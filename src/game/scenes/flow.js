@@ -99,7 +99,18 @@ function onMatch(F, opts) {
   award(0);
   if (!opts.cpu) award(1);
   AU.play('win');
-  go(Result(F.f[w], w, opts, { gains, ups, f: F.f }));
+  go(
+    Result(F.f[w], w, opts, {
+      gains,
+      ups,
+      f: F.f,
+      stage: F.stage,
+      wins: F.wins,
+      perfects: F.perfects,
+      combo: F.bestCombo,
+      rounds: F.round,
+    }),
+  );
 }
 
 export { arcadeNext, goTravel, goVs, onMatch, startBonus };

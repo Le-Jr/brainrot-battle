@@ -567,6 +567,11 @@ const AU = {
           }),
         );
         break;
+      case 'count':
+        this.fm(196, t, 0.18, 0.22, S, { r: 2, i: 3, i2: 0.4, id: 0.06, sus: 0.3 });
+        this.noise(t, 0.08, 0.2, S, { bp: 1800, q: 1.2 });
+        this.osc('sine', 98, t, 0.25, 0.35, S, { slide: 60, sus: 0.3 });
+        break;
       case 'wipe':
         this.noise(t, 0.22, 0.16, S, { bp: 1200, q: 0.7, a: 0.08 });
         break;
