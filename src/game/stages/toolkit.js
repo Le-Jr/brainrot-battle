@@ -294,6 +294,7 @@ export {
   lg,
   palmHD,
   perspTiles,
+  quant,
   ridge,
   rr,
   setSeed,

@@ -513,6 +513,63 @@ const AU = {
         this.fm(1400, t, 0.12, 0.16, S, { r: 1.5, i: 4, slide: 2100, sus: 0.4 });
         this.fm(1900, t + 0.13, 0.1, 0.12, S, { r: 1.5, i: 4, slide: 1300, sus: 0.4 });
         break;
+      // ---- intro and menus (arcade boot style) ----
+      case 'logo':
+        // fast rising brass arpeggio, then a big chord hit with a shimmering tail
+        [0, 4, 7, 12, 16, 19, 24].forEach((k, i) =>
+          this.fm(262 * Math.pow(2, k / 12), t + i * 0.055, 0.18, 0.12, S, {
+            r: 1,
+            i: 2.4,
+            i2: 1,
+            id: 0.12,
+            sus: 0.6,
+          }),
+        );
+        [0, 4, 7, 12].forEach((k) =>
+          this.fm(523 * Math.pow(2, k / 12), t + 0.42, 0.9, 0.08, S, {
+            r: 1,
+            i: 3,
+            i2: 0.8,
+            id: 0.1,
+            a: 0.003,
+            sus: 0.5,
+          }),
+        );
+        this.osc('sine', 131, t + 0.42, 0.7, 0.45, S, { sus: 0.4 });
+        this.noise(t + 0.42, 0.25, 0.3, S, { bp: 900, q: 0.8 });
+        [24, 28, 31, 36].forEach((k, i) =>
+          this.osc('triangle', 262 * Math.pow(2, k / 12), t + 0.55 + i * 0.07, 0.5, 0.06, S, {
+            vib: 1,
+            sus: 0.5,
+          }),
+        );
+        this.noise(t + 0.42, 0.9, 0.12, S, { hp: 6000 });
+        break;
+      case 'power':
+        this.osc('sine', 60, t, 0.5, 0.22, S, { slide: 900, st: 0.35, sus: 0.4 });
+        this.noise(t, 0.25, 0.1, S, { hp: 3000 });
+        break;
+      case 'type':
+        this.osc(this.p12, 1700 + Math.random() * 500, t, 0.02, 0.035, S, { sus: 0.1 });
+        break;
+      case 'glitch':
+        this.noise(t, 0.12, 0.28, S, { bp: 3000, q: 2 });
+        this.osc('square', 90, t, 0.1, 0.1, S, { slide: 2000, st: 0.1 });
+        break;
+      case 'start':
+        [0, 7, 12].forEach((k, i) =>
+          this.fm(988 * Math.pow(2, k / 12), t + i * 0.07, 0.3, 0.12, S, {
+            r: 3,
+            i: 1.2,
+            i2: 0,
+            id: 0.1,
+            sus: 0.3,
+          }),
+        );
+        break;
+      case 'wipe':
+        this.noise(t, 0.22, 0.16, S, { bp: 1200, q: 0.7, a: 0.08 });
+        break;
     }
   },
 };
