@@ -14,26 +14,32 @@ import { hStrada } from './strada.js';
 import { hTeatro } from './teatro.js';
 import { hVillaggio } from './villaggio.js';
 
-/** The 13 painted stages, indexed by stage id (characters' home stage, story panels, bonus stages). */
-let STAGES = [];
-/** Paint every stage once (about 2 s on a laptop). Later calls reuse the cached layers. */
+/** Stage builders in stage-id order (characters' home stage, story panels, bonus stages and the map use these ids). */
+const BUILDERS = [
+  hBeach,
+  hPiazza,
+  hJungle,
+  hDesert,
+  hCafe,
+  hVillaggio,
+  hCielo,
+  hTeatro,
+  hPiantagione,
+  hSaturno,
+  hStrada,
+  hCyber,
+  hByd,
+];
+/** The painted stages, indexed by stage id. Filled by buildNextStage()/buildStages() at boot. */
+const STAGES = [];
+/** Paint the next stage (one to two hundred ms each). Returns the loading progress from 0 to 1. */
+function buildNextStage() {
+  if (STAGES.length < BUILDERS.length) STAGES.push(BUILDERS[STAGES.length]());
+  return STAGES.length / BUILDERS.length;
+}
+/** Paint every remaining stage at once (tests and tools). */
 function buildStages() {
-  if (!STAGES.length)
-    STAGES = [
-      hBeach(),
-      hPiazza(),
-      hJungle(),
-      hDesert(),
-      hCafe(),
-      hVillaggio(),
-      hCielo(),
-      hTeatro(),
-      hPiantagione(),
-      hSaturno(),
-      hStrada(),
-      hCyber(),
-      hByd(),
-    ];
+  while (buildNextStage() < 1);
   return STAGES;
 }
 function drawStage(st, cam, t) {
@@ -48,4 +54,4 @@ function drawStage(st, cam, t) {
   ctx.drawImage(st.floor, -cam, 0, st.floor.width * k, st.floor.height * k);
 }
 
-export { STAGES, buildStages, drawStage };
+export { BUILDERS, STAGES, buildNextStage, buildStages, drawStage };

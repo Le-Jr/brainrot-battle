@@ -17,10 +17,12 @@ export interface CreateGameOptions {
   autoStart?: boolean;
   /** Where keyboard listeners are attached. Defaults to window; null disables them. */
   keyboardTarget?: EventTarget | null;
+  /** Play the Tupinicode loading screen and studio intro before the title. Defaults to true. */
+  intro?: boolean;
 }
 
 export interface GameHandle {
-  /** Resolves when the font and atlases are loaded and the title screen is up. */
+  /** Resolves when the font and atlases are loaded (and, with `intro: false`, the title screen is up). */
   ready: Promise<void>;
   /** Stops the loop and removes listeners. The run state is kept for the next createGame(). */
   destroy(): void;

@@ -7,6 +7,7 @@ import { attachKeyboard, pressVirtual, pressedQ, releaseVirtual } from './core/i
 import { go, scene, startLoop, stopLoop } from './core/scene.js';
 import { on } from './events.js';
 import { XP } from './progression/xp.js';
+import { Intro } from './scenes/intro.js';
 import { Title } from './scenes/title.js';
 import { loadHD } from './sprites/hd.js';
 import { buildStages } from './stages/index.js';
@@ -14,9 +15,14 @@ import { SET } from './state.js';
 import { buildLogo } from './ui/logo.js';
 
 let booting = null;
-/** One-time boot: web font, atlases, saved XP, narrator voices, logo and the 13 painted stages. */
-function boot(assetBase) {
+/**
+ * One-time boot: web font, atlases, saved XP, narrator voices and the logo.
+ * With the intro, the Tupinicode loading screen is up right away and paints the 13 stages one per frame;
+ * without it (tests, tools) the stages are painted at once and the game starts on the title screen.
+ */
+function boot(assetBase, intro) {
   if (booting) return booting;
+  if (intro) go(Intro);
   const fontReady =
     document.fonts && document.fonts.load
       ? Promise.race([document.fonts.load('8px ' + FONT), new Promise((r) => setTimeout(r, 2500))])
@@ -25,15 +31,19 @@ function boot(assetBase) {
     XP.load();
     VO.init();
     buildLogo();
-    buildStages();
-    go(Title);
+    if (intro) Intro.assetsReady = true;
+    else {
+      buildStages();
+      go(Title);
+    }
   });
   return booting;
 }
 
 /**
  * Bind the engine to a 640x360 canvas and start it.
- * Returns a handle right away; `ready` resolves when assets are loaded and the title screen is up.
+ * Returns a handle right away; `ready` resolves when the font and atlases are loaded (and, without the intro,
+ * once the title screen is up).
  * The engine is a singleton: calling destroy() and createGame() again (React StrictMode, remounts) resumes the same run.
  */
 function createGame({
@@ -42,6 +52,7 @@ function createGame({
   assetBase = '/atlases',
   autoStart = true,
   keyboardTarget = window,
+  intro = true,
 }) {
   initCanvas(canvas);
   if (fontFamily) setFont(fontFamily);
@@ -55,9 +66,11 @@ function createGame({
   };
   if (canvas.addEventListener) canvas.addEventListener('pointerdown', onPointer);
   let alive = true;
-  const ready = boot(assetBase).then(() => {
+  const ready = boot(assetBase, intro).then(() => {
     if (alive && autoStart) startLoop();
   });
+  // the intro animates its own loading screen, so the loop starts before the assets arrive
+  if (intro && autoStart) startLoop();
   return {
     ready,
     destroy() {
