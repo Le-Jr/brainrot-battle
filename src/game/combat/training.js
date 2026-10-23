@@ -57,7 +57,7 @@ class Training extends Fight {
   }
   onKO() {}
   drawBanner() {
-    txt('TREINO', W / 2, 32, 8, '#4af0ff', 'center');
+    txt('TREINO', W / 2, 30, 8, '#4af0ff', 'center');
     txt('ESC: PAUSA   TAB: HITBOXES', W / 2, 150, 8, 'rgba(255,255,255,.7)', 'center');
     if (this.show && this.show.t > 0)
       txt('DANO DO COMBO: ' + this.show.dmg, W / 2, 44, 8, '#ffd23a', 'center');

@@ -196,7 +196,7 @@ class Bonus extends Fight {
     lifeBar(0, P1.hp / 100, P1.dhp / 100, this.tick, P1.dhpT > 26);
     lifeBar(1, car.hp / car.maxhp, car.dhp / car.maxhp, this.tick, car.dhpT > 26);
     namePlate(0, P1.ch.short, P1.ch.col, 0, 0, this.tick);
-    txt('NV' + P1.lvl, 4, 32, 8, '#ffd23a');
+    txt('NV' + P1.lvl, 4, 28, 6, '#ffd23a');
     namePlate(1, car.ch.short, car.ch.col, 0, 0, this.tick);
     powerGauge(0, P1.meter, this.tick);
     comboCounter(0, this.combo[0]);
@@ -207,19 +207,19 @@ class Bonus extends Fight {
     const p = this.phase,
       t = this.pt;
     if (p === 'intro') {
-      band(56, 48, t / 10);
+      band(60, 38, t / 10);
       if (t > 4)
-        txt('BONUS STAGE', W / 2, 62, 16, vgrad(62, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
-      if (t > 30) txt('DESTRUA O ' + this.f[1].ch.short + '!', W / 2, 86, 8, '#ffffff', 'center');
+        txt('BONUS STAGE', W / 2, 65, 16, vgrad(65, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
+      if (t > 30) txt('DESTRUA O ' + this.f[1].ch.short + '!', W / 2, 85, 8, '#ffffff', 'center');
     }
     if (p === 'end' && this.res) {
       const destroyed = this.res.type === 'destroy';
-      band(54, 64, t / 8, destroyed ? '90,8,24' : '8,30,80');
+      band(58, 48, t / 8, destroyed ? '90,8,24' : '8,30,80');
       if (destroyed)
-        txt('DESTRUÍDO!', W / 2, 60, 24, vgrad(60, 24, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
-      else txt('TEMPO!', W / 2, 62, 24, vgrad(62, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
+        txt('DESTRUÍDO!', W / 2, 64, 16, vgrad(64, 16, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
+      else txt('TEMPO!', W / 2, 64, 16, vgrad(64, 16, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
       if (t > 50)
-        txt('+' + Math.min(this.xp, Math.floor((t - 50) * 8)) + ' XP', W / 2, 92, 16, '#7aff9a', 'center');
+        txt('+' + Math.min(this.xp, Math.floor((t - 50) * 8)) + ' XP', W / 2, 86, 12, '#7aff9a', 'center');
     }
   }
 }

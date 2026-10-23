@@ -703,31 +703,31 @@ class Fight {
         // ROUND n: a band opens from the center, the title slides in, everything fades before FIGHT!
         const a = t < 52 ? 1 : 1 - (t - 52) / 8;
         ctx.globalAlpha = a;
-        band(62, 34, t / 10);
+        band(64, 26, t / 10);
         const label = this.round >= 3 ? 'FINAL ROUND' : 'ROUND ' + this.round,
           sx = Math.round((1 - Math.min(1, (t - 4) / 10)) * 200);
-        if (t > 4) txt(label, W / 2 - sx, 67, 24, vgrad(67, 24, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
-        if (t > 16) sparkle(W / 2 + label.length * 12 + 4, 66, ((t - 16) % 30) / 30);
+        if (t > 4) txt(label, W / 2 - sx, 69, 16, vgrad(69, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
+        if (t > 16) sparkle(W / 2 + label.length * 8 + 4, 68, ((t - 16) % 30) / 30);
         ctx.globalAlpha = 1;
       } else {
         const k = Math.max(1, 2.4 - (t - 60) / 5);
-        band(58, 44, 1, t < 64 ? '255,255,255' : '90,8,24');
+        band(62, 32, 1, t < 64 ? '255,255,255' : '90,8,24');
         ctx.save();
-        ctx.translate(W / 2, 80);
+        ctx.translate(W / 2, 78);
         ctx.scale(k, k);
-        txt('FIGHT!', 0, -16, 32, vgrad(-16, 32, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
+        txt('FIGHT!', 0, -12, 24, vgrad(-12, 24, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
         ctx.restore();
       }
     }
     if ((p === 'ko' || p === 'end') && this.res) {
       if (this.res.type === 'ko') {
         const tt = p === 'ko' ? this.slowT : 80 + t;
-        if (tt > 4) band(58, 44, (tt - 4) / 8, '90,8,24');
+        if (tt > 4) band(62, 32, (tt - 4) / 8, '90,8,24');
         if (tt > 6 && (tt < 70 ? (tt >> 2) & 1 : true))
-          txt('K.O.', W / 2, 64, 32, vgrad(64, 32, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
+          txt('K.O.', W / 2, 66, 24, vgrad(66, 24, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
       } else if (p === 'end') {
-        band(60, 40, t / 8, '8,30,80');
-        txt('TEMPO!', W / 2, 68, 24, vgrad(68, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
+        band(64, 26, t / 8, '8,30,80');
+        txt('TEMPO!', W / 2, 69, 16, vgrad(69, 16, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
       }
       if (p === 'end' && t > 50) {
         const w = this.res.w;

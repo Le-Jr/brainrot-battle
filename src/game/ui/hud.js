@@ -7,7 +7,7 @@ import { sprite } from '../sprites/sprite.js';
 import { frameBox, plate, sparkle } from './arcade.js';
 import { fitShot, headShot } from './portrait.js';
 
-const BAR = { y: 7, h: 9, w: 112, skew: 5, inset: 34 };
+const BAR = { y: 6, h: 7, w: 114, skew: 4, inset: 28 };
 const ease = (k) => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
 
 /** Rows r0..r1 of a slanted bar of height h: row r is shifted by skew·(1 − r/(h−1)). Keeps every row pixel-crisp. */
@@ -58,7 +58,7 @@ function lifeBar(side, frac, trail, t, hitFlash) {
 
 /** Framed head shot next to the life bar; flashes white when hit, blue when frozen, darkens on K.O. */
 function portraitChip(side, f, t) {
-  const S = 26,
+  const S = 22,
     x = side ? W - 4 - S : 4,
     y = 3;
   frameBox(x, y, S, S, f.ch.col, vgrad(y, S, [shade(f.ch.col, -0.35), shade(f.ch.col, -0.75)]));
@@ -75,60 +75,58 @@ function portraitChip(side, f, t) {
 
 /** Slanted plate with the fighter's name in their color, followed by the round-win medals. */
 function namePlate(side, name, col, wins, need, t) {
-  const y = 19,
-    w = name.length * 8 + 14,
-    sk = side ? -4 : 4,
+  const y = 16,
+    w = name.length * 6 + 12,
+    sk = side ? -3 : 3,
     x = side ? W - BAR.inset - w : BAR.inset;
-  plate(x - 1, y - 1, w + 2, 12, '#05020a', sk);
-  plate(x, y, w, 10, vgrad(y, 10, ['#3a2456', '#1e1030', '#120a1c']), sk);
-  plate(side ? x + w - 4 : x, y, 4, 10, col, sk);
-  plate(x, y + 9, w, 1, shade(col, -0.2), sk);
-  txt(name, side ? x + w - 8 : x + 8, y + 1, 8, shade(col, 0.45), side ? 'right' : 'left', '#05020a');
+  plate(x - 1, y - 1, w + 2, 10, '#05020a', sk);
+  plate(x, y, w, 8, vgrad(y, 8, ['#3a2456', '#1e1030', '#120a1c']), sk);
+  plate(side ? x + w - 3 : x, y, 3, 8, col, sk);
+  plate(x, y + 7, w, 1, shade(col, -0.2), sk);
+  txt(name, side ? x + w - 6 : x + 6, y + 1, 6, shade(col, 0.45), side ? 'right' : 'left', '#05020a');
   // round-win medals under the portrait chip
   for (let k = 0; k < need; k++) {
-    const my = 32,
-      mx = side ? W - 13 - k * 11 : 5 + k * 11,
+    const my = 28,
+      mx = side ? W - 11 - k * 9 : 5 + k * 9,
       won = k < wins;
     ctx.fillStyle = '#05020a';
-    ctx.fillRect(mx - 1, my - 1, 10, 10);
-    ctx.fillStyle = won ? vgrad(my, 8, ['#fff7b0', '#ffd23a', '#c07010']) : '#2a1838';
-    ctx.fillRect(mx, my, 8, 8);
+    ctx.fillRect(mx - 1, my - 1, 8, 8);
+    ctx.fillStyle = won ? vgrad(my, 6, ['#fff7b0', '#ffd23a', '#c07010']) : '#2a1838';
+    ctx.fillRect(mx, my, 6, 6);
     if (won) {
-      ctx.fillStyle = '#7a3a00';
-      ctx.fillRect(mx + 2, my + 2, 1, 3);
-      ctx.fillRect(mx + 5, my + 2, 1, 3);
-      ctx.fillRect(mx + 3, my + 5, 2, 1);
-      if ((t + k * 20) % 90 < 30) sparkle(mx + 6, my + 1, ((t + k * 20) % 90) / 30);
+      ctx.fillStyle = 'rgba(255,255,255,.7)';
+      ctx.fillRect(mx + 1, my + 1, 2, 1);
+      if ((t + k * 20) % 90 < 30) sparkle(mx + 5, my + 1, ((t + k * 20) % 90) / 30);
     } else {
       ctx.fillStyle = '#3a2a50';
-      ctx.fillRect(mx + 3, my + 3, 2, 2);
+      ctx.fillRect(mx + 2, my + 2, 2, 2);
     }
   }
 }
 
 /** Timer emblem between the bars; red and pulsing in the last 10 seconds. */
 function timerEmblem(label, warn, t) {
-  const x = 146,
+  const x = 148,
     y = 3,
-    w = 28,
-    h = 25;
-  chamfer(x - 2, y - 2, w + 4, h + 4, '#05020a', 6);
-  chamfer(x - 1, y - 1, w + 2, h + 2, vgrad(y, h, ['#fff2b0', '#c98a2a', '#6a3a08']), 5);
-  chamfer(x, y, w, h, vgrad(y, h, ['#3a1a5a', '#1a0a2e', '#0e0618']), 4);
+    w = 24,
+    h = 19;
+  chamfer(x - 2, y - 2, w + 4, h + 4, '#05020a', 5);
+  chamfer(x - 1, y - 1, w + 2, h + 2, vgrad(y, h, ['#fff2b0', '#c98a2a', '#6a3a08']), 4);
+  chamfer(x, y, w, h, vgrad(y, h, ['#3a1a5a', '#1a0a2e', '#0e0618']), 3);
   ctx.fillStyle = 'rgba(255,255,255,.12)';
   ctx.fillRect(x + 4, y + 1, w - 8, 1);
   const k = warn ? 1 + Math.max(0, Math.sin((t / 30) * Math.PI * 2)) * 0.12 : 1;
   ctx.save();
-  ctx.translate(160, y + 13);
+  ctx.translate(160, y + 10);
   ctx.scale(k, k);
   txt(
     label,
     0,
-    -8,
-    16,
+    -6,
+    12,
     warn
-      ? vgrad(-8, 16, ['#ffd0d0', '#ff4d5e', '#a8102a'])
-      : vgrad(-8, 16, ['#ffffff', '#e8e0ff', '#a898d8']),
+      ? vgrad(-6, 12, ['#ffd0d0', '#ff4d5e', '#a8102a'])
+      : vgrad(-6, 12, ['#ffffff', '#e8e0ff', '#a898d8']),
     'center',
   );
   ctx.restore();
@@ -136,9 +134,9 @@ function timerEmblem(label, warn, t) {
 
 /** Power gauge at the bottom: two segments (EX at half, MAX when full, with a rainbow shimmer). */
 function powerGauge(side, meter, t) {
-  const w = 100,
-    h = 6,
-    y = 168,
+  const w = 84,
+    h = 4,
+    y = 171,
     sk = side ? -3 : 3,
     x = side ? W - 8 - w : 8,
     mw = Math.round((w * Math.min(100, meter)) / 100),
@@ -165,8 +163,8 @@ function powerGauge(side, meter, t) {
   rows(x + w / 2, y, 1, h, sk, '#05020a');
   const lx = side ? x - 6 : x + w + 6,
     al = side ? 'right' : 'left';
-  if (full) txt('MAX', lx, y - 1, 8, (t >> 3) & 1 ? '#ffffff' : '#ffd23a', al);
-  else if (half) txt('EX', lx, y - 1, 8, '#4af0ff', al);
+  if (full) txt('MAX', lx, y - 1, 6, (t >> 3) & 1 ? '#ffffff' : '#ffd23a', al);
+  else if (half) txt('EX', lx, y - 1, 6, '#4af0ff', al);
 }
 
 /** Big combo counter that pops on every new hit and fades out at the end. */
@@ -175,18 +173,18 @@ function comboCounter(side, c) {
   const age = 70 - c.t,
     pop = 1 + Math.max(0, 6 - age) / 10,
     n = String(c.n),
-    nw = n.length * 24,
+    nw = n.length * 16,
     x = side ? W - 10 : 10,
-    y = 50;
+    y = 38;
   ctx.save();
   ctx.globalAlpha = Math.min(1, c.t / 12);
-  ctx.translate(side ? x - nw / 2 : x + nw / 2, y + 12);
+  ctx.translate(side ? x - nw / 2 : x + nw / 2, y + 8);
   ctx.scale(pop, pop);
-  txt(n, 0, -12, 24, vgrad(-12, 24, ['#ffffff', '#ffd23a', '#ff5a2a']), 'center');
+  txt(n, 0, -8, 16, vgrad(-8, 16, ['#ffffff', '#ffd23a', '#ff5a2a']), 'center');
   ctx.restore();
   ctx.globalAlpha = Math.min(1, c.t / 12);
-  txt('HITS', side ? x - nw - 4 : x + nw + 4, y + 14, 8, '#ffffff', side ? 'right' : 'left');
-  txt('COMBO', side ? x - nw - 4 : x + nw + 4, y + 4, 8, '#ffb0e8', side ? 'right' : 'left');
+  txt('HITS', side ? x - nw - 3 : x + nw + 3, y + 9, 6, '#ffffff', side ? 'right' : 'left');
+  txt('COMBO', side ? x - nw - 3 : x + nw + 3, y + 2, 6, '#ffb0e8', side ? 'right' : 'left');
   ctx.globalAlpha = 1;
 }
 
@@ -210,16 +208,16 @@ function band(y, h, k, col = '10,4,24') {
 
 /** Winner plate under the K.O. / TEMPO banner. */
 function winnerPlate(label, col, perfect, t) {
-  const w = label.length * 8 + 28,
+  const w = label.length * 8 + 24,
     x = (W - w) / 2,
-    y = 108;
-  plate(x - 1, y - 1, w + 2, 14, '#05020a', 6);
-  plate(x, y, w, 12, vgrad(y, 12, [shade(col, 0.3), col, shade(col, -0.45)]), 6);
-  txt(label, W / 2 + 3, y + 2, 8, '#ffffff', 'center', '#120a1c');
+    y = 102;
+  plate(x - 1, y - 1, w + 2, 12, '#05020a', 5);
+  plate(x, y, w, 10, vgrad(y, 10, [shade(col, 0.3), col, shade(col, -0.45)]), 5);
+  txt(label, W / 2 + 2, y + 1, 8, '#ffffff', 'center', '#120a1c');
   if (perfect) {
-    txt('PERFEITO!', W / 2, y + 18, 16, vgrad(y + 18, 16, ['#fff7b0', '#ffd23a', '#ff8a2a']), 'center');
-    sparkle(W / 2 - 76, y + 20, (t % 40) / 40);
-    sparkle(W / 2 + 76, y + 30, ((t + 20) % 40) / 40);
+    txt('PERFEITO!', W / 2, y + 16, 12, vgrad(y + 16, 12, ['#fff7b0', '#ffd23a', '#ff8a2a']), 'center');
+    sparkle(W / 2 - 58, y + 18, (t % 40) / 40);
+    sparkle(W / 2 + 58, y + 26, ((t + 20) % 40) / 40);
   }
 }
 
