@@ -16,7 +16,20 @@
 
 ## Toque (celular e tablet)
 
-Num aparelho com tela de toque, aparece um **D-pad** e os botões **SOCO**, **CHUTE**, **ESPECIAL** e **START**. No computador eles podem ser ativados pelo botão **TOQUE**, acima da tela. Tocar na tela do jogo também funciona como START nas telas de menu e de cutscene.
+Num aparelho com tela de toque aparecem os controles na tela. No computador eles podem ser ativados pelo botão **TOQUE**, acima da tela. Tocar na tela do jogo também funciona como START nas telas de menu e de cutscene.
+
+- **D-pad de 8 direções:** é uma área só, não quatro botões. Dá para deslizar o dedo entre as direções, então diagonais e comandos como ↓ ↘ → (EX) e → ↓ ↘ (uppercut) funcionam. Um "polegar" mostra para onde o dedo está apontando.
+- **Botões em arco de fliperama:** **SOCO** (vermelho), **CHUTE** (azul) e **ESP** (dourado), mais um **START** pequeno. Cada botão aceita um dedo próprio (multitoque). No Android, cada toque dá uma vibração curta.
+
+### Tela cheia no celular
+
+No celular aparece o botão **JOGAR EM TELA CHEIA** embaixo do jogo (o botão **TELA CHEIA** da barra faz o mesmo):
+
+- o jogo ocupa a tela inteira e **deita na horizontal**: onde o navegador permite (Android/Chrome), a orientação é travada em paisagem; onde não permite (iPhone), o jogo gira 90° sozinho se o aparelho estiver em pé;
+- os controles ficam **por cima do jogo**, semitransparentes: D-pad à esquerda, botões à direita;
+- no canto de cima ficam **✕ SAIR** e o botão de som.
+
+No computador, a tela cheia mostra só o jogo (os controles de toque aparecem se o botão **TOQUE** estiver ligado).
 
 ## Botões da página
 

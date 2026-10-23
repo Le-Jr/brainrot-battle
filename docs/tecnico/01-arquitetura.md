@@ -13,7 +13,7 @@ flowchart LR
     L[layout.tsx<br/>fonte + metadados] --> P[page.tsx]
     P --> GC[GameCabinet<br/>client component]
     GC --> CB[ControlBar]
-    GC --> TP[TouchPad]
+    GC --> TP[TouchControls]
     P --> CL[ControlsLegend<br/>server component]
     GC --> H[useGameEngine]
   end
@@ -47,7 +47,9 @@ brainrot-battaglia/
 │   │   ├── GameCabinet.tsx       # monta o canvas, guarda os toggles, fala com o motor
 │   │   ├── useGameEngine.ts      # carrega o motor no cliente e cuida do ciclo de vida
 │   │   ├── ControlBar.tsx        # MÚSICA, NARRADOR, CRT, TOQUE, TELA CHEIA
-│   │   ├── TouchPad.tsx          # D-pad e botões de ação com pointer capture
+│   │   ├── TouchControls.tsx     # D-pad de 8 direções e botões em arco (embaixo da tela ou sobre o jogo)
+│   │   ├── useFullscreen.ts      # tela cheia nativa + trava em paisagem, ou modo CSS no iPhone
+│   │   ├── useMediaQuery.ts      # media queries reativas (toque, orientação)
 │   │   ├── ControlsLegend.tsx    # cartões com os controles (server component)
 │   │   └── *.module.css          # CSS Modules de cada componente
 │   └── game/                     # motor do jogo (JS puro, sem React)
@@ -98,6 +100,13 @@ Ciclos de importação entre cenas existem (por exemplo `title → select → �
 ## Por que o motor é JavaScript e não TypeScript?
 
 O motor veio de um arquivo único de 2.300 linhas, muito denso. A migração foi feita **sem reescrever a lógica**: cada módulo é um recorte do código original, e as importações foram calculadas automaticamente. Isso permitiu provar que o jogo continua idêntico (veja [06-ferramentas-e-testes.md](06-ferramentas-e-testes.md#regressão-contra-a-versão-original)). A casca React é TypeScript estrito, e a fronteira entre as duas camadas tem tipos (`index.d.ts`). Tipar o motor aos poucos é um item do [roadmap](08-roadmap.md).
+
+## Tela cheia e celular
+
+- O elemento que entra em tela cheia é o **palco** (`.stage`), com o canvas e os controles sobrepostos dentro dele.
+- `useFullscreen` tenta a Fullscreen API e depois `screen.orientation.lock('landscape')`. Se a API não existir ou for recusada (iPhone Safari), usa um modo "pseudo": uma camada `position: fixed` que cobre a tela e trava a rolagem da página.
+- Os navegadores forçam `transform: none` no elemento em tela cheia; por isso a rotação de 90° (celular em pé) fica num wrapper interno, o `.rotor`. O `.rotor` também é o `container-type: size`, e o canvas é dimensionado com `min(100cqw, 100cqh × 16/9)`.
+- Com o palco girado, o D-pad converte as coordenadas do dedo para o referencial girado (`x = dy`, `y = −dx`) antes de calcular a direção.
 
 ## Ciclo de vida no React
 
