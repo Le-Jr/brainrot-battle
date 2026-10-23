@@ -24,7 +24,7 @@ const MENU = [
     l: 'HISTÓRIA',
     d: 'Escolha um brainrot, viaje por Brainrotália e enfrente La Vacca Saturnita.',
   },
-  { id: 'versus', l: 'VERSUS', d: 'Dois jogadores no mesmo teclado. Sem piedade.' },
+  { id: 'versus', l: 'VERSUS', d: 'Luta livre: contra a CPU ou contra um amigo no mesmo teclado.' },
   { id: 'bonus', l: 'BÔNUS', d: 'Destrua carros para farmar XP: Nonno, Cybercaminhão ou Bi-ai-di.' },
   {
     id: 'training',
@@ -33,6 +33,11 @@ const MENU = [
   },
   { id: 'moves', l: 'COMANDOS', d: 'Todos os golpes, combos, cancelamentos e especiais.' },
   { id: 'options', l: 'OPÇÕES', d: 'Dificuldade, música e escolha das vozes do narrador.' },
+];
+/** VERSUS sub-choice, shown inside the mode card. */
+const VS_MODES = [
+  { cpu: true, l: '1P VS CPU', d: 'Você escolhe os dois lutadores. Nível em OPÇÕES.' },
+  { cpu: false, l: '1P VS 2P', d: 'Dois jogadores no mesmo teclado. Sem piedade.' },
 ];
 /** Cast lineup on the attract screen: x position and facing (everyone looks at the center). */
 const LINEUP = [26, 62, 98, 134, 186, 222, 258, 294];
@@ -60,6 +65,7 @@ const Title = {
     this.back = false;
     this.show = 0;
     this.shake = 0;
+    this.sub = null;
     AU.play('title');
   },
   update() {
@@ -85,6 +91,26 @@ const Title = {
       }
       return;
     }
+    // VERSUS sub-choice: against the CPU or local 2 players
+    if (this.sub) {
+      const p = menuPad();
+      if (p.pup || p.pdown) {
+        this.sub.m ^= 1;
+        AU.sfx('blip');
+      }
+      if (anyPressed(['Escape', 'Backspace'])) {
+        this.sub = null;
+        AU.sfx('blip');
+      } else if (anyPressed(CONFIRM)) {
+        AU.sfx('ok');
+        S.mode = 'versus';
+        S.vsCpu = VS_MODES[this.sub.m].cpu;
+        this.sub = null;
+        this.back = true;
+        go(Select);
+      }
+      return;
+    }
     // menu
     if (anyPressed(['Escape', 'Backspace'])) {
       AU.sfx('wipe');
@@ -105,6 +131,10 @@ const Title = {
     if (anyPressed(CONFIRM)) {
       AU.sfx('ok');
       const id = MENU[this.m].id;
+      if (id === 'versus') {
+        this.sub = { m: S.vsCpu ? 0 : 1 };
+        return;
+      }
       this.back = true;
       if (id === 'moves') go(Moves);
       else if (id === 'options') go(Options);
@@ -219,6 +249,27 @@ const Title = {
     frameBox(x, 90, 140, 74, '#ff6ad5');
     plate(x + 4, 82, 92, 11, vgrad(82, 11, ['#ff9ae0', '#ff6ad5', '#b02a90']), 5);
     txt(MENU[this.m].l, x + 14, 84, 8, '#ffffff', 'left', '#3a0a2a');
+    if (this.sub) {
+      // VERSUS sub-choice inside the card
+      VS_MODES.forEach((v, i) => {
+        const sel = i === this.sub.m,
+          y = 98 + i * 14;
+        plate(x + 8, y - 1, 124, 12, '#05020a', 5);
+        plate(
+          x + 9,
+          y,
+          122,
+          10,
+          sel ? vgrad(y, 10, ['#fff6b0', '#ffd23a', '#e8901a']) : 'rgba(34,16,58,.94)',
+          5,
+        );
+        txt(v.l, x + 72, y + 1, 8, sel ? '#1a0a24' : '#cbbfe6', 'center', null);
+      });
+      wrap(VS_MODES[this.sub.m].d, 16)
+        .slice(0, 3)
+        .forEach((l, i) => txt(l, x + 6, 130 + i * 10, 8, '#f1e9ff', 'left'));
+      return;
+    }
     // the showcased fighter stands behind the text, like key art
     const ch = CH[this.show];
     ctx.save();

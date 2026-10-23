@@ -20,7 +20,7 @@ import { Cutscene } from './cutscene.js';
 import { FightScene } from './fight-scene.js';
 import { goTravel } from './flow.js';
 import { Title } from './title.js';
-import { VS } from './vs.js';
+import { StageSelect } from './stage-select.js';
 
 /* ---------- character select ---------- */
 const Select = {
@@ -28,6 +28,7 @@ const Select = {
   enter() {
     this.cur = [S.p1, S.mode === 'versus' ? S.p2 : S.p1];
     this.ok = [false, S.mode !== 'versus'];
+    this.cpu = S.mode === 'versus' && S.vsCpu;
     this.t = 0;
     this.out = -1;
     AU.play('select');
@@ -44,7 +45,8 @@ const Select = {
       return;
     }
     const vs = S.mode === 'versus',
-      p1 = vs ? readPad('p1') : readPad('p1', 'p1x');
+      cpu = vs && S.vsCpu,
+      p1 = vs && !cpu ? readPad('p1') : readPad('p1', 'p1x');
     const step = (i, p, conf, back) => {
       if (!this.ok[i]) {
         if (p.pleft) {
@@ -69,13 +71,23 @@ const Select = {
         AU.sfx('blip');
       }
     };
-    step(
-      0,
-      p1,
-      anyPressed(vs ? ['KeyJ', 'Space', 'T_p', 'T_start', 'Enter'] : CONFIRM),
-      anyPressed(['KeyK', 'T_k']),
-    );
-    if (vs) step(1, readPad('p2'), anyPressed(CONFIRM2), anyPressed(['KeyN', 'Period', 'Numpad2']));
+    if (cpu) {
+      // 1P picks their fighter, then the CPU's; going back from the rival re-opens the first pick
+      const i = this.ok[0] ? 1 : 0,
+        back = anyPressed(['KeyK', 'T_k']);
+      if (i === 1 && back) {
+        this.ok[0] = false;
+        AU.sfx('blip');
+      } else step(i, p1, anyPressed(CONFIRM), false);
+    } else {
+      step(
+        0,
+        p1,
+        anyPressed(vs ? ['KeyJ', 'Space', 'T_p', 'T_start', 'Enter'] : CONFIRM),
+        anyPressed(['KeyK', 'T_k']),
+      );
+      if (vs) step(1, readPad('p2'), anyPressed(CONFIRM2), anyPressed(['KeyN', 'Period', 'Numpad2']));
+    }
     if (this.ok[0] && this.ok[1]) this.out = 50;
   },
   next() {
@@ -96,14 +108,16 @@ const Select = {
       const F = new Training(me, opp);
       go(FightScene(F, () => go(Select)));
     } else {
-      const c2 = CH[S.p2];
+      const c2 = CH[S.p2],
+        cpu = S.vsCpu;
       go(
-        VS(
+        StageSelect(
           me,
           c2,
-          Math.floor(Math.random() * 10),
-          { cpu: false, lv: [XP.lvl(me.id), XP.lvl(c2.id)] },
-          'VERSUS',
+          cpu
+            ? { cpu: true, lvl: S.diff, lv: [XP.lvl(me.id), XP.lvl(me.id)] }
+            : { cpu: false, lv: [XP.lvl(me.id), XP.lvl(c2.id)] },
+          cpu ? 'VERSUS CPU' : 'VERSUS',
         ),
       );
     }
@@ -125,7 +139,11 @@ const Select = {
       {
         bonus: 'BÔNUS: QUEM VAI FARMAR XP?',
         training: 'TREINO: ESCOLHA SEU LUTADOR',
-        versus: 'VERSUS',
+        versus: !this.cpu
+          ? 'VERSUS'
+          : this.ok[0]
+            ? 'ESCOLHA O RIVAL (CPU)'
+            : 'VERSUS CPU: ESCOLHA SEU LUTADOR',
         arcade: 'ESCOLHA SEU BRAINROT',
       }[S.mode],
       W / 2,
@@ -166,7 +184,7 @@ const Select = {
         'center',
       );
       txt(
-        (this.ok[1] ? 'PRONTO' : '2P') + ' NV' + XP.lvl(CH[this.cur[1]].id),
+        (this.ok[1] ? 'PRONTO' : this.cpu ? 'CPU' : '2P') + ' NV' + XP.lvl(CH[this.cur[this.cpu ? 0 : 1]].id),
         256,
         20,
         8,
@@ -213,7 +231,7 @@ const Select = {
       portrait(ch, x, y, 36, 40);
       txt(String(XP.lvl(ch.id)), x + 35, y + 1, 8, '#ffd23a', 'right');
       const c1 = this.cur[0] === i,
-        c2 = vs && this.cur[1] === i;
+        c2 = vs && (!this.cpu || this.ok[0]) && this.cur[1] === i;
       if (c1) {
         ctx.strokeStyle = (t >> 3) & 1 || this.ok[0] ? '#ff4d5e' : '#ffd0d4';
         ctx.lineWidth = 2;
@@ -224,7 +242,7 @@ const Select = {
         ctx.strokeStyle = (t >> 3) & 1 || this.ok[1] ? '#45b4ff' : '#d0ecff';
         ctx.lineWidth = 2;
         ctx.strokeRect(x + (c1 ? 3 : 0), y + (c1 ? 3 : 0), 36 - (c1 ? 6 : 0), 40 - (c1 ? 6 : 0));
-        txt('2P', x + 35, y + 31, 8, '#45b4ff', 'right');
+        txt(this.cpu ? 'CPU' : '2P', x + 35, y + 31, 8, '#45b4ff', 'right');
       }
     }
   },

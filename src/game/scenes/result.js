@@ -62,7 +62,13 @@ function Result(f, side, opts, xi) {
       }
       drawSpr(sprite(f.ch, 'win', Math.floor(t / 7) % 8, 0, f.alt, ''), 90, f.ch === BOSS ? 190 : 176, 1, 2);
       const who =
-        S.mode === 'versus' ? (side === 0 ? 'JOGADOR 1' : 'JOGADOR 2') : side === 0 ? 'VOCÊ' : 'CPU';
+        S.mode === 'versus' && !S.vsCpu
+          ? side === 0
+            ? 'JOGADOR 1'
+            : 'JOGADOR 2'
+          : side === 0
+            ? 'VOCÊ'
+            : 'CPU';
       txt(who + ' VENCE!', W - 12, 12, 8, side === 0 ? '#ff8a96' : '#9adcff', 'right');
       txt(f.ch.name[0], W - 12, 26, 8, '#ffffff', 'right');
       txt(f.ch.name[1], W - 12, 36, 8, f.ch.col, 'right');
@@ -76,7 +82,7 @@ function Result(f, side, opts, xi) {
         .slice(0, 7)
         .forEach((l, i) => txt(l, 176, 57 + i * 9, 8, '#f1e9ff', 'left', null));
       const k = Math.min(1, t / 60);
-      if (S.mode === 'versus') {
+      if (S.mode === 'versus' && !S.vsCpu) {
         [0, 1].forEach((i) => {
           txt(
             (i ? '2P' : '1P') + ' +' + Math.round(xi.gains[i] * k) + ' XP',
