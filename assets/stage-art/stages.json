@@ -1,0 +1,103 @@
+{
+  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image; 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'keep' = source rectangles (fractions x0,y0,x1,y1) to keep; 'clipBelow' = drop source rows below this fraction; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges. Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art.",
+  "beach": {
+    "off": [
+      "front"
+    ],
+    "layers": {
+      "far": {
+        "src": "far.jpg",
+        "key": true,
+        "width": 600,
+        "x": 136,
+        "anchor": [
+          0.607,
+          236
+        ],
+        "keep": [
+          [
+            0.1375,
+            0.42,
+            1,
+            0.607
+          ],
+          [
+            0.795,
+            0.3,
+            0.84,
+            0.42
+          ]
+        ],
+        "outline": 0.35
+      },
+      "mid": {
+        "src": "mid.jpg",
+        "key": true,
+        "width": 832,
+        "anchor": [
+          0.772,
+          272
+        ],
+        "clipBelow": 0.768,
+        "outline": 0.55
+      },
+      "floor": {
+        "src": "floor.jpg",
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.405,
+          272
+        ],
+        "outline": 0.3,
+        "clipAbove": 0.412
+      }
+    }
+  },
+  "piazza": {
+    "off": [
+      "midA"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sky.jpg",
+        "width": 640,
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "far": {
+        "src": "far.jpg",
+        "key": true,
+        "width": 640,
+        "anchor": [
+          0.81,
+          282
+        ],
+        "tile": "mirror",
+        "outline": 0.3
+      },
+      "mid": {
+        "src": "mid.jpg",
+        "key": true,
+        "width": 832,
+        "anchor": [
+          0.843,
+          278
+        ],
+        "outline": 0.55
+      },
+      "floor": {
+        "src": "floor.jpg",
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.295,
+          272
+        ],
+        "outline": 0.3
+      }
+    }
+  }
+}

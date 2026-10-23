@@ -1,5 +1,6 @@
 /* Stage registry (built once at boot) and the 4-layer parallax renderer. */
 import { ctx } from '../core/canvas.js';
+import { applyArt } from './art.js';
 import { hBeach } from './beach.js';
 import { hByd } from './byd.js';
 import { hCafe } from './cafe.js';
@@ -34,7 +35,7 @@ const BUILDERS = [
 const STAGES = [];
 /** Paint the next stage (one to two hundred ms each). Returns the loading progress from 0 to 1. */
 function buildNextStage() {
-  if (STAGES.length < BUILDERS.length) STAGES.push(BUILDERS[STAGES.length]());
+  if (STAGES.length < BUILDERS.length) STAGES.push(applyArt(STAGES.length, BUILDERS[STAGES.length]()));
   return STAGES.length / BUILDERS.length;
 }
 /** Paint every remaining stage at once (tests and tools). */

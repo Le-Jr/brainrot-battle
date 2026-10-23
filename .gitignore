@@ -14,3 +14,8 @@ tests/out-*.png
 .DS_Store
 *.log
 .env*.local
+
+# stage art sources (large; only the processed layers in public/stages are shipped)
+assets/stage-art/**/*.jpg
+assets/stage-art/**/*.jpeg
+assets/stage-art/**/*.png

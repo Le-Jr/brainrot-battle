@@ -10,6 +10,7 @@ import { XP } from './progression/xp.js';
 import { Intro } from './scenes/intro.js';
 import { Title } from './scenes/title.js';
 import { loadHD } from './sprites/hd.js';
+import { loadStageArt } from './stages/art.js';
 import { buildStages } from './stages/index.js';
 import { SET } from './state.js';
 import { buildLogo } from './ui/logo.js';
@@ -20,14 +21,14 @@ let booting = null;
  * With the intro, the Tupinicode loading screen is up right away and paints the 13 stages one per frame;
  * without it (tests, tools) the stages are painted at once and the game starts on the title screen.
  */
-function boot(assetBase, intro) {
+function boot(assetBase, intro, stageBase) {
   if (booting) return booting;
   if (intro) go(Intro);
   const fontReady =
     document.fonts && document.fonts.load
       ? Promise.race([document.fonts.load('8px ' + FONT), new Promise((r) => setTimeout(r, 2500))])
       : Promise.resolve();
-  booting = Promise.all([fontReady.catch(() => {}), loadHD(assetBase)]).then(() => {
+  booting = Promise.all([fontReady.catch(() => {}), loadHD(assetBase), loadStageArt(stageBase)]).then(() => {
     XP.load();
     VO.init();
     buildLogo();
@@ -50,6 +51,7 @@ function createGame({
   canvas,
   fontFamily,
   assetBase = '/atlases',
+  stageBase = '/stages',
   autoStart = true,
   keyboardTarget = window,
   intro = true,
@@ -66,7 +68,7 @@ function createGame({
   };
   if (canvas.addEventListener) canvas.addEventListener('pointerdown', onPointer);
   let alive = true;
-  const ready = boot(assetBase, intro).then(() => {
+  const ready = boot(assetBase, intro, stageBase).then(() => {
     if (alive && autoStart) startLoop();
   });
   // the intro animates its own loading screen, so the loop starts before the assets arrive

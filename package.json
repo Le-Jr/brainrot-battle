@@ -2,7 +2,7 @@
   "name": "brainrot-battaglia",
   "version": "1.0.0",
   "private": true,
-  "description": "Brainrot Battaglia: Ultra Caos — jogo de luta 2D estilo Street Fighter II com memes do Italian brainrot, feito em Next.js e Canvas 2D.",
+  "description": "Brainrot Battaglia: Ultra Caos \u2014 jogo de luta 2D estilo Street Fighter II com memes do Italian brainrot, feito em Next.js e Canvas 2D.",
   "type": "module",
   "engines": {
     "node": ">=20.9.0"
@@ -19,7 +19,8 @@
     "render": "node tests/render-poses.js && node tests/render-stages.js",
     "sprites": "python3 tools/process_sprites.py",
     "readme:art": "node tools/render-readme-art.js",
-    "test:snapshot:update": "node tests/visual-snapshot.js --update"
+    "test:snapshot:update": "node tests/visual-snapshot.js --update",
+    "stages:art": "node tools/process-stage-art.js"
   },
   "dependencies": {
     "next": "16.4.2",

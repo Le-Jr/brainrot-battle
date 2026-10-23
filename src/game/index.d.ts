@@ -13,6 +13,8 @@ export interface CreateGameOptions {
   fontFamily?: string;
   /** URL folder holding the character atlases. Defaults to "/atlases". */
   assetBase?: string;
+  /** URL folder holding the stage art layers (public/stages). Defaults to "/stages". */
+  stageBase?: string;
   /** Start the requestAnimationFrame loop once assets are loaded. Defaults to true. */
   autoStart?: boolean;
   /** Where keyboard listeners are attached. Defaults to window; null disables them. */
