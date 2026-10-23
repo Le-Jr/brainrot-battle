@@ -141,7 +141,7 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
 ### 🎵 Tudo gerado ao vivo
 - **21 músicas** de um sintetizador FM de 2 operadores (família YM2151)
 - 25 efeitos sonoros, reverb e delay, **zero arquivos de áudio**
-- **13 cenários pintados em código** e quantizados em pixel art com dithering Bayer
+- **13 cenários pintados em código** e convertidos em pixel art moderna: faixas de luz sem granulado, contorno nas silhuetas e perspectiva atmosférica
 
   </td>
   <td valign="top">
@@ -149,7 +149,7 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
 ### 🚗 Fases bônus e progressão
 - Destrua a **Macchina del Nonno**, o **Cybercaminhão** de "vidro blindado" e o **Bi-ai-di** (com papagaio do milk shake 🦜)
 - **XP e níveis 1–10** por personagem, salvos no navegador
-- Versus local, Treino com leitura de dano e **modo celular**: tela cheia na horizontal com D-pad de 8 direções e botões sobre o jogo
+- Versus **contra a CPU ou local**, Treino com leitura de dano e **modo celular**: tela cheia na horizontal com D-pad de 8 direções e botões sobre o jogo
 
   </td>
   </tr>

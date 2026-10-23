@@ -23,7 +23,7 @@ Uma abertura no estilo dos arcades dos anos 90 (era Neo-Geo), com a identidade d
 | Item | Modo (`S.mode`) | O que faz |
 |------|-----------------|-----------|
 | **HISTÓRIA** | `arcade` | Campanha completa: prólogo, 7 lutas em ordem aleatória com viagens pelo mapa, 3 fases bônus, chefe final e final próprio do personagem. |
-| **VERSUS** | `versus` | Dois jogadores no mesmo teclado, cenário sorteado (entre os 10 de luta). Os dois ganham XP. |
+| **VERSUS** | `versus` | Luta avulsa no cenário que você escolher. Ao escolher o modo, abre uma sub-opção: **1P VS CPU** (você escolhe o seu lutador e o rival; a CPU usa a dificuldade de OPÇÕES e só você ganha XP) ou **1P VS 2P** (dois jogadores no mesmo teclado; os dois ganham XP). |
 | **BÔNUS** | `bonus` | Escolha um lutador e um carro e destrua-o para farmar XP. Dá para repetir quantas vezes quiser. |
 | **TREINO** | `training` | Boneco parado, vida infinita, sem cronômetro, barra que recarrega sozinha e leitura do dano do combo. **Tab** mostra as hitboxes. |
 | **COMANDOS** | – | Lista de golpes em duas páginas (← → troca de página). |
@@ -49,7 +49,7 @@ flowchart TD
   C -->|tempo| T
   MAP -->|8ª parada| BI[Intro do chefe] --> VS
   R -->|venceu o chefe| E[Derrota do chefe + final + epílogo] --> END[Créditos]
-  S -->|versus| VS
+  S -->|versus| SS[Escolha do cenário] --> VS
   S -->|treino| TR[Treino]
   S -->|bônus| CS[Escolha do carro] --> B
 ```
@@ -60,7 +60,8 @@ flowchart TD
 |------|----------|
 | **Título** | O logo cai com um "slam" e um flash, com estrelinhas brilhando nas letras. Ao fundo, os anéis de Saturno, raios girando e La Vacca Saturnita gigante e translúcida. O elenco sobe um a um na base da tela. **APERTE START** pisca e a faixa de baixo mostra o XP total, "© 2026 TUPINICODE" e "FREE PLAY". |
 | **Menu** | Depois do START, o elenco desce e entram as placas inclinadas dos modos (a escolhida fica dourada, maior e com brilho correndo) e o cartão do modo, com a descrição e um lutador ao fundo. **Esc** volta para a tela de START. |
-| **Seleção** | Grade com os 8 lutadores e o nível de cada um. No modo solo, mostra as barras VEL/FOR/DEF/ALC, o especial e a barra de XP. No versus, 1P e 2P escolhem ao mesmo tempo (com cores alternativas no espelho). |
+| **Seleção** | Grade com os 8 lutadores e o nível de cada um. No modo solo, mostra as barras VEL/FOR/DEF/ALC, o especial e a barra de XP. No versus 2P, 1P e 2P escolhem ao mesmo tempo (com cores alternativas no espelho). No versus CPU, o 1P escolhe o próprio lutador e depois o rival ("ESCOLHA O RIVAL (CPU)"); o chute desfaz a primeira escolha. |
+| **Escolha do cenário** | Só no versus, depois dos lutadores. Prévia ao vivo do cenário (com animações e a música dele), os retratos dos dois lutadores nas laterais, o nome do lugar e uma grade com os 13 cenários mais **ALEATÓRIO** (sorteia entre os 10 de luta). **Esc** ou chute volta para a seleção de personagens. |
 | **VS** | Os dois lutadores entram deslizando em 2×, o "VS" pulsa e o locutor anuncia "*Tralalero Tralalà… contro… Tung tung tung Sahur!*". Enquanto isso o jogo pré-renderiza as poses dos dois. |
 | **Luta** | HUD no estilo Neo-Geo (veja abaixo). **Enter** ou **Esc** pausa. |
 | **Resultado** | Pose de vitória em 2×, frase de vitória com efeito de máquina de escrever, XP ganho e "LEVEL UP!". |

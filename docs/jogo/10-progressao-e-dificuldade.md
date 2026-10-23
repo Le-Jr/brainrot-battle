@@ -31,7 +31,7 @@ XP = rounds vencidos × 40
    + 400 se derrotou o chefe
 ```
 
-- No **versus**, os dois jogadores ganham XP.
+- No **versus 2P**, os dois jogadores ganham XP. No **versus CPU**, só o jogador; a CPU luta com o mesmo nível de XP do lutador do jogador.
 - As **fases bônus** pagam à parte (veja [09-fases-bonus-e-memes.md](09-fases-bonus-e-memes.md#xp)).
 - O "LEVEL UP!" aparece na tela de resultado, com som e a voz do locutor.
 

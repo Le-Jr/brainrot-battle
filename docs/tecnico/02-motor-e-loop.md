@@ -61,6 +61,7 @@ Uma cena é um objeto simples com `update()`, `draw()` e, opcionalmente, `enter(
 | `Select`, `CarSelect` | `scenes/select.js`, `scenes/car-select.js` | objeto |
 | `VS(c1, c2, cenário, opts, rótulo)` | `scenes/vs.js` | fábrica |
 | `FightScene(fight, aoTerminar)` | `scenes/fight-scene.js` | fábrica (pausa com continuar/reiniciar/hitboxes/sair + Tab) |
+| `StageSelect(c1, c2, opts, rótulo)` | `scenes/stage-select.js` | fábrica (escolha do cenário no versus) |
 | `Result(f, lado, opts, xp)` | `scenes/result.js` | fábrica |
 | `Travel(de, para, próximo)` | `scenes/travel.js` | fábrica |
 | `Cutscene(painéis, próximo, rival)` | `scenes/cutscene.js` | fábrica |

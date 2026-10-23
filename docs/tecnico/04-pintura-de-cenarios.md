@@ -1,6 +1,6 @@
 # 04 · Pintura dos cenários
 
-Os cenários não são imagens: são **pintados em código** no carregamento do jogo, e depois quantizados para ficar com cara de pixel art.
+Os cenários não são imagens: são **pintados em código** no carregamento do jogo, e depois convertidos em pixel art moderna, no mesmo estilo dos sprites.
 
 Código: [`src/game/stages/toolkit.js`](../../src/game/stages/toolkit.js) (ferramentas) e um arquivo por cenário em [`src/game/stages/`](../../src/game/stages).
 
@@ -44,12 +44,25 @@ Os ganchos desenham em pixels nativos dentro de `HDC(ctx, fn)`, que aplica `scal
    | `perspTiles` | Piso em perspectiva (xadrez do café) |
    | `speck` | Pontilhado de textura (areia, grama, asfalto) |
 
-2. **Quantizar** cada camada com `quant(canvas, níveis)`: posterização por canal (14 a 16 níveis) com **dithering Bayer 4×4**, e **alfa binário** nas camadas transparentes. Isso remove o antisserrilhado e deixa as bordas nítidas e os gradientes pontilhados, combinando com os sprites.
+2. **Converter em pixel art** em `finish()`, com [`stages/pixelize.js`](../../src/game/stages/pixelize.js):
+
+   | Camada | Tratamento |
+   |--------|------------|
+   | `sky` | Posterização com **dithering Bayer 4×4** (`quant`): o degradê do céu fica em faixas pontilhadas. |
+   | `far` | **Faixas de brilho** (12) sem dithering, **perspectiva atmosférica** (30% em direção à cor do horizonte, um pouco dessaturada) e contorno suave. |
+   | `mid` | Faixas de brilho (16), um toque de névoa, **contorno** de 1 px nas silhuetas e **luz de borda** na linha logo abaixo de cada topo. |
+   | `floor` | Faixas de brilho (16), contorno e luz de borda. |
+
+   - **Faixas de brilho com o matiz preservado:** a luminância de cada pixel é arredondada para N faixas (espaçadas em raiz quadrada, para cenas escuras não perderem os degraus) e a cor é reescalada mantendo o matiz. Assim os degradês viram rampas de sombra limpas, como numa paleta feita à mão. A posterização canal por canal criava manchas com mudança de cor.
+   - **Contorno seletivo:** pixels opacos vizinhos de pixels transparentes escurecem em direção ao roxo do contorno dos sprites (`#1b1024`), em vez de preto puro.
+   - **Limpeza:** pixels soltos, cercados pela mesma cor nos 4 lados, assumem essa cor.
+   - **Alfa binário** em todas as camadas transparentes, sem antisserrilhado.
+   - `pixelize()` também aceita uma paleta limitada (`colors`, k-means determinístico) com dithering entre faixas, para usos futuros.
 3. **Aleatoriedade com semente:** cada cenário chama `setSeed(n)` antes de pintar e usa `rr()` em vez de `Math.random()`. O resultado é idêntico em todo carregamento (e os testes comparam pixels).
 
 ## Desempenho
 
-Pintar os 13 cenários leva cerca de 2 s num notebook, uma única vez no boot (`buildStages()` guarda o resultado). Os ganchos de animação são baratos: só retângulos e algumas elipses por quadro.
+Pintar e converter os 13 cenários leva cerca de 0,5 s, uma única vez no boot: a tela de carregamento pinta um cenário por quadro e `buildStages()` guarda o resultado. Os ganchos de animação são baratos: só retângulos e algumas elipses por quadro.
 
 ## Criar um cenário novo
 

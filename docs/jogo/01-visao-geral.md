@@ -13,7 +13,7 @@ Muito além da internet existe **Brainrotália**, a terra paralela onde moram os
 | **Luta arcade de verdade** | Correntes, cancelamentos em especial, uppercut com comando (→↓↘), agarrão, EX e Super, juggle, escalonamento de dano e hitboxes medidas a partir dos próprios pixels dos sprites. |
 | **Humor brainrot** | Cada lutador fala com o próprio bordão em italiano, as cutscenes são dramáticas de propósito e as fases bônus homenageiam memes brasileiros e da internet. |
 | **Tudo gerado no navegador** | Não existe nenhum arquivo de áudio: as 21 músicas saem de um sintetizador FM e os 13 cenários são pintados em código quando o jogo carrega. |
-| **Pixel art moderna** | Sprites desenhados à mão em resolução 2×, cenários pintados com gradientes e quantizados com dithering Bayer, para manter tudo com o mesmo visual. |
+| **Pixel art moderna** | Sprites desenhados à mão em resolução 2×, cenários pintados em código e convertidos no mesmo estilo (faixas de luz chapadas, contorno nas silhuetas, perspectiva atmosférica), para manter tudo com o mesmo visual. |
 | **Pega e joga** | Teclado (1 ou 2 jogadores no mesmo teclado), controles de toque no celular, progresso salvo no próprio navegador. |
 
 ## Em números

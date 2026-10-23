@@ -25,7 +25,7 @@ Código: [`src/game/stages/`](../../src/game/stages), um arquivo por cenário.
 ## Onde cada cenário aparece
 
 - **História:** cada rival luta na própria casa; o chefe luta em Saturno.
-- **Versus:** um dos cenários 0 a 9, sorteado.
+- **Versus:** o jogador escolhe qualquer um dos 13 na tela de escolha do cenário (ou ALEATÓRIO, entre os 10 de luta).
 - **Treino:** um dos cenários 0 a 10, sorteado.
 - **Bônus:** Strada (Nonno), Neon Città (Cybercaminhão) e Vila Brasilini (Bi-ai-di).
-- **Título:** a Piazza, com a câmera passeando devagar.
+- **Título:** os anéis de Saturno, escurecidos, com a câmera passeando devagar.
