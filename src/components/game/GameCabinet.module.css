@@ -1,0 +1,79 @@
+.cabinet {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.marquee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+}
+.title b {
+  color: var(--gold);
+  font-weight: 400;
+}
+.title span {
+  color: var(--pink);
+}
+
+.screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  box-shadow:
+    0 0 0 3px var(--line),
+    0 0 0 7px #08050d,
+    0 18px 60px rgba(255, 90, 170, 0.18);
+  overflow: hidden;
+}
+.screen:fullscreen {
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  touch-action: none;
+  outline: none;
+}
+.screen:fullscreen .canvas {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* Scanlines overlay */
+.crt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px);
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    box-shadow: 0 0 0 3px var(--line);
+  }
+}

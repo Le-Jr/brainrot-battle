@@ -1,0 +1,47 @@
+/* Design tokens and base styles shared by the arcade cabinet page */
+:root {
+  --bg: #0c0814;
+  --panel: #171024;
+  --line: #2c2142;
+  --fg: #f1e9ff;
+  --muted: #a395c2;
+  --gold: #ffcc3a;
+  --red: #ff4d5e;
+  --blue: #45b4ff;
+  --pink: #ff6ad5;
+  --pix: var(--font-pixel), ui-monospace, 'Courier New', monospace;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: var(--pix);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 14px 28px;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+kbd {
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 2px 5px;
+  color: var(--fg);
+}

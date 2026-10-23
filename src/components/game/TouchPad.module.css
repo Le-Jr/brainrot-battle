@@ -1,0 +1,72 @@
+.touch {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.touch.on {
+  display: flex;
+}
+@media (pointer: coarse) {
+  .touch {
+    display: flex;
+  }
+}
+
+.touch button {
+  font: inherit;
+  color: var(--fg);
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.touch button.held {
+  background: var(--line);
+  border-color: var(--gold);
+}
+
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 4px;
+}
+.dpad button {
+  font-size: 14px;
+}
+.up {
+  grid-area: 1 / 2;
+}
+.left {
+  grid-area: 2 / 1;
+}
+.right {
+  grid-area: 2 / 3;
+}
+.down {
+  grid-area: 3 / 2;
+}
+
+.acts {
+  display: grid;
+  grid-template-columns: repeat(2, 64px);
+  gap: 8px;
+}
+.acts button {
+  height: 52px;
+  font-size: 9px;
+}
+.acts .punch {
+  border-color: #7a2a36;
+}
+.acts .kick {
+  border-color: #2a4f7a;
+}
+.acts .special {
+  border-color: #7a5a1a;
+}
