@@ -14,6 +14,7 @@
 | `npm run render` | Gera `tests/out-poses.png` e `tests/out-stages.png` para conferir no olho |
 | `npm run readme:art` | Regera as imagens do README em `assets/readme/` |
 | `npm run sprites` | Pipeline de sprites (Python) |
+| `npm run stages:art` | Pipeline da arte dos cenários: `assets/stage-art/` → `public/stages/` |
 
 ## Testes headless
 

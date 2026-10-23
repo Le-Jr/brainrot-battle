@@ -32,3 +32,9 @@ A documentação está dividida em duas partes:
 | 6 | Ferramentas, testes e qualidade | [tecnico/06-ferramentas-e-testes.md](tecnico/06-ferramentas-e-testes.md) |
 | 7 | Guia de extensão (novas features) | [tecnico/07-guia-de-extensao.md](tecnico/07-guia-de-extensao.md) |
 | 8 | Limitações conhecidas e roadmap | [tecnico/08-roadmap.md](tecnico/08-roadmap.md) |
+
+## 🎨 Arte
+
+| Assunto | Arquivo |
+|---------|---------|
+| Prompts para gerar a arte dos 13 cenários em outra IA | [arte/prompts-cenarios.md](arte/prompts-cenarios.md) |
