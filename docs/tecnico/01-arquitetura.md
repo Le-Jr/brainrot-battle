@@ -64,7 +64,7 @@ brainrot-battaglia/
 │       ├── stages/               # kit de pintura + um arquivo por cenário
 │       ├── world/                # mapa de Brainrotália
 │       ├── fx/                   # partículas e popups
-│       ├── ui/                   # logo, widgets, kit de UI arcade e arte da Tupinicode
+│       ├── ui/                   # logo, widgets, HUD da luta, retratos, kit de UI arcade e arte da Tupinicode
 │       ├── progression/          # XP e níveis
 │       ├── scenes/               # abertura, todas as telas e o fluxo da história
 │       └── data/atlas-frames.js  # gerado: molduras dos atlas

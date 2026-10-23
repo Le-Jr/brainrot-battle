@@ -62,11 +62,33 @@ flowchart TD
 | **Menu** | Depois do START, o elenco desce e entram as placas inclinadas dos modos (a escolhida fica dourada, maior e com brilho correndo) e o cartão do modo, com a descrição e um lutador ao fundo. **Esc** volta para a tela de START. |
 | **Seleção** | Grade com os 8 lutadores e o nível de cada um. No modo solo, mostra as barras VEL/FOR/DEF/ALC, o especial e a barra de XP. No versus, 1P e 2P escolhem ao mesmo tempo (com cores alternativas no espelho). |
 | **VS** | Os dois lutadores entram deslizando em 2×, o "VS" pulsa e o locutor anuncia "*Tralalero Tralalà… contro… Tung tung tung Sahur!*". Enquanto isso o jogo pré-renderiza as poses dos dois. |
-| **Luta** | HUD estilo SF2: barras de vida com dano atrasado em vermelho, cronômetro de 99, marcadores de rounds, barra de especial com marcas de EX e MAX, contador de hits. **Enter** pausa. |
+| **Luta** | HUD no estilo Neo-Geo (veja abaixo). **Enter** ou **Esc** pausa. |
 | **Resultado** | Pose de vitória em 2×, frase de vitória com efeito de máquina de escrever, XP ganho e "LEVEL UP!". |
 | **Continue** | Contagem de 9 a 0 (um número por segundo). START refaz a mesma luta; quando o tempo acaba, aparece "FIM DE JOGO". |
 | **Final** | O campeão num pódio, os outros sete comemorando, fogos de artifício e créditos em rotação. |
 
+## HUD da luta
+
+Código: [`src/game/ui/hud.js`](../../src/game/ui/hud.js).
+
+| Elemento | Detalhes |
+|----------|----------|
+| **Retrato** | Rosto do lutador numa moldura com a cor dele, nos cantos de cima. Pisca branco quando apanha, fica azul quando congelado e escurece no K.O. |
+| **Barra de vida** | Inclinada, com moldura dourada, brilho correndo e marcas a cada 25%. O dano recente fica como rastro vermelho (branco nos primeiros quadros do golpe). Abaixo de 30% a barra fica vermelha e pulsa. |
+| **Placa de nome** | Placa escura inclinada com uma faixa na cor do personagem. |
+| **Medalhas de round** | Duas medalhas embaixo do retrato; viram ouro (com brilho) a cada round vencido. |
+| **Cronômetro** | Emblema chanfrado com borda dourada entre as barras; nos últimos 10 s fica vermelho e pulsa. No treino mostra "--". |
+| **Barra de especial** | Embaixo, dividida em dois segmentos: **EX** na metade e **MAX** cheia, com brilho de arco-íris. |
+| **Combo** | Número grande que "pula" a cada acerto, com "COMBO / HITS", e some aos poucos. |
+| **Avisos** | ROUND, FIGHT!, K.O., TEMPO! e BONUS STAGE aparecem sobre uma faixa que abre do centro; no fim do round, uma placa com "X VENCE" (ou EMPATE) e "PERFEITO!" com brilhos. |
+
 ## Pausa
 
-Durante a luta, **Enter** (ou **Esc**, ou START no toque) abre a pausa com **CONTINUAR** e **SAIR PARA O MENU**.
+Durante a luta, **Enter** (ou **Esc**, ou START no toque) abre a pausa: a luta escurece, a música abaixa e aparece um painel com os retratos dos dois lutadores, o round e o tempo.
+
+| Opção | O que faz |
+|-------|-----------|
+| **CONTINUAR** | Volta para a luta (Esc também). |
+| **REINICIAR LUTA** | Recomeça do round 1, com vida cheia e barras de especial vazias. |
+| **HITBOXES** | Liga/desliga o visualizador de hitboxes (o mesmo da tecla Tab). |
+| **SAIR PARA O MENU** | Pede confirmação ("O progresso será perdido.") antes de voltar ao título. |

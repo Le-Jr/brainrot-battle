@@ -7,6 +7,7 @@
 - O conteúdo **HD** (atlas dos personagens e cenários) é guardado em 2× e desenhado pela metade, aproveitando a resolução cheia de 640×360. Um canvas marcado com `hd` (sprites) ou `st.hd` (cenários) é desenhado com fator 0,5.
 - O texto usa `txt()` em [`core/canvas.js`](../../src/game/core/canvas.js): contorno de 8 direções e, nos tamanhos grandes, uma sombra extra.
 - A Press Start 2P não tem maiúsculas acentuadas. `txt()` troca `Á É Í Ó Ú Â Ê Ô Ã Õ À…` pela letra base e desenha o acento em pixel art em cima (a fonte é monoespaçada, então cada letra ocupa exatamente `size` px).
+- O HUD da luta (barras, retratos, cronômetro, barras de especial, combo e avisos) fica em [`ui/hud.js`](../../src/game/ui/hud.js), e os retratos recortados da cabeça do sprite (usados no HUD, na pausa e nas cutscenes) em [`ui/portrait.js`](../../src/game/ui/portrait.js).
 - Elementos de interface no estilo arcade (placas inclinadas, molduras, brilhos de estrela, texto com franja cromática, glitch, cortinas) ficam em [`ui/arcade.js`](../../src/game/ui/arcade.js).
 
 ## Arte original
