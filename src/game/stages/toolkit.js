@@ -1,6 +1,6 @@
 /* Stage painting toolkit: 2x layers, seeded RNG, gradients, glows, foliage, buildings and pixel quantization. */
 import { mk } from '../core/canvas.js';
-import { averageRows, pixelize } from './pixelize.js';
+import { pixelStage } from './pixelize.js';
 import { BAYER, rgba, shade } from '../core/color.js';
 import { hsh, vn } from '../core/math.js';
 
@@ -269,11 +269,7 @@ function layers() {
  * and an outlined floor.
  */
 function finish(L, o) {
-  const haze = averageRows(L.sky, 200, 270);
-  quant(L.sky, 16, false);
-  pixelize(L.far, { levels: 12, haze, hazeK: 0.3, outline: 0.35 });
-  pixelize(L.mid, { levels: 16, haze, hazeK: 0.08, outline: 0.6, rim: 0.16 });
-  pixelize(L.floor, { levels: 16, outline: 0.55, rim: 0.2 });
+  pixelStage(L);
   return Object.assign({ hd: true }, L, o);
 }
 const HDC = (c, fn) => {

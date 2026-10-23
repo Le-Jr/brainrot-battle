@@ -199,4 +199,207 @@ function averageRows(c, y0, y1) {
   return n ? s.map((v) => Math.round(v / n)) : [128, 128, 128];
 }
 
-export { averageRows, pixelize };
+/* ======================= stage-wide art direction ======================= */
+
+const LIGHT = [255, 236, 196]; // warm key light (the HUD gold family)
+const SHADOW = [44, 22, 74]; // purple shadow (the HUD/outline purple family)
+const mixTo = (d, i, c, k) => {
+  d[i] += (c[0] - d[i]) * k;
+  d[i + 1] += (c[1] - d[i + 1]) * k;
+  d[i + 2] += (c[2] - d[i + 2]) * k;
+};
+
+/** Chamfer distance (px) from every opaque pixel to the nearest transparent one, capped at `cap`. */
+function edgeDistance(d, w, h, cap) {
+  const D = new Float32Array(w * h);
+  for (let p = 0; p < w * h; p++) D[p] = d[p * 4 + 3] ? cap : 0;
+  const a = 1,
+    b = 1.4;
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++) {
+      const p = y * w + x;
+      if (!D[p]) continue;
+      let v = D[p];
+      if (x > 0) v = Math.min(v, D[p - 1] + a);
+      if (y > 0) {
+        v = Math.min(v, D[p - w] + a);
+        if (x > 0) v = Math.min(v, D[p - w - 1] + b);
+        if (x < w - 1) v = Math.min(v, D[p - w + 1] + b);
+      }
+      D[p] = v;
+    }
+  for (let y = h - 1; y >= 0; y--)
+    for (let x = w - 1; x >= 0; x--) {
+      const p = y * w + x;
+      if (!D[p]) continue;
+      let v = D[p];
+      if (x < w - 1) v = Math.min(v, D[p + 1] + a);
+      if (y < h - 1) {
+        v = Math.min(v, D[p + w] + a);
+        if (x < w - 1) v = Math.min(v, D[p + w + 1] + b);
+        if (x > 0) v = Math.min(v, D[p + w - 1] + b);
+      }
+      D[p] = v;
+    }
+  return D;
+}
+
+/**
+ * Grade one layer in place: depth (desaturate + haze + flatter contrast), automatic bevel shading of every
+ * silhouette with a top-left light (like the sprites) and hue-shifted shadows/highlights.
+ */
+function grade(c, { haze, depth = 0, bevel = 0, bevelSize = 6, hue = 0.25 }) {
+  const g = c.getContext('2d'),
+    w = c.width,
+    h = c.height,
+    id = g.getImageData(0, 0, w, h),
+    d = id.data;
+  const D = bevel ? edgeDistance(d, w, h, bevelSize) : null;
+  for (let p = 0, i = 0; p < w * h; p++, i += 4) {
+    if (!d[i + 3]) continue;
+    // bevel: the outward normal is minus the gradient of the edge distance
+    if (D && D[p] < bevelSize) {
+      const x = p % w,
+        y = (p / w) | 0,
+        gx = (x < w - 1 ? D[p + 1] : D[p]) - (x > 0 ? D[p - 1] : D[p]),
+        gy = (y < h - 1 ? D[p + w] : D[p]) - (y > 0 ? D[p - w] : D[p]),
+        len = Math.hypot(gx, gy);
+      if (len > 0) {
+        const nx = -gx / len,
+          ny = -gy / len,
+          lit = nx * -0.6 + ny * -0.8, // light from the upper left
+          k = (1 - D[p] / bevelSize) * bevel;
+        if (lit > 0) mixTo(d, i, LIGHT, lit * k * 0.55);
+        else mixTo(d, i, SHADOW, -lit * k * 0.6);
+      }
+    }
+    const l = (d[i] * 0.3 + d[i + 1] * 0.59 + d[i + 2] * 0.11) / 255;
+    // hue-shifted ramps: darks lean purple, lights lean warm
+    if (hue) {
+      mixTo(d, i, SHADOW, (1 - l) * (1 - l) * hue);
+      mixTo(d, i, LIGHT, l * l * l * hue * 0.5);
+    }
+    // depth: desaturate, pull towards the horizon haze and flatten contrast
+    if (depth) {
+      const L = d[i] * 0.3 + d[i + 1] * 0.59 + d[i + 2] * 0.11;
+      for (let k = 0; k < 3; k++) d[i + k] += (L - d[i + k]) * 0.45 * depth;
+      mixTo(d, i, haze, 0.38 * depth);
+    }
+  }
+  g.putImageData(id, 0, 0);
+}
+
+/** Shared stage palette: k-means for the bulk plus farthest-point accents, so small saturated details survive. */
+function stagePalette(layers, k = 40, accents = 10) {
+  const S = [];
+  for (const c of layers) {
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data,
+      stride = Math.max(1, Math.floor(d.length / 4 / 4000));
+    for (let p = 0; p < d.length / 4; p += stride)
+      if (d[p * 4 + 3]) S.push([d[p * 4], d[p * 4 + 1], d[p * 4 + 2]]);
+  }
+  const flat = new Uint8ClampedArray(S.length * 4);
+  S.forEach((s, i) => {
+    flat[i * 4] = s[0];
+    flat[i * 4 + 1] = s[1];
+    flat[i * 4 + 2] = s[2];
+    flat[i * 4 + 3] = 255;
+  });
+  const P = palette(flat, k),
+    dist = (a, b) => (a[0] - b[0]) ** 2 * 0.3 + (a[1] - b[1]) ** 2 * 0.59 + (a[2] - b[2]) ** 2 * 0.11,
+    sat = (c) => Math.max(...c) - Math.min(...c);
+  for (let n = 0; n < accents; n++) {
+    let best = null,
+      bd = 0;
+    for (const s of S) {
+      let m = 1e9;
+      for (const c of P) m = Math.min(m, dist(s, c));
+      const score = m * (0.5 + sat(s) / 255);
+      if (score > bd) {
+        bd = score;
+        best = s;
+      }
+    }
+    if (!best || bd < 120) break;
+    P.push(best.slice());
+  }
+  return P;
+}
+
+/** Map a layer onto the stage palette (optional ordered dither), clean stray pixels, outline and rim. */
+function mapLayer(c, P, { dither = false, outline = 0, rim = 0, cut = true }) {
+  const g = c.getContext('2d'),
+    w = c.width,
+    h = c.height,
+    id = g.getImageData(0, 0, w, h),
+    d = id.data,
+    M = matcher(P),
+    col = new Int16Array(w * h).fill(-1);
+  for (let p = 0, i = 0; p < w * h; p++, i += 4) {
+    if (cut) d[i + 3] = d[i + 3] > 110 ? 255 : 0;
+    if (!d[i + 3]) continue;
+    const k = M.key(d[i], d[i + 1], d[i + 2]);
+    let j = M.near[k];
+    if (dither) {
+      const x = p % w,
+        y = (p / w) | 0,
+        th = (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16;
+      if (M.mix[k] * 2 > th + 0.1) j = M.second[k];
+    }
+    col[p] = j;
+  }
+  if (!dither)
+    for (let y = 1; y < h - 1; y++)
+      for (let x = 1; x < w - 1; x++) {
+        const p = y * w + x,
+          a = col[p - 1];
+        if (col[p] < 0 || a < 0 || a === col[p]) continue;
+        if (col[p + 1] === a && col[p - w] === a && col[p + w] === a) col[p] = a;
+      }
+  for (let p = 0, i = 0; p < w * h; p++, i += 4) {
+    const j = col[p];
+    if (j < 0) continue;
+    let [r, gg, b] = P[j];
+    if (outline || rim) {
+      const x = p % w,
+        y = (p / w) | 0,
+        open = (q, ok) => ok && col[q] < 0;
+      if (
+        outline &&
+        (open(p - 1, x > 0) || open(p + 1, x < w - 1) || open(p - w, y > 0) || open(p + w, y < h - 1))
+      ) {
+        r = r * (1 - outline) + 27 * outline;
+        gg = gg * (1 - outline) + 16 * outline;
+        b = b * (1 - outline) + 36 * outline;
+      } else if (rim && y > 1 && col[p - w] >= 0 && col[p - 2 * w] < 0) {
+        r += (255 - r) * rim;
+        gg += (248 - gg) * rim;
+        b += (226 - b) * rim;
+      }
+    }
+    d[i] = r;
+    d[i + 1] = gg;
+    d[i + 2] = b;
+  }
+  g.putImageData(id, 0, 0);
+}
+
+/**
+ * Full art direction for a painted stage: grade every layer by depth with sprite-like bevel shading, then map
+ * everything onto one shared limited palette (dithered sky, crisp outlined layers).
+ */
+function pixelStage(L) {
+  const haze = averageRows(L.sky, 200, 270);
+  grade(L.sky, { haze, depth: 0.35, hue: 0.2 });
+  grade(L.far, { haze, depth: 0.55, bevel: 0.6, bevelSize: 5, hue: 0.2 });
+  grade(L.mid, { haze, depth: 0.18, bevel: 1, bevelSize: 7, hue: 0.28 });
+  grade(L.floor, { haze, depth: 0, bevel: 0.8, bevelSize: 6, hue: 0.3 });
+  // the sky gets its own finer palette so glows and gradients dither smoothly instead of ringing
+  const P = stagePalette([L.far, L.mid, L.floor]);
+  mapLayer(L.sky, stagePalette([L.sky], 28, 4), { dither: true, cut: false });
+  mapLayer(L.far, P, { outline: 0.3 });
+  mapLayer(L.mid, P, { outline: 0.72, rim: 0.14 });
+  mapLayer(L.floor, P, { outline: 0.6, rim: 0.16 });
+}
+
+export { averageRows, mapLayer, pixelStage, pixelize, stagePalette };
