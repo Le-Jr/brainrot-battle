@@ -1,0 +1,40 @@
+{
+  "name": "brainrot-battaglia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brainrot Battaglia: Ultra Caos — jogo de luta 2D estilo Street Fighter II com memes do Italian brainrot, feito em Next.js e Canvas 2D.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/visual-snapshot.js",
+    "render": "node tests/render-poses.js && node tests/render-stages.js",
+    "sprites": "python3 tools/process_sprites.py",
+    "readme:art": "node tools/render-readme-art.js",
+    "test:snapshot:update": "node tests/visual-snapshot.js --update"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^1.0.13",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.2",
+    "eslint-config-prettier": "^10.1.0",
+    "prettier": "^3.9.0",
+    "typescript": "^5.9.3"
+  }
+}

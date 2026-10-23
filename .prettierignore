@@ -1,0 +1,10 @@
+.next
+node_modules
+legacy
+.agents
+public
+assets
+package-lock.json
+skills-lock.json
+src/game/data
+*.md
