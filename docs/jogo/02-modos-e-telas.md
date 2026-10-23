@@ -64,8 +64,8 @@ flowchart TD
 | **Escolha do cenário** | Só no versus, depois dos lutadores. Prévia ao vivo do cenário (com animações e a música dele), os retratos dos dois lutadores nas laterais, o nome do lugar e uma grade com os 13 cenários mais **ALEATÓRIO** (sorteia entre os 10 de luta). **Esc** ou chute volta para a seleção de personagens. |
 | **VS** | Os dois lutadores entram deslizando em 2×, o "VS" pulsa e o locutor anuncia "*Tralalero Tralalà… contro… Tung tung tung Sahur!*". Enquanto isso o jogo pré-renderiza as poses dos dois. |
 | **Luta** | HUD no estilo Neo-Geo (veja abaixo). **Enter** ou **Esc** pausa. |
-| **Resultado** | Pose de vitória em 2×, frase de vitória com efeito de máquina de escrever, XP ganho e "LEVEL UP!". |
-| **Continue** | Contagem de 9 a 0 (um número por segundo). START refaz a mesma luta; quando o tempo acaba, aparece "FIM DE JOGO". |
+| **Resultado** | No estilo KOF/SF: o cenário da luta congelado e escurecido, linhas de velocidade e uma faixa inclinada na cor do vencedor, que entra grande com o nome em marca d'água. Cabeçalho **VITÓRIA** (dourado), **DERROTA** (vermelho, quando a CPU vence) ou **1P/2P VENCE**; nome do vencedor, retratos do vencedor (moldura dourada) e do perdedor (escurecido, "K.O."); a frase de vitória numa caixa de diálogo; rounds, perfeitos, maior combo e o XP subindo com a barra de nível e "LEVEL UP!". |
+| **Continue** | Fundo vermelho escuro com scanlines e o retrato do seu lutador, que escurece a cada segundo. Número gigante de 9 a 0 que "bate" a cada segundo com um som de contagem, e um anel que esvazia com o tempo (vermelho nos 3 últimos). **START** continua (refaz a mesma luta), **soco/chute/especial aceleram** a contagem como nos fliperamas e **Esc** desiste. No zero: **GAME OVER** com o locutor, e volta ao título. |
 | **Final** | O campeão num pódio, os outros sete comemorando, fogos de artifício e créditos em rotação. |
 
 ## HUD da luta
