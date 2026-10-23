@@ -10,11 +10,11 @@ import { anyPressed } from '../core/input.js';
 import { rnd } from '../core/math.js';
 import { tick } from '../core/scene.js';
 import { FX } from '../fx/particles.js';
-import { drawSpr, profile, sprite } from '../sprites/sprite.js';
+import { drawSpr, sprite } from '../sprites/sprite.js';
 import { STAGES, drawStage } from '../stages/index.js';
 import { S } from '../state.js';
-import { OX, OY } from '../sprites/primitives.js';
 import { blink, fade, frameBox, letterbox, plate } from '../ui/arcade.js';
+import { headShot } from '../ui/portrait.js';
 
 /* ---------- cutscenes ---------- */
 function actorCh(w, opp) {
@@ -96,26 +96,9 @@ function drawPanel(p, t, opp) {
 
 /** Speaker portrait: the head of the idle sprite in an arcade frame. Right-side speakers face the center. */
 function bust(ch, x, y, tint, right, t) {
-  const S2 = 46,
-    img = sprite(ch, 'idle', Math.floor(t / 9) % 8, 0, false, tint),
-    k = img.hd ? 2 : 1;
+  const S2 = 46;
   frameBox(x, y, S2, S2, ch.col, vgrad(y, S2, [shade(ch.col, -0.45), shade(ch.col, -0.75)]));
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(x + 1, y + 1, S2 - 2, S2 - 2);
-  ctx.clip();
-  if (right) {
-    ctx.translate(x * 2 + S2, 0);
-    ctx.scale(-1, 1);
-  }
-  // crop around the head: the top of the measured body, biased towards the front (faces look forward)
-  const P = profile(ch),
-    bw = P.r - P.l,
-    cs = Math.min(58, Math.max(36, bw * 0.66)),
-    cx = (P.l + P.r) / 2 + bw * 0.18,
-    cy = P.t - 4;
-  ctx.drawImage(img, (OX + cx - cs / 2) * k, (OY + cy) * k, cs * k, cs * k, x, y + 1, S2, S2);
-  ctx.restore();
+  headShot(ch, x + 1, y + 1, S2 - 2, { tint, flip: right, t });
   if (tint === 'p') {
     ctx.fillStyle = `rgba(176,96,255,${(0.12 + Math.sin(t / 6) * 0.08).toFixed(3)})`;
     ctx.fillRect(x, y, S2, S2);
