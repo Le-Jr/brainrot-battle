@@ -1,5 +1,6 @@
 // Renders the README artwork with the real engine (headless, through tests/harness.js):
 //   assets/readme/banner.png            title screen
+//   assets/readme/intro*.png            Tupinicode intro and developer credit
 //   assets/readme/chars/<id>.png        idle and win poses of every fighter
 //   assets/readme/stages.png            4-column grid with a live fight on each of the 13 stages
 //   assets/readme/<scene>.png           select, map, cutscene, bonus and boss-fight screens
@@ -49,9 +50,23 @@ const run = (n, fn) => {
 let seed = 42;
 Math.random = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
 
-// Title screen, after the logo slam
+// Tupinicode intro: the logo card, then the developer credit
+const { Intro } = await import('../src/game/scenes/intro.js');
+Intro.assetsReady = true;
+T.go(Intro);
+run(80);
+T.pressedQ.add('Enter');
+run(150);
+frame();
+save(main, 'intro.png');
+run(110);
+frame();
+save(main, 'intro-credit.png');
+
+// Title screen (attract mode, with APERTE START on)
+
 T.go(T.Title);
-run(120);
+run(146); // t % 36 < 18: APERTE START is in its visible half
 frame();
 save(main, 'banner.png');
 
@@ -102,6 +117,12 @@ stages.forEach((st, i) => {
   gg.drawImage(main, (i % cols) * 320, Math.floor(i / cols) * 180, 320, 180);
 });
 save(grid, 'stages.png');
+
+// Main menu
+T.pressedQ.add('Enter');
+run(30);
+frame();
+save(main, 'menu.png');
 
 // Screens
 T.S.mode = 'arcade';

@@ -90,7 +90,7 @@ const [
 );
 
 const main = createCanvas(640, 360);
-await engine.createGame({ canvas: main, autoStart: false, keyboardTarget: null }).ready;
+await engine.createGame({ canvas: main, autoStart: false, keyboardTarget: null, intro: false }).ready;
 
 export const T = {
   ...scenes,

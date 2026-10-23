@@ -28,9 +28,10 @@ try {
       P.ck && Math.round(P.ck.x1),
     );
   }
+  // title: logo slam -> attract (APERTE START) -> menu -> HISTÓRIA
   run(50);
   press('Enter');
-  run(3);
+  run(15);
   press('Enter');
   run(3);
   console.log('select?', T.scene === T.Select);
