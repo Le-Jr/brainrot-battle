@@ -1,5 +1,6 @@
 /* Stage painting toolkit: 2x layers, seeded RNG, gradients, glows, foliage, buildings and pixel quantization. */
 import { mk } from '../core/canvas.js';
+import { averageRows, pixelize } from './pixelize.js';
 import { BAYER, rgba, shade } from '../core/color.js';
 import { hsh, vn } from '../core/math.js';
 
@@ -262,11 +263,17 @@ function perspTiles(g, y0, c1, c2, lines, vx = FW / 2) {
 function layers() {
   return { sky: mk(640, SH2), far: mk(FARW, SH2), mid: mk(MIDW, SH2), floor: mk(FW, SH2) };
 }
+/**
+ * Turn the four painted layers into modern pixel art (see pixelize.js): dithered sky gradient, then flat
+ * posterized bands (no dithering) with a hazy outlined far layer, an outlined middle layer with a rim light
+ * and an outlined floor.
+ */
 function finish(L, o) {
+  const haze = averageRows(L.sky, 200, 270);
   quant(L.sky, 16, false);
-  quant(L.far, 14);
-  quant(L.mid, 14);
-  quant(L.floor, 14);
+  pixelize(L.far, { levels: 12, haze, hazeK: 0.3, outline: 0.35 });
+  pixelize(L.mid, { levels: 16, haze, hazeK: 0.08, outline: 0.6, rim: 0.16 });
+  pixelize(L.floor, { levels: 16, outline: 0.55, rim: 0.2 });
   return Object.assign({ hd: true }, L, o);
 }
 const HDC = (c, fn) => {
