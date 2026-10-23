@@ -11,6 +11,7 @@ import { bubble, parrot } from '../ui/widgets.js';
 import { Car } from './car.js';
 import { NOINP } from './constants.js';
 import { Fight } from './fight.js';
+import { band, comboCounter, lifeBar, namePlate, portraitChip, powerGauge, timerEmblem } from '../ui/hud.js';
 
 const BONUS_STAGE = { nonno: 10, cyber: 11, byd: 12 };
 class Bonus extends Fight {
@@ -190,63 +191,35 @@ class Bonus extends Fight {
   drawHUD() {
     const P1 = this.f[0],
       car = this.f[1];
-    const bar = (x0, v, dv, right, col) => {
-      const w = 128;
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(x0 - 2, 7, w + 4, 12);
-      ctx.fillStyle = '#c98a2a';
-      ctx.fillRect(x0 - 1, 8, w + 2, 10);
-      ctx.fillStyle = '#3a1020';
-      ctx.fillRect(x0, 9, w, 8);
-      const hw = Math.round(w * v),
-        dw = Math.round(w * dv);
-      ctx.fillStyle = '#e8343f';
-      ctx.fillRect(right ? x0 + w - dw : x0 + hw, 9, dw - hw, 8);
-      ctx.fillStyle = col;
-      ctx.fillRect(right ? x0 + w - hw : x0, 9, hw, 8);
-      ctx.fillStyle = 'rgba(255,255,255,.5)';
-      ctx.fillRect(right ? x0 + w - hw : x0, 9, hw, 2);
-    };
-    bar(8, P1.hp / 100, P1.dhp / 100, false, '#ffd23a');
-    bar(184, car.hp / car.maxhp, car.dhp / car.maxhp, true, '#9adcff');
-    txt(P1.ch.short + '  NV' + P1.lvl, 8, 22, 8, '#ffb0b8');
-    txt(car.ch.short, 312, 22, 8, '#9adcff', 'right');
-    ctx.fillStyle = '#120a1c';
-    ctx.fillRect(145, 5, 30, 22);
-    ctx.fillStyle = '#2a1838';
-    ctx.fillRect(146, 6, 28, 20);
-    txt(
-      String(this.timer).padStart(2, '0'),
-      160,
-      9,
-      16,
-      this.timer <= 10 && (this.tick >> 3) & 1 ? '#ff4d5e' : '#ffffff',
-      'center',
-      null,
-    );
-    const full = P1.meter >= 100;
-    ctx.fillStyle = '#120a1c';
-    ctx.fillRect(7, 170, 74, 6);
-    ctx.fillStyle = '#2a1838';
-    ctx.fillRect(8, 171, 72, 4);
-    ctx.fillStyle = full ? ['#ff6ad5', '#45b4ff', '#ffd23a', '#7aff9a'][(this.tick >> 2) % 4] : '#45b4ff';
-    ctx.fillRect(8, 171, Math.round((72 * P1.meter) / 100), 4);
-    const c = this.combo[0];
-    if (c && c.t > 0) txt(c.n + ' HITS!', 8, 38, 8, c.t > 60 ? '#ffffff' : '#ffd23a');
+    portraitChip(0, P1, this.tick);
+    portraitChip(1, car, this.tick);
+    lifeBar(0, P1.hp / 100, P1.dhp / 100, this.tick, P1.dhpT > 26);
+    lifeBar(1, car.hp / car.maxhp, car.dhp / car.maxhp, this.tick, car.dhpT > 26);
+    namePlate(0, P1.ch.short, P1.ch.col, 0, 0, this.tick);
+    txt('NV' + P1.lvl, 4, 32, 8, '#ffd23a');
+    namePlate(1, car.ch.short, car.ch.col, 0, 0, this.tick);
+    powerGauge(0, P1.meter, this.tick);
+    comboCounter(0, this.combo[0]);
+    timerEmblem(String(this.timer).padStart(2, '0'), this.timer <= 10, this.tick);
   }
+
   drawBanner() {
     const p = this.phase,
       t = this.pt;
     if (p === 'intro') {
-      txt('BONUS STAGE', W / 2, 62, 16, vgrad(62, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
-      if (t > 30) txt('DESTRUA O ' + this.f[1].ch.short + '!', W / 2, 88, 8, '#ffffff', 'center');
+      band(56, 48, t / 10);
+      if (t > 4)
+        txt('BONUS STAGE', W / 2, 62, 16, vgrad(62, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
+      if (t > 30) txt('DESTRUA O ' + this.f[1].ch.short + '!', W / 2, 86, 8, '#ffffff', 'center');
     }
     if (p === 'end' && this.res) {
-      if (this.res.type === 'destroy')
+      const destroyed = this.res.type === 'destroy';
+      band(54, 64, t / 8, destroyed ? '90,8,24' : '8,30,80');
+      if (destroyed)
         txt('DESTRUÍDO!', W / 2, 60, 24, vgrad(60, 24, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
-      else txt('TEMPO!', W / 2, 64, 24, vgrad(64, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
+      else txt('TEMPO!', W / 2, 62, 24, vgrad(62, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
       if (t > 50)
-        txt('+' + Math.min(this.xp, Math.floor((t - 50) * 8)) + ' XP', W / 2, 100, 16, '#7aff9a', 'center');
+        txt('+' + Math.min(this.xp, Math.floor((t - 50) * 8)) + ' XP', W / 2, 92, 16, '#7aff9a', 'center');
     }
   }
 }

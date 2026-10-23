@@ -11,6 +11,17 @@ import { HD } from '../sprites/hd.js';
 import { drawSpr, sprite } from '../sprites/sprite.js';
 import { STAGES, drawStage } from '../stages/index.js';
 import { DEBUG } from '../state.js';
+import { sparkle } from '../ui/arcade.js';
+import {
+  band,
+  comboCounter,
+  lifeBar,
+  namePlate,
+  portraitChip,
+  powerGauge,
+  timerEmblem,
+  winnerPlate,
+} from '../ui/hud.js';
 import { AI } from './ai.js';
 import { NOINP, overlap } from './constants.js';
 import { Fighter } from './fighter.js';
@@ -673,120 +684,59 @@ class Fight {
   }
   drawHUD() {
     for (let i = 0; i < 2; i++) {
-      const F = this.f[i],
-        x0 = i ? 184 : 8,
-        w = 128;
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(x0 - 2, 7, w + 4, 12);
-      ctx.fillStyle = '#c98a2a';
-      ctx.fillRect(x0 - 1, 8, w + 2, 10);
-      ctx.fillStyle = '#3a1020';
-      ctx.fillRect(x0, 9, w, 8);
-      const hw = Math.round((w * F.hp) / 100),
-        dw = Math.round((w * F.dhp) / 100);
-      const low = F.hp < 30 && (this.tick >> 3) & 1;
-      if (i === 0) {
-        ctx.fillStyle = '#e8343f';
-        ctx.fillRect(x0 + hw, 9, dw - hw, 8);
-        ctx.fillStyle = low ? '#ff8a3a' : '#ffd23a';
-        ctx.fillRect(x0, 9, hw, 8);
-        ctx.fillStyle = low ? '#ffc070' : '#fff27a';
-        ctx.fillRect(x0, 9, hw, 2);
-        ctx.fillStyle = '#d88a1a';
-        ctx.fillRect(x0, 15, hw, 2);
-      } else {
-        ctx.fillStyle = '#e8343f';
-        ctx.fillRect(x0 + w - dw, 9, dw - hw, 8);
-        ctx.fillStyle = low ? '#ff8a3a' : '#ffd23a';
-        ctx.fillRect(x0 + w - hw, 9, hw, 8);
-        ctx.fillStyle = low ? '#ffc070' : '#fff27a';
-        ctx.fillRect(x0 + w - hw, 9, hw, 2);
-        ctx.fillStyle = '#d88a1a';
-        ctx.fillRect(x0 + w - hw, 15, hw, 2);
-      }
-      txt(F.ch.short, i ? x0 + w : x0, 22, 8, i ? '#9adcff' : '#ffb0b8', i ? 'right' : 'left');
-      for (let k = 0; k < this.wins[i]; k++) {
-        const sx = i ? 190 + k * 10 : 124 - k * 10;
-        ctx.fillStyle = '#120a1c';
-        ctx.fillRect(sx - 1, 22, 8, 8);
-        ctx.fillStyle = '#ffd23a';
-        ctx.fillRect(sx, 23, 6, 6);
-        ctx.fillStyle = '#fff7b0';
-        ctx.fillRect(sx + 1, 24, 2, 2);
-      }
-      const mx = i ? W - 8 - 72 : 8,
-        full = F.meter >= 100,
-        half = F.meter >= 50;
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(mx - 1, 170, 74, 6);
-      ctx.fillStyle = '#2a1838';
-      ctx.fillRect(mx, 171, 72, 4);
-      const mw = Math.round((72 * F.meter) / 100);
-      ctx.fillStyle = full
-        ? ['#ff6ad5', '#45b4ff', '#ffd23a', '#7aff9a'][(this.tick >> 2) % 4]
-        : half
-          ? '#4af0ff'
-          : '#2a7ad8';
-      ctx.fillRect(i ? mx + 72 - mw : mx, 171, mw, 4);
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(mx + 36, 170, 1, 6);
-      if (full) txt('MAX', i ? mx - 28 : mx + 76, 169, 8, '#ffd23a');
-      else if (half) txt('EX', i ? mx - 20 : mx + 76, 169, 8, '#4af0ff');
-      const c = this.combo[i];
-      if (c && c.t > 0)
-        txt(c.n + ' HITS!', i ? W - 8 : 8, 38, 8, c.t > 60 ? '#ffffff' : '#ffd23a', i ? 'right' : 'left');
+      const F = this.f[i];
+      portraitChip(i, F, this.tick);
+      lifeBar(i, F.hp / 100, F.dhp / 100, this.tick, F.dhpT > 26);
+      namePlate(i, F.ch.short, F.ch.col, this.wins[i], 2, this.tick);
+      powerGauge(i, F.meter, this.tick);
+      comboCounter(i, this.combo[i]);
     }
-    ctx.fillStyle = '#120a1c';
-    ctx.fillRect(145, 5, 30, 22);
-    ctx.fillStyle = '#2a1838';
-    ctx.fillRect(146, 6, 28, 20);
-    txt(
-      this.opts.dummy ? '--' : String(this.timer).padStart(2, '0'),
-      160,
-      9,
-      16,
-      this.timer <= 10 && (this.tick >> 3) & 1 ? '#ff4d5e' : '#ffffff',
-      'center',
-      null,
-    );
+    const warn = !this.opts.dummy && this.timer <= 10;
+    timerEmblem(this.opts.dummy ? '--' : String(this.timer).padStart(2, '0'), warn, this.tick);
   }
+
   drawBanner() {
     const p = this.phase,
       t = this.pt;
     if (p === 'intro') {
       if (t < 60) {
-        const s = Math.min(1, t / 10);
-        ctx.globalAlpha = s;
-        txt(
-          this.round === 3 ? 'FINAL ROUND' : 'ROUND ' + this.round,
-          W / 2,
-          70,
-          16,
-          vgrad(70, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']),
-          'center',
-        );
+        // ROUND n: a band opens from the center, the title slides in, everything fades before FIGHT!
+        const a = t < 52 ? 1 : 1 - (t - 52) / 8;
+        ctx.globalAlpha = a;
+        band(62, 34, t / 10);
+        const label = this.round >= 3 ? 'FINAL ROUND' : 'ROUND ' + this.round,
+          sx = Math.round((1 - Math.min(1, (t - 4) / 10)) * 200);
+        if (t > 4) txt(label, W / 2 - sx, 67, 24, vgrad(67, 24, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
+        if (t > 16) sparkle(W / 2 + label.length * 12 + 4, 66, ((t - 16) % 30) / 30);
         ctx.globalAlpha = 1;
       } else {
-        const k = Math.max(1, 2 - (t - 60) / 8);
+        const k = Math.max(1, 2.4 - (t - 60) / 5);
+        band(58, 44, 1, t < 64 ? '255,255,255' : '90,8,24');
         ctx.save();
         ctx.translate(W / 2, 80);
         ctx.scale(k, k);
-        txt('FIGHT!', 0, -12, 24, vgrad(-12, 24, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
+        txt('FIGHT!', 0, -16, 32, vgrad(-16, 32, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
         ctx.restore();
       }
     }
     if ((p === 'ko' || p === 'end') && this.res) {
       if (this.res.type === 'ko') {
         const tt = p === 'ko' ? this.slowT : 80 + t;
+        if (tt > 4) band(58, 44, (tt - 4) / 8, '90,8,24');
         if (tt > 6 && (tt < 70 ? (tt >> 2) & 1 : true))
-          txt('K.O.', W / 2, 66, 32, vgrad(66, 32, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
-      } else if (p === 'end')
-        txt('TEMPO!', W / 2, 70, 24, vgrad(70, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
+          txt('K.O.', W / 2, 64, 32, vgrad(64, 32, ['#ffffff', '#ffd23a', '#ff3a3a']), 'center');
+      } else if (p === 'end') {
+        band(60, 40, t / 8, '8,30,80');
+        txt('TEMPO!', W / 2, 68, 24, vgrad(68, 24, ['#ffffff', '#9adcff', '#45b4ff']), 'center');
+      }
       if (p === 'end' && t > 50) {
         const w = this.res.w;
-        const s = w < 0 ? 'EMPATE' : this.f[w].ch.short + ' VENCE';
-        txt(s, W / 2, 110, 8, '#ffffff', 'center');
-        if (this.res.perfect) txt('PERFEITO!', W / 2, 122, 8, '#ffd23a', 'center');
+        winnerPlate(
+          w < 0 ? 'EMPATE' : this.f[w].ch.short + ' VENCE',
+          w < 0 ? '#8a8aa8' : this.f[w].ch.col,
+          this.res.perfect,
+          t,
+        );
       }
     }
   }
