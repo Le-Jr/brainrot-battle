@@ -5,6 +5,7 @@ export { Moves } from './moves.js';
 export { Select } from './select.js';
 export { CarSelect } from './car-select.js';
 export { VS } from './vs.js';
+export { StageSelect } from './stage-select.js';
 export { FightScene } from './fight-scene.js';
 export { Result } from './result.js';
 export { Travel } from './travel.js';
