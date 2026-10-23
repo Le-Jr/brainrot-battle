@@ -39,13 +39,6 @@
     0 18px 60px rgba(255, 90, 170, 0.18);
   overflow: hidden;
 }
-.screen:fullscreen {
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .canvas {
   display: block;
   width: 100%;
@@ -54,12 +47,6 @@
   image-rendering: crisp-edges;
   touch-action: none;
   outline: none;
-}
-.screen:fullscreen .canvas {
-  width: auto;
-  height: 100%;
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
 }
 
 /* Scanlines overlay */
@@ -76,4 +63,81 @@
   .screen {
     box-shadow: 0 0 0 3px var(--line);
   }
+}
+
+/* ---------- fullscreen stage ---------- */
+.stage {
+  position: relative;
+  min-width: 0;
+}
+/* the stage is the fullscreen element; browsers force transform:none on it, so the rotation lives on .rotor */
+.fs {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  touch-action: none;
+  overflow: hidden;
+}
+.rotor {
+  position: relative;
+}
+.fs .rotor {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
+.fs .screen {
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  box-shadow: none;
+}
+/* phone held upright: turn the game 90° clockwise so it plays in landscape */
+@media (orientation: portrait) {
+  .fs.rotated .rotor {
+    inset: auto;
+    top: 0;
+    left: 0;
+    width: 100dvh;
+    height: 100dvw;
+    transform-origin: top left;
+    transform: rotate(90deg) translateY(-100%);
+  }
+}
+.fsBar {
+  position: absolute;
+  top: max(10px, 2cqh);
+  left: max(12px, 2cqw);
+  display: flex;
+  gap: 8px;
+}
+.fsBar button {
+  font: inherit;
+  font-size: 8px;
+  color: var(--fg);
+  background: rgba(23, 16, 36, 0.7);
+  border: 2px solid rgba(255, 204, 58, 0.45);
+  border-radius: 6px;
+  padding: 7px 9px;
+  letter-spacing: 0.06em;
+  -webkit-tap-highlight-color: transparent;
+}
+.fsBar button[aria-pressed='false'] {
+  color: var(--muted);
+}
+
+/* ---------- mobile call to action ---------- */
+.playFs {
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #1a0a24;
+  background: linear-gradient(#fff6b0, #ffd23a 55%, #e8901a);
+  border: 2px solid #05020a;
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 8px 24px rgba(255, 204, 58, 0.25);
+  padding: 14px 12px;
+  cursor: pointer;
 }
