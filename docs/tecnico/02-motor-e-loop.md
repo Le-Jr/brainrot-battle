@@ -11,9 +11,10 @@ const game = createGame({
   assetBase: '/atlases',        // padrão
   autoStart: true,              // inicia o requestAnimationFrame quando carregar
   keyboardTarget: window,       // null desliga o teclado (usado nos testes)
+  intro: true,                  // abertura Tupinicode antes do título (false nos testes)
 });
 
-await game.ready;               // fonte + atlas carregados, título na tela
+await game.ready;               // fonte + atlas carregados
 game.setMusic(false);
 game.setNarrator(true);
 game.pressButton('T_p');        // botões virtuais do toque
@@ -25,9 +26,10 @@ game.destroy();
 ## Boot
 
 1. `initCanvas(canvas)` liga o contexto 2D principal e desliga a suavização de imagem.
-2. Espera a fonte (no máximo 2,5 s) **e** decodifica os 9 atlas de `/atlases/<id>.png`.
-3. `XP.load()`, `VO.init()`, `buildLogo()` e `buildStages()` (pinta os 13 cenários, cerca de 2 s num notebook).
-4. `go(Title)` e, se `autoStart`, `startLoop()`.
+2. Com `intro` (padrão), `go(Intro)` e o loop começa **na hora**: a tela de carregamento já anima enquanto o resto chega.
+3. Espera a fonte (no máximo 2,5 s) **e** decodifica os 9 atlas de `/atlases/<id>.png`. Depois roda `XP.load()`, `VO.init()` e `buildLogo()` e marca `Intro.assetsReady`.
+4. A `Intro` pinta os cenários com `buildNextStage()`, **um por quadro** (25 a 45 ms cada, cerca de 0,4 s no total), e mostra o progresso no CRT.
+5. Sem a abertura (`intro: false`, usado nos testes e nas ferramentas), `buildStages()` pinta tudo de uma vez e o jogo começa direto no `Title`.
 
 ## Loop de passo fixo
 
@@ -53,7 +55,8 @@ Uma cena é um objeto simples com `update()`, `draw()` e, opcionalmente, `enter(
 
 | Cena | Arquivo | Tipo |
 |------|---------|------|
-| `Title` | `scenes/title.js` | objeto |
+| `Intro` | `scenes/intro.js` | objeto (carregamento, logo, crédito, aviso) |
+| `Title` | `scenes/title.js` | objeto (slam, START, menu) |
 | `Options`, `Moves` | `scenes/options.js`, `scenes/moves.js` | objeto |
 | `Select`, `CarSelect` | `scenes/select.js`, `scenes/car-select.js` | objeto |
 | `VS(c1, c2, cenário, opts, rótulo)` | `scenes/vs.js` | fábrica |

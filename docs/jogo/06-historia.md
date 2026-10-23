@@ -76,6 +76,7 @@ pnx([cenario, filtroOuNull, cameraX], atores, texto, quemFala, efeito)
 | `glitch` | Faixas horizontais deslocadas com tons RGB, com som de rachadura. |
 | Ator hipnotizado | Sprite tingido de roxo, uma aura pulsante e partículas roxas subindo. |
 
+- **Visual:** barras de cinema em cima (com pontinhos de progresso dos painéis e "ESC: PULAR") e uma faixa de diálogo embaixo com borda dourada. Quem fala aparece num **retrato emoldurado**: o jogador à esquerda, o rival ou o chefe à direita (o rival hipnotizado com o retrato roxo pulsando), com uma placa inclinada na cor do personagem. Entre um painel e outro há um fade pelo preto.
 - O texto aparece letra por letra (1,3 caractere por frame), quebra em 37 caracteres e ocupa no máximo 4 linhas. O teste `tests/check-texts.js` garante isso para **todas** as combinações de lutador e rival.
 - **Enter** completa o texto ou avança; **Esc** pula a cutscene inteira.
 - Cada painel é lido em voz alta: o narrador com o tom neutro, o chefe com o tom 0,3 e os personagens com o próprio tom (veja [05-personagens.md](05-personagens.md#personalidade-e-voz)).

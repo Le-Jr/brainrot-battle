@@ -14,6 +14,7 @@ Tralalero, Tung Tung Sahur, Bombardiro e companhia contra uma vaca cósmica que 
 [![Web Audio](https://img.shields.io/badge/Web_Audio-FM_synth-ffcc3a?style=for-the-badge)](https://developer.mozilla.org/docs/Web/API/Web_Audio_API)
 
 <a href="#-como-jogar"><b>🎮 Jogar</b></a> ·
+<a href="#-abertura-tupinicode"><b>🌴 Abertura</b></a> ·
 <a href="#-o-elenco"><b>🧬 Elenco</b></a> ·
 <a href="#-recursos"><b>✨ Recursos</b></a> ·
 <a href="#-desenvolvimento"><b>🛠️ Desenvolvimento</b></a> ·
@@ -22,6 +23,31 @@ Tralalero, Tung Tung Sahur, Bombardiro e companhia contra uma vaca cósmica que 
 </div>
 
 ---
+
+## 🌴 Abertura Tupinicode
+
+Uma abertura no estilo dos arcades dos anos 90: o CRT na selva carrega o jogo de verdade (com barra de progresso), o logo cai com glitch e jingle de boot, e o crédito do desenvolvedor aparece antes da tela de aviso e do título.
+
+<div align="center">
+<table>
+  <tr>
+    <td><img src="assets/readme/intro.png" width="400" alt="Abertura: TUPINICODE apresenta"></td>
+    <td><img src="assets/readme/intro-credit.png" width="400" alt="Abertura: um jogo de Leandro Junior"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub><b>TUPINICODE</b> apresenta</sub></td>
+    <td align="center"><sub>Um jogo de <b>Leandro Junior</b></sub></td>
+  </tr>
+  <tr>
+    <td><img src="assets/readme/menu.png" width="400" alt="Menu principal com placas inclinadas"></td>
+    <td><img src="assets/readme/cutscene.png" width="400" alt="Cutscene com retrato de quem fala"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub><b>Menu</b> com placas inclinadas estilo Neo-Geo</sub></td>
+    <td align="center"><sub><b>Cutscenes</b> com barras de cinema e retrato de quem fala</sub></td>
+  </tr>
+</table>
+</div>
 
 ## 📖 A história
 
@@ -34,11 +60,11 @@ Durante séculos, bastava um *tralalá*, um *tung tung*, um *bananini*… e o mu
 <div align="center">
 <table>
   <tr>
-    <td><img src="assets/readme/cutscene.png" width="400" alt="Cutscene: Bombardiro hipnotizado"></td>
+    <td><img src="assets/readme/select.png" width="400" alt="Seleção de personagem"></td>
     <td><img src="assets/readme/map.png" width="400" alt="Mapa de Brainrotália"></td>
   </tr>
   <tr>
-    <td align="center"><sub><b>Cutscenes narradas</b> com efeitos de glitch, zoom e hipnose</sub></td>
+    <td align="center"><sub><b>Escolha seu brainrot</b> e liberte os outros sete</sub></td>
     <td align="center"><sub><b>Mapa de Brainrotália</b> entre uma luta e outra</sub></td>
   </tr>
 </table>
