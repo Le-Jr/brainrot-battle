@@ -490,7 +490,8 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 |---------|------|------------|
 | `piazza` | SKY, FAR, MID, FLOOR | As 4 camadas saíram certas. |
 | `beach` | FAR, MID, FLOOR | O céu continua procedural (mar, sol e gaivotas animadas). FAR e FLOOR vieram "sujos" e foram recortados (só as colinas com o farol; só a espuma e a areia). |
-| os outros 11 | – | Pintura procedural. |
+| `map` | MAP | Mapa de Brainrotália; os 11 locais foram reposicionados nos marcos da arte. |
+| os outros 11 cenários | – | Pintura procedural. |
 
 ### Lições das duas primeiras gerações
 
@@ -515,3 +516,28 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 | `off` (no cenário) | Animações procedurais que não combinam mais com a arte (ex.: as lâmpadas da Piazza, que agora estão desenhadas). |
 
 O pipeline recorta, escala, posiciona e aplica a mesma paleta limitada e o mesmo contorno dos cenários pintados, para a arte, os sprites e o HUD terem um visual só.
+
+---
+
+## Mapa de Brainrotália (`map`)
+
+Uma imagem só, **16:9**, opaca (sem magenta). Salve em `assets/stage-art/map/map.png`. A camada interativa (marcadores, rota, avião, Saturno com os raios roxos, barras de cima e de baixo) continua sendo desenhada pelo jogo, e as posições dos 11 locais são ajustadas na arte gerada.
+
+- As faixas de **0–9%** (topo) e **81–100%** (base) da altura ficam atrás das barras do jogo: só mar.
+- O **canto superior direito** fica livre (mar escuro/aberto): é lá que o jogo desenha Saturno e o portal.
+
+**MAP**
+```
+Modern HD pixel art fantasy world map seen from above (slight top-down three-quarter view), for a 2D arcade fighting game travel screen (Neo Geo / King of Fighters era, modern indie quality). Crisp hand-placed pixels, no anti-aliasing, limited palette (about 48 colors), hue-shifted shading (purple shadows, warm highlights), light from the upper left, 1-pixel dark outline on landmarks, 16:9.
+A deep blue ocean with pixel wave patterns, foam rings around the coasts and shallow turquoise water near the shore. In the middle, one large boot-shaped island continent (like a playful Italy) covering roughly 12%–75% of the width and 15%–78% of the height, plus a smaller tropical island on the far right (around 88% width, 67% height) with a palm tree and banana plants, and two tiny islets on the left. Distinct regions on the continent, each with a clear landmark:
+- north-west (21% width, 31% height): a village of wooden stilt huts with red roofs;
+- north (34% width, 18% height): snowy mountains with a small airfield on a plateau;
+- north-center (51% width, 27% height): a small theater with a red dome;
+- center (42% width, 41% height): an Italian town piazza with terracotta roofs and a bell tower;
+- east (64% width, 33% height): a dense dark-green jungle with a waterfall;
+- center-south (55% width, 50% height): a winding country road with a tiny red car;
+- south-west (25% width, 60% height): a sandy desert with dunes and a small clock tower ruin;
+- south-center (38% width, 58% height): a lake shaped like a coffee cup with a handle;
+- south-east coast (66% width, 71% height): a golden beach with palm trees and a lighthouse.
+Dotted sandy paths connect the regions. Keep the top-right corner (around 89% width, 24% height) as open dark ocean with nothing on it. Keep the top 9% and bottom 19% of the image as plain ocean. No text, no labels, no names, no compass, no UI, no characters, no people, no animals, no watermark.
+```

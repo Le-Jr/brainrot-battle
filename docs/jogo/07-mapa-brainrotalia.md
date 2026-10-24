@@ -6,38 +6,36 @@ Entre uma luta e outra da história, um aviãozinho leva o seu lutador pelo mapa
 
 Código: [`src/game/world/map.js`](../../src/game/world/map.js) (geração) e [`src/game/scenes/travel.js`](../../src/game/scenes/travel.js) (cena animada).
 
+## Arte
+
+O mapa é uma ilustração em pixel art gerada a partir do prompt em [../arte/prompts-cenarios.md](../arte/prompts-cenarios.md#mapa-de-brainrotália-map) e convertida pelo mesmo pipeline dos cenários (`npm run stages:art`, saída `public/stages/map/map.png`). O jogo desenha por cima tudo que é interativo: marcadores, rotas, o aviãozinho, Saturno e os raios roxos.
+
+Se a imagem não existir, o jogo usa o mapa gerado em código (continente em forma de bota, biomas e marcos desenhados pixel a pixel).
+
 ## Locais
 
-O índice de cada local é o mesmo índice do cenário correspondente.
+O índice de cada local é o mesmo índice do cenário correspondente. As posições estão em `LOC_ART`, em [`src/game/world/map.js`](../../src/game/world/map.js): se o mapa for regerado, é só atualizar essas coordenadas (em pixels lógicos, 320×180).
 
-| # | Local | Posição (x,y) | Quem mora lá |
-|---|-------|---------------|--------------|
-| 0 | Spiaggia Tralalà | 212,128 | Tralalero |
-| 1 | Piazza Pizzaiola | 136,74 | – |
-| 2 | Selva Patapim | 204,60 | Patapim |
-| 3 | Deserto Tic-Tac | 80,108 | Lirilì |
-| 4 | Caffè Assassino | 122,104 | Assassino |
-| 5 | Villaggio Sahur | 66,56 | Tung |
-| 6 | Cielo Bombardiro | 110,32 | Bombardiro |
-| 7 | Teatro Cappuccina | 164,48 | Ballerina |
-| 8 | Isola Bananini | 280,120 | Chimpanzini |
-| 9 | Anelli di Saturno | 286,44 | Saturnita |
-| 10 | Strada del Nonno | 176,90 | (fase bônus) |
-
-## Como o mapa é gerado
-
-O mapa (320×180) é gerado uma vez e guardado em cache:
-
-1. **Terra:** teste de ponto dentro de polígono contra o continente (`MAINLAND`, em forma de bota) e três ilhas (`ISLES`, incluindo a Isola Bananini).
-2. **Distância até a costa:** uma busca em largura de até 7 px a partir da terra. Gera as faixas de água rasa, a espuma e a areia da praia.
-3. **Biomas:** cada pixel de terra pega a cor do centro de bioma mais próximo (selva, deserto, aldeia, piazza, teatro, terra de café), com dithering nas bordas. O resto é campo verde com variação de ruído.
-4. **Marcos:** montanhas com neve, a copa da Selva Patapim, as cabanas da aldeia, os quarteirões da piazza com a torre, um lago em forma de xícara de café, a cúpula do teatro, estradas pontilhadas e uma palmeira na ilha das bananas.
+| # | Local | Marco na arte | Posição (x,y) |
+|---|-------|---------------|---------------|
+| 0 | Spiaggia Tralalà | Farol na ponta sudeste | 220,124 |
+| 1 | Piazza Pizzaiola | Praça com a torre | 133,77 |
+| 2 | Selva Patapim | Cachoeira na selva | 186,62 |
+| 3 | Deserto Tic-Tac | Torre do relógio | 96,104 |
+| 4 | Caffè Assassino | Lago em forma de xícara | 141,108 |
+| 5 | Villaggio Sahur | Casas de palafita | 72,47 |
+| 6 | Cielo Bombardiro | Pista nas montanhas | 124,30 |
+| 7 | Teatro Cappuccina | Cúpula vermelha | 144,49 |
+| 8 | Isola Bananini | Ilha das bananas | 288,95 |
+| 9 | Anelli di Saturno | Mar aberto (o jogo desenha Saturno) | 288,38 |
+| 10 | Strada del Nonno | Estrada com o carrinho vermelho | 171,95 |
 
 ## O que se mexe
 
-- Brilhos na água, sombras de nuvens e uma barbatana de tubarão rondando a praia.
-- Um mini Bombardiro dando voltas no céu com rastro de fumaça.
-- Ponteiros girando no deserto, vapor saindo do lago de café, troncos do Tung pulando na aldeia e holofotes varrendo o teatro.
+- Brilhos no mar aberto (sorteados sobre a água da arte), sombras de nuvens e uma barbatana de tubarão rondando o farol.
+- Um mini Bombardiro dando voltas sobre a pista das montanhas, com rastro de fumaça.
+- Holofotes varrendo o céu a partir da cúpula do teatro.
+- No mapa de reserva (sem arte) também aparecem os ponteiros do deserto, o vapor da xícara e os troncos do Tung na aldeia; na arte, esses marcos já estão desenhados.
 - **Saturno:** um portal brilhando, um anel girando com a cabeça da vaca (olhos piscando em roxo) e **raios roxos** pulsando na direção de cada local ainda hipnotizado.
 - **Marcadores:** vermelho na casa do jogador, bandeiras verdes nos locais libertados, anéis roxos pulsantes nos hipnotizados e uma seta branca quicando no destino.
 - **Viagem:** uma trajetória em arco com rastro pontilhado, percorrida pelo aviãozinho carregando o sprite do jogador em miniatura.
