@@ -10,7 +10,8 @@ import { XP } from './progression/xp.js';
 import { Intro } from './scenes/intro.js';
 import { Title } from './scenes/title.js';
 import { loadHD } from './sprites/hd.js';
-import { loadStageArt } from './stages/art.js';
+import { artImage, loadStageArt } from './stages/art.js';
+import { useMapArt } from './world/map.js';
 import { buildStages } from './stages/index.js';
 import { SET } from './state.js';
 import { buildLogo } from './ui/logo.js';
@@ -29,6 +30,8 @@ function boot(assetBase, intro, stageBase) {
       ? Promise.race([document.fonts.load('8px ' + FONT), new Promise((r) => setTimeout(r, 2500))])
       : Promise.resolve();
   booting = Promise.all([fontReady.catch(() => {}), loadHD(assetBase), loadStageArt(stageBase)]).then(() => {
+    const map = artImage('map', 'map');
+    if (map) useMapArt(map);
     XP.load();
     VO.init();
     buildLogo();

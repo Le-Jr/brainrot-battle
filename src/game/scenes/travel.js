@@ -3,14 +3,15 @@ import { AU } from '../audio/synth.js';
 import { VO } from '../audio/voice.js';
 import { BOSS } from '../characters/fighters/saturnita.js';
 import { CH } from '../characters/roster.js';
-import { W } from '../config.js';
+import { H, W } from '../config.js';
 import { ctx, fe, txt } from '../core/canvas.js';
 import { shade } from '../core/color.js';
 import { CONFIRM, anyPressed } from '../core/input.js';
 import { clamp } from '../core/math.js';
-import { drawSpr, portrait, sprite } from '../sprites/sprite.js';
+import { drawSpr, sprite } from '../sprites/sprite.js';
 import { S } from '../state.js';
-import { LOC, MAPW, getMap, minePlane } from '../world/map.js';
+import { DECOR, LOC, MAPW, getMap, minePlane } from '../world/map.js';
+import { headShot } from '../ui/portrait.js';
 
 function Travel(from, to, next) {
   return {
@@ -27,7 +28,7 @@ function Travel(from, to, next) {
     },
     draw() {
       const t = this.t;
-      ctx.drawImage(getMap(), 0, 0);
+      ctx.drawImage(getMap(), 0, 0, W, H);
       for (const [x, y, ph] of MAPW)
         if (Math.sin(t * 0.06 + ph) > 0.8) {
           ctx.fillStyle = '#d8f0ff';
@@ -38,48 +39,61 @@ function Travel(from, to, next) {
           y = 30 + k * 40;
         fe(ctx, Math.round(x), y, 16, 6, 'rgba(0,20,40,.14)');
       }
-      const fa = t / 12;
+      const fa = t / 12,
+        [fx, fy] = DECOR.fin;
       ctx.fillStyle = '#8a94a8';
-      ctx.fillRect(Math.round(212 + Math.cos(fa) * 12), Math.round(140 + Math.sin(fa) * 3), 2, 3);
-      ctx.fillRect(Math.round(212 + Math.cos(fa) * 12) + 1, Math.round(139 + Math.sin(fa) * 3), 1, 1);
-      const bx = 110 + Math.sin(t / 40) * 30,
-        by = 26 + Math.sin(t / 20) * 5;
+      ctx.fillRect(Math.round(fx + Math.cos(fa) * 12), Math.round(fy + Math.sin(fa) * 3), 2, 3);
+      ctx.fillRect(Math.round(fx + Math.cos(fa) * 12) + 1, Math.round(fy - 1 + Math.sin(fa) * 3), 1, 1);
+      const [px0, py0] = DECOR.plane,
+        bx = px0 + Math.sin(t / 40) * 30,
+        by = py0 + Math.sin(t / 20) * 5;
       for (let k = 1; k < 8; k++) {
         ctx.fillStyle = `rgba(255,255,255,${(0.5 - k * 0.06).toFixed(2)})`;
         ctx.fillRect(
-          Math.round(110 + Math.sin((t - k * 3) / 40) * 30),
-          Math.round(26 + Math.sin((t - k * 3) / 20) * 5) + 1,
+          Math.round(px0 + Math.sin((t - k * 3) / 40) * 30),
+          Math.round(py0 + Math.sin((t - k * 3) / 20) * 5) + 1,
           2,
           1,
         );
       }
       minePlane(bx, by, Math.cos(t / 40) > 0 ? 1 : -1, t);
-      const ha = t / 20;
-      ctx.fillStyle = '#120a1c';
-      for (let k = 0; k < 3; k++) {
-        ctx.fillRect(Math.round(81 + Math.cos(ha) * k), Math.round(96 + Math.sin(ha) * k), 1, 1);
-        ctx.fillRect(
-          Math.round(81 + Math.cos(ha / 12) * k * 0.7),
-          Math.round(96 + Math.sin(ha / 12) * k * 0.7),
-          1,
-          1,
-        );
+      if (DECOR.clock) {
+        const ha = t / 20,
+          [cx, cy] = DECOR.clock;
+        ctx.fillStyle = '#120a1c';
+        for (let k = 0; k < 3; k++) {
+          ctx.fillRect(Math.round(cx + Math.cos(ha) * k), Math.round(cy + Math.sin(ha) * k), 1, 1);
+          ctx.fillRect(
+            Math.round(cx + Math.cos(ha / 12) * k * 0.7),
+            Math.round(cy + Math.sin(ha / 12) * k * 0.7),
+            1,
+            1,
+          );
+        }
       }
-      for (let k = 0; k < 4; k++) {
-        const p = (t * 0.4 + k * 8) % 24;
-        ctx.fillStyle = `rgba(255,255,255,${(0.6 - p / 40).toFixed(2)})`;
-        ctx.fillRect(Math.round(121 + Math.sin(p / 4 + k) * 2), Math.round(100 - p), 1, 2);
-      }
-      for (let k = 0; k < 3; k++) {
-        const j = Math.abs(Math.sin(t / 8 + k * 1.3)) * 3;
-        ctx.fillStyle = '#b97f48';
-        ctx.fillRect(56 + k * 9, Math.round(66 - j), 2, 4);
-      }
+      if (DECOR.steam)
+        for (let k = 0; k < 4; k++) {
+          const p = (t * 0.4 + k * 8) % 24;
+          ctx.fillStyle = `rgba(255,255,255,${(0.6 - p / 40).toFixed(2)})`;
+          ctx.fillRect(
+            Math.round(DECOR.steam[0] + Math.sin(p / 4 + k) * 2),
+            Math.round(DECOR.steam[1] - p),
+            1,
+            2,
+          );
+        }
+      if (DECOR.logs)
+        for (let k = 0; k < 3; k++) {
+          const j = Math.abs(Math.sin(t / 8 + k * 1.3)) * 3;
+          ctx.fillStyle = '#b97f48';
+          ctx.fillRect(DECOR.logs[0] + k * 9, Math.round(DECOR.logs[1] - j), 2, 4);
+        }
       for (const s of [-1, 1]) {
-        const a = -Math.PI / 2 + Math.sin(t / 30) * 0.5 * s;
+        const a = -Math.PI / 2 + Math.sin(t / 30) * 0.5 * s,
+          [sx, sy] = DECOR.spots;
         ctx.fillStyle = 'rgba(255,246,210,.6)';
         for (let r = 2; r < 16; r += 2)
-          ctx.fillRect(Math.round(164 + s * 4 + Math.cos(a) * r), Math.round(44 + Math.sin(a) * r), 1, 1);
+          ctx.fillRect(Math.round(sx + s * 4 + Math.cos(a) * r), Math.round(sy + Math.sin(a) * r), 1, 1);
       }
       const SL = LOC[9],
         stops = S.ladder.map((i) => CH[i].stage),
@@ -184,7 +198,7 @@ function Travel(from, to, next) {
       ctx.fillRect(5, 149, 30, 28);
       ctx.fillStyle = shade(opp.col, -0.5);
       ctx.fillRect(6, 150, 28, 26);
-      portrait(opp, 6, 150, 28, 26);
+      headShot(opp, 7, 150, 26, { flip: true, t });
       txt('PRÓXIMA PARADA', 42, 151, 8, '#ffd23a');
       txt(B.n, 42, 163, 8, '#ffffff');
       txt(S.li < 7 ? 'DESAFIO ' + (S.li + 1) + '/7' : 'CHEFE FINAL', W - 6, 151, 8, '#ff8a96', 'right');

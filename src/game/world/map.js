@@ -81,7 +81,60 @@ const BIOME = [
 ];
 let MAPC = null,
   MAPW = [];
+/** Illustrated map (assets/stage-art/map), when present. */
+let MAP_ART = null;
+/** Where each location sits on the illustrated map (same order as LOC). */
+const LOC_ART = [
+  [220, 124],
+  [133, 77],
+  [186, 62],
+  [96, 104],
+  [141, 108],
+  [72, 47],
+  [124, 30],
+  [144, 49],
+  [288, 95],
+  [288, 38],
+  [171, 95],
+];
+/** Spots of the animated decorations (null = drawn by the art itself). */
+const DECOR = {
+  fin: [212, 140],
+  plane: [110, 26],
+  clock: [81, 96],
+  steam: [121, 100],
+  logs: [56, 66],
+  spots: [164, 44],
+};
+/** Switch the travel map to the illustrated art: move the locations and decorations, re-seed the water sparkles. */
+function useMapArt(img) {
+  MAP_ART = img;
+  LOC_ART.forEach(([x, y], i) => Object.assign(LOC[i], { x, y }));
+  Object.assign(DECOR, {
+    fin: [246, 140],
+    plane: [124, 22],
+    clock: null,
+    steam: null,
+    logs: null,
+    spots: [144, 44],
+  });
+  const c = mk(W, H),
+    g = c.getContext('2d');
+  g.drawImage(img, 0, 0, W, H);
+  const d = g.getImageData(0, 0, W, H).data;
+  MAPW.length = 0;
+  for (let i = 0; i < W * H; i++) {
+    const r = d[i * 4],
+      gg = d[i * 4 + 1],
+      b = d[i * 4 + 2],
+      y = (i / W) | 0;
+    // open ocean only (blue, not the turquoise shallows), away from the HUD bars
+    if (b > r + 60 && b > gg + 30 && y > 18 && y < 144 && hsh(i * 0.37) > 0.985)
+      MAPW.push([i % W, y, hsh(i) * 6.28]);
+  }
+}
 function getMap() {
+  if (MAP_ART) return MAP_ART;
   if (MAPC) return MAPC;
   const c = mk(W, H),
     g = c.getContext('2d'),
@@ -275,4 +328,4 @@ function minePlane(x, y, d, t) {
   Q(-11, -1, 3, 2, (t >> 1) & 1 ? '#ffd23a' : '#ff8a3a');
 }
 
-export { LOC, MAPW, getMap, minePlane };
+export { DECOR, LOC, MAPW, getMap, minePlane, useMapArt };
