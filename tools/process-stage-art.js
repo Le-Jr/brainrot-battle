@@ -1,7 +1,7 @@
 // Stage art pipeline: AI/hand-made stage images -> game-ready parallax layers.
 //
 // Input : assets/stage-art/<id>/{sky,far,mid,floor}.(png|jpg) + assets/stage-art/stages.json (placement)
-// Output: public/stages/<id>/<layer>.png   (HD layers: sky 640, far 736, mid 832, floor 960 x 360)
+// Output: public/stages/<id>/<layer>.png   (HD layers: sky 640, far 736, mid 832, floor 960 x 360; map 640)
 //         src/game/data/stage-art.js       (which stages/layers have art and which animation hooks to drop)
 // Steps per layer: cut the magenta background, keep/clip regions, scale and place it on the layer (ground line
 // at y=272), tile it horizontally if asked, then the same limited palette + outline pass used by the painted
@@ -16,7 +16,7 @@ import { mapLayer, stagePalette } from '../src/game/stages/pixelize.js';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(ROOT, 'assets', 'stage-art');
 const OUT = path.join(ROOT, 'public', 'stages');
-const LAYER_W = { sky: 640, far: 736, mid: 832, floor: 960 };
+const LAYER_W = { sky: 640, far: 736, mid: 832, floor: 960, map: 640 };
 const H = 360;
 
 /** Background test: pure magenta and the pink blends around it (pink sunsets are kept: they are not this purple-pink). */
@@ -66,7 +66,7 @@ function buildLayer(name, img, o) {
       g.drawImage(src, 0, 0, w, h);
       g.restore();
     }
-  const opaque = name === 'sky';
+  const opaque = name === 'sky' || name === 'map';
   if (opaque) {
     // the sky must cover the whole layer: fill any uncovered row with the nearest painted one
     const id = g.getImageData(0, 0, LW, H),
@@ -74,7 +74,7 @@ function buildLayer(name, img, o) {
     for (let i = 0; i < d.length; i += 4) d[i + 3] = 255;
     g.putImageData(id, 0, 0);
   }
-  mapLayer(out, stagePalette([out], 64, 8), { cut: !opaque, outline: o.outline || 0 });
+  mapLayer(out, stagePalette([out], o.colors || 64, 8), { cut: !opaque, outline: o.outline || 0 });
   return out;
 }
 

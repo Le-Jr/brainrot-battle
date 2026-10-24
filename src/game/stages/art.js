@@ -50,4 +50,7 @@ function applyArt(index, st) {
   return st;
 }
 
-export { STAGE_IDS, applyArt, loadStageArt };
+/** A loaded art image (for non-stage art such as the world map), or null. */
+const artImage = (id, layer) => (IMAGES[id] && IMAGES[id][layer]) || null;
+
+export { STAGE_IDS, applyArt, artImage, loadStageArt };

@@ -1,5 +1,5 @@
 {
-  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image; 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'keep' = source rectangles (fractions x0,y0,x1,y1) to keep; 'clipBelow' = drop source rows below this fraction; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges. Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art.",
+  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image; 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'keep' = source rectangles (fractions x0,y0,x1,y1) to keep; 'clipBelow' = drop source rows below this fraction; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges. Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art. The 'map' entry is the Brainrotália world map (one opaque 640x360 layer); 'colors' sets the palette size (default 64).",
   "beach": {
     "off": [
       "front"
@@ -97,6 +97,19 @@
           272
         ],
         "outline": 0.3
+      }
+    }
+  },
+  "map": {
+    "layers": {
+      "map": {
+        "src": "map.png",
+        "width": 640,
+        "anchor": [
+          0,
+          0
+        ],
+        "colors": 96
       }
     }
   }

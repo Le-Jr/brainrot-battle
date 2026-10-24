@@ -21,6 +21,12 @@ const STAGE_ART = {
     off: [
       "midA"
     ]
+  },
+  map: {
+    layers: [
+      "map"
+    ],
+    off: []
   }
 };
 
