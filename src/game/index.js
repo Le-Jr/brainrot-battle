@@ -11,6 +11,7 @@ import { Intro } from './scenes/intro.js';
 import { Title } from './scenes/title.js';
 import { loadHD } from './sprites/hd.js';
 import { loadProjectileArt } from './sprites/projectile-art.js';
+import { loadBonusArt } from './sprites/bonus-art.js';
 import { artImage, loadStageArt } from './stages/art.js';
 import { useMapArt } from './world/map.js';
 import { buildStages } from './stages/index.js';
@@ -34,6 +35,7 @@ function boot(assetBase, intro, stageBase) {
     fontReady.catch(() => {}),
     loadHD(assetBase),
     loadProjectileArt(assetBase),
+    loadBonusArt(assetBase),
     loadStageArt(stageBase),
   ]).then(() => {
     const map = artImage('map', 'map');

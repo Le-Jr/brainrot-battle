@@ -15,11 +15,12 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/visual-snapshot.js",
+    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/bonus-art.js && node tests/visual-snapshot.js",
     "render": "node tests/render-poses.js && node tests/render-stages.js",
     "sprites": "node tools/process-sprite-art.js",
     "sprites:legacy": "python3 tools/process_sprites.py",
     "sprites:projectiles": "node tools/process-projectile-art.js",
+    "sprites:bonus": "node tools/process-bonus-art.js",
     "readme:art": "node tools/render-readme-art.js",
     "test:snapshot:update": "node tests/visual-snapshot.js --update",
     "stages:art": "node tools/process-stage-art.js"

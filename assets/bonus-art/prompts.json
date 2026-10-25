@@ -1,0 +1,11 @@
+{
+  "tool": "image_gen",
+  "style": "Premium crisp arcade pixel-art sprite matching Neo Geo fighting game assets. Hard pixel clusters, dark purple outline, vibrant limited palette, clean readable silhouette, detailed but no photorealism, no blur. Single isolated subject with actual transparent background, no shadow, no ground, no text, no sheet, no extra objects. Full subject completely visible, strictly SIDE VIEW.",
+  "subjects": {
+    "nonno": "Classic tiny red Italian vintage rounded compact hatchback, chrome bumpers, round headlights, Italian tricolor stripe on lower rear door. Front points RIGHT. Two wheels side view.",
+    "cyber": "Stainless steel silver angular wedge electric pickup truck, polygonal roof, dark continuous windows, straight slim white front lightbar. Front points RIGHT. Two wheels side view.",
+    "byd": "Modern white compact electric crossover hatchback with cobalt blue trim stripe and blue license plate, dark glass, modern small headlights. Front points RIGHT. Two wheels side view.",
+    "parrot": "Comical cheeky green Brazilian Amazon parrot, yellow forehead and cheeks, small blue and red wing tips, curved ivory beak, expressive eye with tiny white highlight, orange feet. Facing RIGHT on a short horizontal brown wooden perch. Friendly mischievous meme mascot."
+  },
+  "referencePolicy": "Every variant uses the same pristine/resting frame as reference; transparent background."
+}

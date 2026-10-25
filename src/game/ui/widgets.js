@@ -3,8 +3,11 @@ import { W } from '../config.js';
 import { ctx, txt, wrapTxt } from '../core/canvas.js';
 import { clamp } from '../core/math.js';
 import { XP } from '../progression/xp.js';
+import { drawBonusArt } from '../sprites/bonus-art.js';
 
-function parrot(x, y, talk, t) {
+function parrot(x, y, talk, t, startled = false) {
+  const frame = startled ? 4 : talk ? [1, 2, 1, 0][(t >> 3) & 3] : t % 180 < 8 ? 3 : 0;
+  if (drawBonusArt(ctx, 'parrot', frame, x + 10, y + 18, 0.5)) return;
   const B = (a, b, w, h, c) => {
     ctx.fillStyle = c;
     ctx.fillRect(x + a, y + b, w, h);

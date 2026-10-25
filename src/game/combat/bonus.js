@@ -32,6 +32,7 @@ class Bonus extends Fight {
     this.bub = null;
     this.parT = 200;
     this.parTalk = 0;
+    this.parReact = 0;
     this.memeN = 0;
   }
   input() {
@@ -68,6 +69,7 @@ class Bonus extends Fight {
     for (const c of this.combo) if (c) c.t--;
     if (this.bub && --this.bub.t <= 0) this.bub = null;
     if (this.type === 'byd') {
+      if (this.parReact > 0) this.parReact--;
       if (this.parTalk > 0) this.parTalk--;
       if (--this.parT <= 0 && !(this.bub && this.bub.who === 'car')) {
         this.parT = 520;
@@ -113,6 +115,7 @@ class Bonus extends Fight {
     }
     const ps = car.poseInfo().pose;
     if (car.state !== ps) {
+      if (this.type === 'byd' && car.state !== undefined) this.parReact = 24;
       if (car.state !== undefined && ps !== 'd4') {
         if (this.type === 'cyber') {
           AU.sfx('crack');
@@ -178,7 +181,7 @@ class Bonus extends Fight {
   }
   drawExtra(cam) {
     if (this.type === 'byd') {
-      parrot(10, 108, this.parTalk > 0, this.tick);
+      parrot(10, 108, this.parTalk > 0 && this.bub?.who === 'parrot', this.tick, this.parReact > 0);
       ctx.fillStyle = '#5a3a20';
       ctx.fillRect(18, 125, 3, 40);
     }

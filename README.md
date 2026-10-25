@@ -220,6 +220,7 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 | `npm run readme:art` | Regera as imagens deste README com o próprio motor |
 | `npm run sprites` | 19 poses por personagem → atlas em `public/atlases/` |
 | `npm run sprites:projectiles` | Empacota os oito artefatos com três fases cada |
+| `npm run sprites:bonus` | Empacota os estados de dano dos carros e as expressões do papagaio |
 
 ### 🧱 Arquitetura
 
