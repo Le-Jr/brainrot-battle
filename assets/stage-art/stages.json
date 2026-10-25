@@ -5,52 +5,46 @@
       "front"
     ],
     "layers": {
-      "far": {
-        "src": "far.jpg",
-        "key": true,
-        "width": 600,
-        "x": 136,
+      "sky": {
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.607,
-          236
+          0,
+          0
         ],
-        "keep": [
-          [
-            0.1375,
-            0.42,
-            1,
-            0.607
-          ],
-          [
-            0.795,
-            0.3,
-            0.84,
-            0.42
-          ]
+        "key": false,
+        "colors": 96
+      },
+      "far": {
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0.6978579481397971,
+          272
         ],
-        "outline": 0.35
+        "key": true,
+        "colors": 96
       },
       "mid": {
-        "src": "mid.jpg",
-        "key": true,
+        "src": "mid.png",
         "width": 832,
         "anchor": [
-          0.772,
+          0.904993909866017,
           272
         ],
-        "clipBelow": 0.768,
-        "outline": 0.55
+        "key": true,
+        "colors": 96
       },
       "floor": {
-        "src": "floor.jpg",
-        "key": true,
+        "src": "floor.png",
         "width": 960,
         "anchor": [
-          0.405,
+          0.656516443361754,
           272
         ],
-        "outline": 0.3,
-        "clipAbove": 0.412
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -60,43 +54,45 @@
     ],
     "layers": {
       "sky": {
-        "src": "sky.jpg",
+        "src": "sky.png",
         "width": 640,
         "anchor": [
           0,
           0
-        ]
+        ],
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "far.jpg",
-        "key": true,
-        "width": 640,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          0.81,
-          282
-        ],
-        "tile": "mirror",
-        "outline": 0.3
-      },
-      "mid": {
-        "src": "mid.jpg",
-        "key": true,
-        "width": 832,
-        "anchor": [
-          0.843,
-          278
-        ],
-        "outline": 0.55
-      },
-      "floor": {
-        "src": "floor.jpg",
-        "key": true,
-        "width": 960,
-        "anchor": [
-          0.295,
+          0.9481397970687712,
           272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.833130328867235,
+          272
+        ],
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.7259439707673568,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -105,43 +101,46 @@
       "farA"
     ],
     "layers": {
-      "far": {
-        "src": "master.jpg",
-        "crop": [
-          0.363,
-          0.0,
-          0.6313,
-          1.0
-        ],
-        "width": 425,
+      "sky": {
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.8185,
+          0,
+          0
+        ],
+        "key": false,
+        "colors": 96
+      },
+      "far": {
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0.9627959413754228,
           272
         ],
-        "x": 215,
-        "tile": "repeat"
+        "key": true,
+        "colors": 96
       },
       "mid": {
-        "src": "mid.jpg",
-        "key": true,
+        "src": "mid.png",
         "width": 832,
         "anchor": [
-          0.8185,
+          0.8246041412911084,
           272
         ],
-        "outline": 0.4
+        "key": true,
+        "colors": 96
       },
       "floor": {
-        "src": "floor.jpg",
-        "key": true,
+        "src": "floor.png",
         "width": 960,
         "anchor": [
-          0.506,
-          278
+          0.7344701583434835,
+          272
         ],
-        "clipAbove": 0.4702,
-        "haze": 0.5104,
-        "outline": 0.3
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -151,69 +150,45 @@
     ],
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.0,
-          1.0,
-          0.2894
-        ],
-        "width": 1672,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
         ],
-        "x": -100
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.2926,
-          1.0,
-          0.5287
-        ],
-        "key": true,
-        "width": 1338,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          1.0,
+          0.8444193912063134,
           272
         ],
-        "x": -500,
-        "outline": 0.35
+        "key": true,
+        "colors": 96
       },
       "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.5287,
-          1.0,
-          0.7447
-        ],
-        "key": true,
-        "width": 1170,
+        "src": "mid.png",
+        "width": 832,
         "anchor": [
-          1.0,
-          284
-        ],
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.8277,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 960,
-        "anchor": [
-          0.0123,
+          0.7856272838002436,
           272
         ],
-        "clipAbove": 0.0123,
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.7101096224116931,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -224,51 +199,91 @@
       "midA"
     ],
     "layers": {
-      "far": {
-        "src": "master.png",
-        "crop": [
-          0.0,
-          0.0,
-          1.0,
-          0.6943
-        ],
-        "width": 913,
+      "sky": {
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          1.0,
+          0,
+          0
+        ],
+        "key": false,
+        "colors": 96
+      },
+      "far": {
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0.9293544457978076,
           272
-        ]
+        ],
+        "key": true,
+        "colors": 96
       },
       "mid": {
-        "blank": true
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.9159561510353228,
+          272
+        ],
+        "key": true,
+        "colors": 96
       },
       "floor": {
-        "src": "master.png",
-        "crop": [
-          0.0,
-          0.6943,
-          1.0,
-          1.0
-        ],
+        "src": "floor.png",
         "width": 960,
         "anchor": [
-          0.0,
+          0.6711327649208283,
           272
-        ]
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
   "villaggio": {
     "layers": {
-      "far": {
-        "src": "far.jpg",
-        "key": true,
-        "width": 874,
+      "sky": {
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.7778,
-          285
+          0,
+          0
         ],
-        "clipBelow": 0.7806,
-        "outline": 0.3
+        "key": false,
+        "colors": 96
+      },
+      "far": {
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0.6845310596833131,
+          272
+        ],
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.830694275274056,
+          272
+        ],
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.6504263093788063,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -278,41 +293,45 @@
     ],
     "layers": {
       "sky": {
-        "src": "sky.jpg",
-        "width": 680,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
-        ]
+        ],
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "far.jpg",
-        "key": true,
+        "src": "far.png",
         "width": 736,
         "anchor": [
-          0.4,
-          200
-        ]
+          0.758830694275274,
+          272
+        ],
+        "key": true,
+        "colors": 96
       },
       "mid": {
-        "src": "mid.jpg",
-        "key": true,
+        "src": "mid.png",
         "width": 832,
         "anchor": [
-          0.7307,
+          0.8768292682926829,
           272
         ],
-        "outline": 0.4
+        "key": true,
+        "colors": 96
       },
       "floor": {
-        "src": "floor.jpg",
-        "key": true,
+        "src": "floor.png",
         "width": 960,
         "anchor": [
-          0.3497,
+          0.6321559074299634,
           272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -322,166 +341,90 @@
     ],
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0365,
-          0.4744,
-          0.4969,
-          0.7256
-        ],
-        "width": 1148,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
         ],
-        "x": -343
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.5031,
-          0.4744,
-          0.9984,
-          0.7256
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0,
+          25
         ],
         "key": true,
-        "width": 950,
-        "anchor": [
-          0.0,
-          0
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0958,
-            0.1505
-          ]
-        ],
-        "outline": 0.4
+        "colors": 96
       },
       "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0344,
-          0.7378,
-          0.4969,
-          0.9878
-        ],
-        "key": true,
-        "width": 1153,
+        "src": "mid.png",
+        "width": 832,
         "anchor": [
-          1.0098,
-          276
-        ],
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.5031,
-          0.7378,
-          0.9984,
-          0.9878
-        ],
-        "key": true,
-        "width": 960,
-        "anchor": [
-          0.3902,
+          0.8514007308160779,
           272
         ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0958,
-            0.1707
-          ]
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.6772228989037758,
+          272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
   "piantagione": {
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0365,
-          0.4434,
-          0.4969,
-          0.6955
-        ],
-        "width": 1147,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
-        ]
+        ],
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.5031,
-          0.4434,
-          1.0,
-          0.6955
-        ],
-        "key": true,
-        "width": 1238,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          0.8502,
-          235
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0798,
-            0.1739
-          ]
-        ],
-        "outline": 0.3
-      },
-      "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0344,
-          0.7065,
-          0.4969,
-          1.0
-        ],
-        "key": true,
-        "width": 1152,
-        "anchor": [
-          0.7676,
-          274
-        ],
-        "clipBelow": 0.7801,
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.5031,
-          0.7065,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 960,
-        "anchor": [
-          0.4564,
+          0.7539585870889159,
           272
         ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.1113,
-            0.1452
-          ]
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.9062119366626066,
+          272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.7271619975639464,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -491,91 +434,45 @@
     ],
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0366,
-          0.4471,
-          0.4966,
-          0.7084
-        ],
-        "width": 1143,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
-        ]
+        ],
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.5024,
-          0.4471,
-          1.0,
-          0.7084
+        "src": "far.png",
+        "width": 736,
+        "anchor": [
+          0.5,
+          150
         ],
         "key": true,
-        "width": 1284,
-        "anchor": [
-          0.0,
-          -6
-        ],
-        "x": -343,
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0757,
-            0.1488
-          ]
-        ],
-        "outline": 0.35
+        "colors": 96
       },
       "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.7205,
-          0.4966,
-          1.0
-        ],
-        "key": true,
-        "width": 949,
+        "src": "mid.png",
+        "width": 832,
         "anchor": [
-          0.0,
-          30
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0738,
-            0.1391
-          ]
-        ],
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.5024,
-          0.7205,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 960,
-        "anchor": [
-          0.487,
+          0.7369062119366626,
           272
         ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.1073,
-            0.1391
-          ]
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.7271619975639464,
+          272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -585,83 +482,45 @@
     ],
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0366,
-          0.3557,
-          1.0,
-          0.5104
-        ],
-        "width": 2583,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          1.0157,
-          230
-        ]
+          0,
+          0
+        ],
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.5201,
-          1.0,
-          0.6443
-        ],
-        "key": true,
-        "width": 2681,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          1.0196,
-          276
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0366,
-            0.3431
-          ]
-        ],
-        "outline": 0.3
-      },
-      "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0345,
-          0.6516,
-          1.0,
-          0.8197
-        ],
-        "key": true,
-        "width": 2589,
-        "anchor": [
-          0.9638,
-          274
-        ],
-        "x": -493,
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.827,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 1494,
-        "anchor": [
-          0.2042,
+          0.7064555420219245,
           272
         ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0522,
-            0.2324
-          ]
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.8221680876979294,
+          272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.6735688185140073,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
@@ -671,169 +530,90 @@
     ],
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0345,
-          0.3771,
-          0.4979,
-          0.5839
-        ],
-        "width": 1330,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
         ],
-        "x": -286
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.5026,
-          0.3771,
-          1.0,
-          0.5839
-        ],
-        "key": true,
-        "width": 1142,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          1.0,
-          274
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0735,
-            0.1882
-          ]
-        ],
-        "outline": 0.3
-      },
-      "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.5937,
-          1.0,
-          0.8029
-        ],
-        "key": true,
-        "width": 2488,
-        "anchor": [
-          1.0,
-          274
-        ],
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0366,
-            0.1977
-          ]
-        ],
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.8114,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 1436,
-        "anchor": [
-          0.2258,
+          0.7795371498172959,
           272
         ],
-        "clipAbove": 0.2258,
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.8221680876979294,
+          272
+        ],
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.7149817295980512,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },
   "byd": {
     "layers": {
       "sky": {
-        "src": "sheet.png",
-        "crop": [
-          0.0455,
-          0.0,
-          1.0,
-          0.2414
-        ],
-        "width": 2678,
+        "src": "sky.png",
+        "width": 640,
         "anchor": [
-          0.0,
+          0,
           0
         ],
-        "x": -60
+        "key": false,
+        "colors": 96
       },
       "far": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.2652,
-          1.0,
-          0.5113
-        ],
-        "key": true,
-        "width": 1870,
+        "src": "far.png",
+        "width": 736,
         "anchor": [
-          1.0097,
-          274
-        ],
-        "x": -647,
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0428,
-            0.2995
-          ]
-        ],
-        "outline": 0.3
-      },
-      "mid": {
-        "src": "sheet.png",
-        "crop": [
-          0.0,
-          0.5208,
-          1.0,
-          0.7681
-        ],
-        "key": true,
-        "width": 1590,
-        "anchor": [
-          0.9952,
-          274
-        ],
-        "x": -579,
-        "drop": [
-          [
-            0.0,
-            0.0,
-            0.0428,
-            0.2981
-          ]
-        ],
-        "outline": 0.5
-      },
-      "floor": {
-        "src": "sheet.png",
-        "crop": [
-          0.0471,
-          0.7776,
-          1.0,
-          1.0
-        ],
-        "key": true,
-        "width": 1099,
-        "anchor": [
-          0.0107,
+          0.7271619975639464,
           272
         ],
-        "outline": 0.3
+        "key": true,
+        "colors": 96
+      },
+      "mid": {
+        "src": "mid.png",
+        "width": 832,
+        "anchor": [
+          0.781973203410475,
+          272
+        ],
+        "key": true,
+        "colors": 96
+      },
+      "floor": {
+        "src": "floor.png",
+        "width": 960,
+        "anchor": [
+          0.6711327649208283,
+          272
+        ],
+        "key": true,
+        "colors": 96,
+        "tile": "repeat"
       }
     }
   },

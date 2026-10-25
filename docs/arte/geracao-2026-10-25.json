@@ -1,0 +1,340 @@
+{
+  "date": "2026-10-25",
+  "tool": "image_gen",
+  "prompts": "docs/arte/prompts-cenarios.md",
+  "recovered": 29,
+  "generated": 37,
+  "total": 66,
+  "assets": [
+    {
+      "path": "assets/stage-art/beach/master.png",
+      "bytes": 2662541,
+      "sha256": "9519469921e7e17d73c76bed35c8c1673623476eeada8fc759210b1abfb024bc"
+    },
+    {
+      "path": "assets/stage-art/beach/sky.png",
+      "bytes": 1977179,
+      "sha256": "53f00556788d18c723c3ee983db66e06df08316eb516183e6ebfcad23d0a02b7"
+    },
+    {
+      "path": "assets/stage-art/beach/far.png",
+      "bytes": 598544,
+      "sha256": "7c0eaed54c33b9ff623f4290c74658dd531c78d4fd34a32b908b4622316bd600"
+    },
+    {
+      "path": "assets/stage-art/beach/mid.png",
+      "bytes": 1491417,
+      "sha256": "818d3b991dc87204c80a1ab0c72cecffd49c3a238e8006453fc46f6716add298"
+    },
+    {
+      "path": "assets/stage-art/beach/floor.png",
+      "bytes": 1143923,
+      "sha256": "328af1f553d3212c687be3f745a9e80f2368adfcfef6141b38ea49641cbff193"
+    },
+    {
+      "path": "assets/stage-art/piazza/master.png",
+      "bytes": 3030268,
+      "sha256": "6b8df29ecb1227937109039b2bd5a5a9ddee6f7643a7fd0e27c5885da28a1cc3"
+    },
+    {
+      "path": "assets/stage-art/piazza/sky.png",
+      "bytes": 2091394,
+      "sha256": "57038042e487e22513c77d89c30d5c3a1be7ffd96aad4e3e7a8c50f968aa63db"
+    },
+    {
+      "path": "assets/stage-art/piazza/far.png",
+      "bytes": 1244564,
+      "sha256": "4afe827eccef1e2a81e384e5e1aa9e82200fedcbab8a570c24f21d6cd00bfbad"
+    },
+    {
+      "path": "assets/stage-art/piazza/mid.png",
+      "bytes": 2144967,
+      "sha256": "69c93f049fd110578f7e1ee932596709658e7c0d40f9d7430405a9e167b29180"
+    },
+    {
+      "path": "assets/stage-art/piazza/floor.png",
+      "bytes": 1000516,
+      "sha256": "24dd6be0c08c9c9f45fccdb2b0e0cb2b0c3646ca87ac8788c2efb2777fe48791"
+    },
+    {
+      "path": "assets/stage-art/jungle/master.png",
+      "bytes": 3507777,
+      "sha256": "151c12540b58cf68965555ef084d8a7b1cf1b22ea1fe402906cfb0c8ff99f77f"
+    },
+    {
+      "path": "assets/stage-art/jungle/sky.png",
+      "bytes": 1967280,
+      "sha256": "c3c22d90ad2b612bcb23ea970d6ea02749ead84ab44d790c9c889f0ae1b2d52a"
+    },
+    {
+      "path": "assets/stage-art/jungle/far.png",
+      "bytes": 1889186,
+      "sha256": "a1578b8083e9de47e67fad870e5a4231c0c149c816e2946b11ef1b33753484db"
+    },
+    {
+      "path": "assets/stage-art/jungle/mid.png",
+      "bytes": 2494441,
+      "sha256": "0dd4da291d23b7b40024619fd6aab00e187f4654ba0649d682d174e22e3b9659"
+    },
+    {
+      "path": "assets/stage-art/jungle/floor.png",
+      "bytes": 1193164,
+      "sha256": "36ee4214c66e712538e069453b71a56fc6ac2c2ae878e8d0a86d0b0355fa2a73"
+    },
+    {
+      "path": "assets/stage-art/desert/master.png",
+      "bytes": 2736819,
+      "sha256": "38bbc2fd82726f95b81784fde3348a7e622f2da1cc449a00a80af0b9e3a5d664"
+    },
+    {
+      "path": "assets/stage-art/desert/sky.png",
+      "bytes": 2040801,
+      "sha256": "6047ce8352d672d618f4c5fbbd71bc5c508e06fd8ecfa64a4bfd964c04eb2b4e"
+    },
+    {
+      "path": "assets/stage-art/desert/far.png",
+      "bytes": 1127648,
+      "sha256": "ef6df1802007e5cfa6c45c77323f86dec887e39a4f4335f1972a80bb91698f3f"
+    },
+    {
+      "path": "assets/stage-art/desert/mid.png",
+      "bytes": 915675,
+      "sha256": "3dc7b7cb36e0622444ab4cbadd3d996b430646c288fb96d2c2708781a0b633e7"
+    },
+    {
+      "path": "assets/stage-art/desert/floor.png",
+      "bytes": 1250063,
+      "sha256": "932bf25d35420c0a9531f35ee6a659a791b0b72bc68d8ede67d8dde397072f6b"
+    },
+    {
+      "path": "assets/stage-art/cafe/master.png",
+      "bytes": 2327868,
+      "sha256": "684ad13c0108c45ae479dfb2449e099daa6e7a77e97c42a5f7721b54df8111e4"
+    },
+    {
+      "path": "assets/stage-art/cafe/sky.png",
+      "bytes": 1755839,
+      "sha256": "03d56aed6548394e4789a8c371f55014d7c74821714a51ee752e2e9f4bed91d4"
+    },
+    {
+      "path": "assets/stage-art/cafe/far.png",
+      "bytes": 1843864,
+      "sha256": "da723cdcd357a4d3b23a98d92ba35ae142586ffd222fb0dc3c31faec96cb9a2d"
+    },
+    {
+      "path": "assets/stage-art/cafe/mid.png",
+      "bytes": 1362148,
+      "sha256": "fb17eec24748d7615f66f6d5a4426471617ebc4aa1aef200aa1053804fdbbcb2"
+    },
+    {
+      "path": "assets/stage-art/cafe/floor.png",
+      "bytes": 1552315,
+      "sha256": "ab3bc741f0c3d8d12dfb6250eea09fa17e9fb82e45585c6b780225373f1d0280"
+    },
+    {
+      "path": "assets/stage-art/villaggio/master.png",
+      "bytes": 2661934,
+      "sha256": "58224d6c45c11d0df04fe98bbb3a89885c40af068b05f08a6ad351488aefc17f"
+    },
+    {
+      "path": "assets/stage-art/villaggio/sky.png",
+      "bytes": 1831515,
+      "sha256": "e6909355d28f39a4d6d522b55d0ff3f4d1ccfc4f7763b187598209114652147a"
+    },
+    {
+      "path": "assets/stage-art/villaggio/far.png",
+      "bytes": 1526350,
+      "sha256": "45467a1cabf6aee9a18ee8f0a4ff6dd7b238d27e5b4af4ae201450b79f3640a5"
+    },
+    {
+      "path": "assets/stage-art/villaggio/mid.png",
+      "bytes": 2110667,
+      "sha256": "00b4880473ca4e23665a57d8ad634bce5ef71107f2697355febe6d6b0430c9fa"
+    },
+    {
+      "path": "assets/stage-art/villaggio/floor.png",
+      "bytes": 1813565,
+      "sha256": "901b7cc5bd69ba704517a6933f37c7923de520fbf6789916ede6a8a1ff8f898f"
+    },
+    {
+      "path": "assets/stage-art/cielo/master.png",
+      "bytes": 2192991,
+      "sha256": "7ca70b11fe0e69e3c41a2ab82a134da4606ccf47066aa9e9db55bbb37e27aa01"
+    },
+    {
+      "path": "assets/stage-art/cielo/sky.png",
+      "bytes": 1310371,
+      "sha256": "8106160fbf54d53ee83c08ef079c50f8b7ee513f5894423d79efbb9739d71250"
+    },
+    {
+      "path": "assets/stage-art/cielo/far.png",
+      "bytes": 1427909,
+      "sha256": "0d10717794e3ae14fbc41d6789e861e782b7f47b5b182246ac61b244628a7dc5"
+    },
+    {
+      "path": "assets/stage-art/cielo/mid.png",
+      "bytes": 1545065,
+      "sha256": "d1124252a2bd1b454fb7efeb7ccaeeb6bd431e9903dc892f60128a10108759b5"
+    },
+    {
+      "path": "assets/stage-art/cielo/floor.png",
+      "bytes": 1658371,
+      "sha256": "593dc1aef72de901fb379ef1981b71d2e70815017167acaf0f1a2467d96dc231"
+    },
+    {
+      "path": "assets/stage-art/teatro/master.png",
+      "bytes": 2490128,
+      "sha256": "b8d2dca22565af5e11c83d13d3e375b511f15cdd13ee8a44ca0815d8f240030b"
+    },
+    {
+      "path": "assets/stage-art/teatro/sky.png",
+      "bytes": 2489262,
+      "sha256": "b8ebdd2474bec7f3c8e4c614156bb50f37e8b5b41b5b9329da71c41cac9b8ec6"
+    },
+    {
+      "path": "assets/stage-art/teatro/far.png",
+      "bytes": 1422009,
+      "sha256": "fdf14d9a2e0b66934334449e195fe8fa5b4513557efb356e12ebdedce878a890"
+    },
+    {
+      "path": "assets/stage-art/teatro/mid.png",
+      "bytes": 1791372,
+      "sha256": "be572c39e4a17e8ae3ce345855ff90205e76306874d0f966eeea3d36ff6fb12f"
+    },
+    {
+      "path": "assets/stage-art/teatro/floor.png",
+      "bytes": 1506151,
+      "sha256": "4991fcb212e904e378695ffb451bc2c622ed58f351c9e94debd6a54dbe2e4841"
+    },
+    {
+      "path": "assets/stage-art/piantagione/master.png",
+      "bytes": 3220226,
+      "sha256": "8a84c9beee357c81a7c6ce6df8702e5e8d60b7a51c454a5c9c8af07a14ff1c60"
+    },
+    {
+      "path": "assets/stage-art/piantagione/sky.png",
+      "bytes": 1798138,
+      "sha256": "1e29d7f28f0ce94bae66b64e49026535374bc3774649aeff94d140cebd40cafa"
+    },
+    {
+      "path": "assets/stage-art/piantagione/far.png",
+      "bytes": 1640879,
+      "sha256": "9fb996af340fb5d6a2d64046e7e3788caeb5d5014e905bc2549845391ef52d9c"
+    },
+    {
+      "path": "assets/stage-art/piantagione/mid.png",
+      "bytes": 2317039,
+      "sha256": "39c5fc123b0e694bea6101f0954e54148982cc20820dd1d35b9cf07e085b0204"
+    },
+    {
+      "path": "assets/stage-art/piantagione/floor.png",
+      "bytes": 1739513,
+      "sha256": "57767f6474ea2bfecea22f663b23c155cba60b9e51cc05896c4813c399f277cb"
+    },
+    {
+      "path": "assets/stage-art/saturno/master.png",
+      "bytes": 3051380,
+      "sha256": "288f1f8011884dc9c18ca97545ccc739c97edeebd2d2c481609b4349386a05cc"
+    },
+    {
+      "path": "assets/stage-art/saturno/sky.png",
+      "bytes": 2642335,
+      "sha256": "8b6ea849eb7134a8590b08708832a97c0ce099cac1d92d9de7f522e9d1995631"
+    },
+    {
+      "path": "assets/stage-art/saturno/far.png",
+      "bytes": 1762480,
+      "sha256": "e143629fc94cd99ec2b2b58bed35fb56f832951da7d68080bec86a7153a97b4f"
+    },
+    {
+      "path": "assets/stage-art/saturno/mid.png",
+      "bytes": 1552464,
+      "sha256": "c4696a05ffdc2cf79287e9bae0ec83ffa017e6adce34fabb6cdcb40d17832505"
+    },
+    {
+      "path": "assets/stage-art/saturno/floor.png",
+      "bytes": 1832447,
+      "sha256": "f74e8c3efe971b5f1313e62bfcfc222b6752c0c95aac75cc13879b1796c8770c"
+    },
+    {
+      "path": "assets/stage-art/strada/master.png",
+      "bytes": 3152411,
+      "sha256": "2506bc6d7096ffa97b62734f39a181ff6f38969c3b2a6cc3418a5b41497984ae"
+    },
+    {
+      "path": "assets/stage-art/strada/sky.png",
+      "bytes": 1678141,
+      "sha256": "c23227f582b6d5c6e287ce0f07e07ac17bf9776014d237603ce04811da756b34"
+    },
+    {
+      "path": "assets/stage-art/strada/far.png",
+      "bytes": 1671855,
+      "sha256": "795ead96aa208d90baee8500af76c84d330b1cf6d6e4dcd9651173950174cbc0"
+    },
+    {
+      "path": "assets/stage-art/strada/mid.png",
+      "bytes": 2386053,
+      "sha256": "701cbadca263ff023cc3e041a8660578bbf40a8e9a6cb6fa3c58f8109a2fb39f"
+    },
+    {
+      "path": "assets/stage-art/strada/floor.png",
+      "bytes": 1785158,
+      "sha256": "49d970388e6cac6ea337a5cc88e8362ff75dc03f1ca7f361ca4a84a1a56b9c75"
+    },
+    {
+      "path": "assets/stage-art/cyber/master.png",
+      "bytes": 2753118,
+      "sha256": "87a8424f6cdd7a1ca25812be8df5fb036c5de1b4253b374683fb26488797f2be"
+    },
+    {
+      "path": "assets/stage-art/cyber/sky.png",
+      "bytes": 2004963,
+      "sha256": "aca1ca95ae9753c4bc419fa55410ca39994383b20974c9e782cb7ce17a27f720"
+    },
+    {
+      "path": "assets/stage-art/cyber/far.png",
+      "bytes": 1731707,
+      "sha256": "6a42692c11f776e3745efd64abb13e2e5419109f5c9805baa56d944470b0d3a2"
+    },
+    {
+      "path": "assets/stage-art/cyber/mid.png",
+      "bytes": 1793905,
+      "sha256": "6f1fab3924b88d3387be841c9bd696dc442a0c07017a137490263e13b6de4524"
+    },
+    {
+      "path": "assets/stage-art/cyber/floor.png",
+      "bytes": 1718330,
+      "sha256": "c644358cb190a8335092f53f00f8a57e9b4a27057b185e27a5cb4c20ffa7c165"
+    },
+    {
+      "path": "assets/stage-art/byd/master.png",
+      "bytes": 3452627,
+      "sha256": "9ef57de2ad116967ef045831664a9e2f99e4f5a0bc35cb14c3690c8216507994"
+    },
+    {
+      "path": "assets/stage-art/byd/sky.png",
+      "bytes": 1962378,
+      "sha256": "5fb044701df7d827a7627fe1794a364e46c6d40f588b138c24c834cfcc09006d"
+    },
+    {
+      "path": "assets/stage-art/byd/far.png",
+      "bytes": 1961789,
+      "sha256": "9e4d4204a4c7e81467d4df7361d167c6d9b1499827d52bba1c625742ba981ceb"
+    },
+    {
+      "path": "assets/stage-art/byd/mid.png",
+      "bytes": 2045596,
+      "sha256": "2289540d9ac2781fc09ad091af5c38ef4b2adbff9aa4046be68bcfd7601749c5"
+    },
+    {
+      "path": "assets/stage-art/byd/floor.png",
+      "bytes": 2031431,
+      "sha256": "c0853010198aee824d17179fbf4857e3cdc2a2a93fe9c63954852d36822bf4f7"
+    },
+    {
+      "path": "assets/stage-art/map/map.png",
+      "bytes": 2629998,
+      "sha256": "c8ea83b7f203acfdb262f66f74bf4646d33172ae6d087ee4d2c6fe7f816cf881"
+    }
+  ]
+}

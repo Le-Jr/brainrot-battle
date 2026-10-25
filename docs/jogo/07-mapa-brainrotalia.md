@@ -18,17 +18,17 @@ O índice de cada local é o mesmo índice do cenário correspondente. As posiç
 
 | # | Local | Marco na arte | Posição (x,y) |
 |---|-------|---------------|---------------|
-| 0 | Spiaggia Tralalà | Farol na ponta sudeste | 220,124 |
-| 1 | Piazza Pizzaiola | Praça com a torre | 133,77 |
-| 2 | Selva Patapim | Cachoeira na selva | 186,62 |
-| 3 | Deserto Tic-Tac | Torre do relógio | 96,104 |
-| 4 | Caffè Assassino | Lago em forma de xícara | 141,108 |
-| 5 | Villaggio Sahur | Casas de palafita | 72,47 |
-| 6 | Cielo Bombardiro | Pista nas montanhas | 124,30 |
-| 7 | Teatro Cappuccina | Cúpula vermelha | 144,49 |
-| 8 | Isola Bananini | Ilha das bananas | 288,95 |
+| 0 | Spiaggia Tralalà | Farol na ponta sudeste | 212,113 |
+| 1 | Piazza Pizzaiola | Praça com a torre | 134,70 |
+| 2 | Selva Patapim | Cachoeira na selva | 214,59 |
+| 3 | Deserto Tic-Tac | Torre do relógio | 77,98 |
+| 4 | Caffè Assassino | Lago em forma de xícara | 140,110 |
+| 5 | Villaggio Sahur | Casas de palafita | 65,54 |
+| 6 | Cielo Bombardiro | Pista nas montanhas | 119,34 |
+| 7 | Teatro Cappuccina | Cúpula vermelha | 161,46 |
+| 8 | Isola Bananini | Ilha das bananas | 297,107 |
 | 9 | Anelli di Saturno | Mar aberto (o jogo desenha Saturno) | 288,38 |
-| 10 | Strada del Nonno | Estrada com o carrinho vermelho | 171,95 |
+| 10 | Strada del Nonno | Estrada com o carrinho vermelho | 176,86 |
 
 ## O que se mexe
 

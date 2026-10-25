@@ -3,6 +3,7 @@
 const STAGE_ART = {
   beach: {
     layers: [
+      "sky",
       "far",
       "mid",
       "floor"
@@ -24,6 +25,7 @@ const STAGE_ART = {
   },
   jungle: {
     layers: [
+      "sky",
       "far",
       "mid",
       "floor"
@@ -45,6 +47,7 @@ const STAGE_ART = {
   },
   cafe: {
     layers: [
+      "sky",
       "far",
       "mid",
       "floor"
@@ -57,7 +60,10 @@ const STAGE_ART = {
   },
   villaggio: {
     layers: [
-      "far"
+      "sky",
+      "far",
+      "mid",
+      "floor"
     ],
     off: []
   },

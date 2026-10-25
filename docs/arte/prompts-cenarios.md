@@ -486,22 +486,28 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 
 ### Status
 
+Regeneração concluída em **25/10/2026**, com a ferramenta de geração de imagens integrada. Foram recuperadas as 29 imagens já geradas (13 masters e 16 camadas) e geradas as 36 camadas restantes e o mapa. Total: **66 arquivos principais**. Cada camada foi gerada separadamente usando o master correspondente como referência e os prompts deste documento.
+
 | Cenário | Arte | Observação |
 |---------|------|------------|
-| `piazza` | SKY, FAR, MID, FLOOR | As 4 camadas saíram certas. |
-| `beach` | FAR, MID, FLOOR | O céu continua procedural (mar, sol e gaivotas animadas). FAR e FLOOR vieram "sujos" e foram recortados (só as colinas com o farol; só a espuma e a areia). |
-| `jungle` | FAR, MID, FLOOR | Veio só o master, as árvores (MID) e o corte do chão com raízes (FLOOR). O FAR é o miolo do master, entre os troncos (cachoeira), repetido na horizontal; as emendas ficam atrás das árvores. A névoa cinza sobre a grama do FLOOR sai com `haze`. Sem a água animada da cachoeira. |
-| `desert` | SKY, FAR, MID, FLOOR | Folha com as 4 camadas empilhadas (sem rótulos). Sem os ponteiros animados do relógio. |
-| `cafe` | FAR, MID (vazio), FLOOR | Veio só o master (opaco). Parede, balcão e banquetas viram o FAR; o xadrez vira o FLOOR; o MID fica vazio (`blank`). Sem o neon "ESPRESSO", o vapor e os cones de luz. |
-| `villaggio` | FAR | Só a silhueta da mesquita com palmeiras; céu, casas e chão continuam procedurais (com lanternas e vaga-lumes). |
-| `cielo` | SKY, FAR, MID, FLOOR | Arquivos separados. Sem as nuvens procedurais passando (as linhas de vento continuam). |
-| `teatro` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem a ribalta e as cabeças da plateia procedurais (a arte já tem as duas); os holofotes continuam. |
-| `piantagione` | SKY, FAR, MID, FLOOR | Folha com rótulos. |
-| `saturno` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem a poeira animada do anel. Também é o fundo da tela de título. |
-| `strada` | SKY, FAR, MID, FLOOR | Folha com rótulos. Os varais agora estão na arte (sem o balanço procedural). |
-| `cyber` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem os letreiros de texto piscando e a chuva. |
-| `byd` | SKY, FAR, MID, FLOOR | Folha com rótulos. |
-| `map` | MAP | Mapa de Brainrotália; os 11 locais foram reposicionados nos marcos da arte. |
+| `beach` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `piazza` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `jungle` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `desert` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `cafe` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `villaggio` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `cielo` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `teatro` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `piantagione` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `saturno` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `strada` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `cyber` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `byd` | MASTER, SKY, FAR, MID, FLOOR | Arquivos PNG separados; posicionamento ajustado em `stages.json`. |
+| `map` | MAP | Mapa regenerado; marcadores e decorações reposicionados na nova arte. |
+
+Os masters e as camadas originais estão em `assets/stage-art/<id>/`. Como já previsto no `.gitignore`, os PNGs originais ficam locais; as versões processadas em `public/stages/` são versionadas. O inventário com hashes está em [geracao-2026-10-25.json](geracao-2026-10-25.json).
+
+Validação da regeneração: renderização dos 13 cenários e do mapa revisada; campanha, 24 lutas, bônus, textos, snapshots, TypeScript e lint passaram. Os snapshots foram atualizados para as novas artes. Uma renderização isolada do `HEAD` anterior nesta mesma máquina confirmou os mesmos hashes dos 9 sprites e os mesmos resultados de vida das 13 lutas determinísticas; diferenças nos hashes de sprites do snapshot antigo já ocorriam antes desta troca de arte neste ambiente.
 
 ### Lições das duas primeiras gerações
 
