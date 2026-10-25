@@ -3,8 +3,8 @@
 // Input : assets/stage-art/<id>/{sky,far,mid,floor}.(png|jpg) + assets/stage-art/stages.json (placement)
 // Output: public/stages/<id>/<layer>.png   (HD layers: sky 640, far 736, mid 832, floor 960 x 360; map 640)
 //         src/game/data/stage-art.js       (which stages/layers have art and which animation hooks to drop)
-// Steps per layer: cut the magenta background, keep/clip regions, scale and place it on the layer (ground line
-// at y=272), tile it horizontally if asked, then the same limited palette + outline pass used by the painted
+// Steps per layer: crop a panel out of a layer sheet, cut the magenta background and haze, keep/clip/drop
+// regions, scale and place it on the layer (ground line at y=272), tile it horizontally if asked, then the same limited palette + outline pass used by the painted
 // stages (stages/pixelize.js), so art, sprites and HUD share one look.
 // Usage: npm run stages:art
 import fs from 'node:fs';
@@ -23,21 +23,36 @@ const H = 360;
 const isKey = (r, g, b) => r > 140 && b > 140 && g < 0.55 * Math.min(r, b);
 
 function prepareSource(img, o) {
-  const sw = img.width,
-    sh = img.height,
+  // 'crop' picks one panel of a layer sheet (several layers in one image); every other fraction is then relative to it
+  const [cx0, cy0, cx1, cy1] = o.crop || [0, 0, 1, 1],
+    ox = Math.round(cx0 * img.width),
+    oy = Math.round(cy0 * img.height),
+    sw = Math.round(cx1 * img.width) - ox,
+    sh = Math.round(cy1 * img.height) - oy,
     c = createCanvas(sw, sh),
     g = c.getContext('2d');
-  g.drawImage(img, 0, 0);
+  g.drawImage(img, ox, oy, sw, sh, 0, 0, sw, sh);
   const id = g.getImageData(0, 0, sw, sh),
     d = id.data,
-    keep = o.keep && o.keep.map(([x0, y0, x1, y1]) => [x0 * sw, y0 * sh, x1 * sw, y1 * sh]);
+    rects = (a) => a && a.map(([x0, y0, x1, y1]) => [x0 * sw, y0 * sh, x1 * sw, y1 * sh]),
+    inside = (r, x, y) => r.some(([a, b, c2, e]) => x >= a && x < c2 && y >= b && y < e),
+    keep = rects(o.keep),
+    cut = rects(o.drop);
   for (let y = 0; y < sh; y++)
     for (let x = 0; x < sw; x++) {
       const i = (y * sw + x) * 4;
       let drop = o.key && isKey(d[i], d[i + 1], d[i + 2]);
       if (o.clipBelow !== undefined && y >= o.clipBelow * sh) drop = true;
       if (o.clipAbove !== undefined && y < o.clipAbove * sh) drop = true;
-      if (keep && !keep.some(([a, b, c2, e]) => x >= a && x < c2 && y >= b && y < e)) drop = true;
+      // 'haze': above this row, drop washed-out pixels (fog the generator painted behind grass blades)
+      if (
+        o.haze !== undefined &&
+        y < o.haze * sh &&
+        Math.max(d[i], d[i + 1], d[i + 2]) - Math.min(d[i], d[i + 1], d[i + 2]) < 70
+      )
+        drop = true;
+      if (keep && !inside(keep, x, y)) drop = true;
+      if (cut && inside(cut, x, y)) drop = true;
       if (drop) d[i + 3] = 0;
     }
   g.putImageData(id, 0, 0);
@@ -49,10 +64,10 @@ function buildLayer(name, img, o) {
     out = createCanvas(LW, H),
     g = out.getContext('2d'),
     src = prepareSource(img, o),
-    s = o.width / img.width,
-    w = img.width * s,
-    h = img.height * s,
-    y = o.anchor[1] - o.anchor[0] * img.height * s,
+    s = o.width / src.width,
+    w = src.width * s,
+    h = src.height * s,
+    y = o.anchor[1] - o.anchor[0] * src.height * s,
     x = o.x ?? (LW - w) / 2;
   g.imageSmoothingEnabled = true;
   g.imageSmoothingQuality = 'high';
@@ -70,7 +85,15 @@ function buildLayer(name, img, o) {
   if (opaque) {
     // the sky must cover the whole layer: fill any uncovered row with the nearest painted one
     const id = g.getImageData(0, 0, LW, H),
-      d = id.data;
+      d = id.data,
+      row = LW * 4,
+      painted = [];
+    for (let yy = 0; yy < H; yy++) if (d[yy * row + Math.floor(LW / 2) * 4 + 3] > 0) painted.push(yy);
+    for (let yy = 0; yy < H && painted.length; yy++) {
+      const from =
+        yy < painted[0] ? painted[0] : yy > painted[painted.length - 1] ? painted[painted.length - 1] : yy;
+      if (from !== yy) d.copyWithin(yy * row, from * row, from * row + row);
+    }
     for (let i = 0; i < d.length; i += 4) d[i + 3] = 255;
     g.putImageData(id, 0, 0);
   }
@@ -85,9 +108,22 @@ for (const [id, st] of Object.entries(config)) {
   fs.mkdirSync(path.join(OUT, id), { recursive: true });
   const done = [];
   for (const [name, o] of Object.entries(st.layers)) {
+    if (o.blank) {
+      // the art covers this depth already: an empty layer hides the procedural painting
+      fs.writeFileSync(
+        path.join(OUT, id, name + '.png'),
+        createCanvas(LAYER_W[name], H).toBuffer('image/png'),
+      );
+      done.push(name);
+      console.log(`${id}/${name}.png`, 'blank');
+      continue;
+    }
     const file = path.join(SRC, id, o.src);
     if (!fs.existsSync(file)) {
-      console.warn(`skip ${id}/${name}: ${o.src} not found`);
+      // the sources are not in git: keep a layer that was already processed on another machine
+      const kept = fs.existsSync(path.join(OUT, id, name + '.png'));
+      console.warn(`skip ${id}/${name}: ${o.src} not found${kept ? ' (keeping the processed layer)' : ''}`);
+      if (kept) done.push(name);
       continue;
     }
     const layer = buildLayer(name, await loadImage(fs.readFileSync(file)), o);

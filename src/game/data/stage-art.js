@@ -22,6 +22,118 @@ const STAGE_ART = {
       "midA"
     ]
   },
+  jungle: {
+    layers: [
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "farA"
+    ]
+  },
+  desert: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "farA"
+    ]
+  },
+  cafe: {
+    layers: [
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "back",
+      "farA",
+      "midA"
+    ]
+  },
+  villaggio: {
+    layers: [
+      "far"
+    ],
+    off: []
+  },
+  cielo: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "back"
+    ]
+  },
+  teatro: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "front"
+    ]
+  },
+  piantagione: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: []
+  },
+  saturno: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "farA"
+    ]
+  },
+  strada: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "midA"
+    ]
+  },
+  cyber: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: [
+      "midA"
+    ]
+  },
+  byd: {
+    layers: [
+      "sky",
+      "far",
+      "mid",
+      "floor"
+    ],
+    off: []
+  },
   map: {
     layers: [
       "map"

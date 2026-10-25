@@ -1,5 +1,5 @@
 {
-  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image; 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'keep' = source rectangles (fractions x0,y0,x1,y1) to keep; 'clipBelow' = drop source rows below this fraction; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges. Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art. The 'map' entry is the Brainrotália world map (one opaque 640x360 layer); 'colors' sets the palette size (default 64).",
+  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image (after 'crop'); 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'crop' = source rectangle (fractions x0,y0,x1,y1) to use, for layer sheets with several panels in one image; every other fraction is relative to the crop; 'keep' = source rectangles to keep; 'drop' = source rectangles to cut (the panel labels of a sheet); 'clipAbove'/'clipBelow' = drop source rows above/below this fraction; 'haze' = above this fraction, drop washed-out (fog) pixels; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges; 'blank' = an empty layer (hides the procedural painting when the art already covers that depth). Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art. The 'map' entry is the Brainrotália world map (one opaque 640x360 layer); 'colors' sets the palette size (default 64).",
   "beach": {
     "off": [
       "front"
@@ -94,6 +94,743 @@
         "width": 960,
         "anchor": [
           0.295,
+          272
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "jungle": {
+    "off": [
+      "farA"
+    ],
+    "layers": {
+      "far": {
+        "src": "master.jpg",
+        "crop": [
+          0.363,
+          0.0,
+          0.6313,
+          1.0
+        ],
+        "width": 425,
+        "anchor": [
+          0.8185,
+          272
+        ],
+        "x": 215,
+        "tile": "repeat"
+      },
+      "mid": {
+        "src": "mid.jpg",
+        "key": true,
+        "width": 832,
+        "anchor": [
+          0.8185,
+          272
+        ],
+        "outline": 0.4
+      },
+      "floor": {
+        "src": "floor.jpg",
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.506,
+          278
+        ],
+        "clipAbove": 0.4702,
+        "haze": 0.5104,
+        "outline": 0.3
+      }
+    }
+  },
+  "desert": {
+    "off": [
+      "farA"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.0,
+          1.0,
+          0.2894
+        ],
+        "width": 1672,
+        "anchor": [
+          0.0,
+          0
+        ],
+        "x": -100
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.2926,
+          1.0,
+          0.5287
+        ],
+        "key": true,
+        "width": 1338,
+        "anchor": [
+          1.0,
+          272
+        ],
+        "x": -500,
+        "outline": 0.35
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.5287,
+          1.0,
+          0.7447
+        ],
+        "key": true,
+        "width": 1170,
+        "anchor": [
+          1.0,
+          284
+        ],
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.8277,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.0123,
+          272
+        ],
+        "clipAbove": 0.0123,
+        "outline": 0.3
+      }
+    }
+  },
+  "cafe": {
+    "off": [
+      "back",
+      "farA",
+      "midA"
+    ],
+    "layers": {
+      "far": {
+        "src": "master.png",
+        "crop": [
+          0.0,
+          0.0,
+          1.0,
+          0.6943
+        ],
+        "width": 913,
+        "anchor": [
+          1.0,
+          272
+        ]
+      },
+      "mid": {
+        "blank": true
+      },
+      "floor": {
+        "src": "master.png",
+        "crop": [
+          0.0,
+          0.6943,
+          1.0,
+          1.0
+        ],
+        "width": 960,
+        "anchor": [
+          0.0,
+          272
+        ]
+      }
+    }
+  },
+  "villaggio": {
+    "layers": {
+      "far": {
+        "src": "far.jpg",
+        "key": true,
+        "width": 874,
+        "anchor": [
+          0.7778,
+          285
+        ],
+        "clipBelow": 0.7806,
+        "outline": 0.3
+      }
+    }
+  },
+  "cielo": {
+    "off": [
+      "back"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sky.jpg",
+        "width": 680,
+        "anchor": [
+          0.0,
+          0
+        ]
+      },
+      "far": {
+        "src": "far.jpg",
+        "key": true,
+        "width": 736,
+        "anchor": [
+          0.4,
+          200
+        ]
+      },
+      "mid": {
+        "src": "mid.jpg",
+        "key": true,
+        "width": 832,
+        "anchor": [
+          0.7307,
+          272
+        ],
+        "outline": 0.4
+      },
+      "floor": {
+        "src": "floor.jpg",
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.3497,
+          272
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "teatro": {
+    "off": [
+      "front"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0365,
+          0.4744,
+          0.4969,
+          0.7256
+        ],
+        "width": 1148,
+        "anchor": [
+          0.0,
+          0
+        ],
+        "x": -343
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.5031,
+          0.4744,
+          0.9984,
+          0.7256
+        ],
+        "key": true,
+        "width": 950,
+        "anchor": [
+          0.0,
+          0
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0958,
+            0.1505
+          ]
+        ],
+        "outline": 0.4
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0344,
+          0.7378,
+          0.4969,
+          0.9878
+        ],
+        "key": true,
+        "width": 1153,
+        "anchor": [
+          1.0098,
+          276
+        ],
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.5031,
+          0.7378,
+          0.9984,
+          0.9878
+        ],
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.3902,
+          272
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0958,
+            0.1707
+          ]
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "piantagione": {
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0365,
+          0.4434,
+          0.4969,
+          0.6955
+        ],
+        "width": 1147,
+        "anchor": [
+          0.0,
+          0
+        ]
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.5031,
+          0.4434,
+          1.0,
+          0.6955
+        ],
+        "key": true,
+        "width": 1238,
+        "anchor": [
+          0.8502,
+          235
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0798,
+            0.1739
+          ]
+        ],
+        "outline": 0.3
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0344,
+          0.7065,
+          0.4969,
+          1.0
+        ],
+        "key": true,
+        "width": 1152,
+        "anchor": [
+          0.7676,
+          274
+        ],
+        "clipBelow": 0.7801,
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.5031,
+          0.7065,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.4564,
+          272
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.1113,
+            0.1452
+          ]
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "saturno": {
+    "off": [
+      "farA"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0366,
+          0.4471,
+          0.4966,
+          0.7084
+        ],
+        "width": 1143,
+        "anchor": [
+          0.0,
+          0
+        ]
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.5024,
+          0.4471,
+          1.0,
+          0.7084
+        ],
+        "key": true,
+        "width": 1284,
+        "anchor": [
+          0.0,
+          -6
+        ],
+        "x": -343,
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0757,
+            0.1488
+          ]
+        ],
+        "outline": 0.35
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.7205,
+          0.4966,
+          1.0
+        ],
+        "key": true,
+        "width": 949,
+        "anchor": [
+          0.0,
+          30
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0738,
+            0.1391
+          ]
+        ],
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.5024,
+          0.7205,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 960,
+        "anchor": [
+          0.487,
+          272
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.1073,
+            0.1391
+          ]
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "strada": {
+    "off": [
+      "midA"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0366,
+          0.3557,
+          1.0,
+          0.5104
+        ],
+        "width": 2583,
+        "anchor": [
+          1.0157,
+          230
+        ]
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.5201,
+          1.0,
+          0.6443
+        ],
+        "key": true,
+        "width": 2681,
+        "anchor": [
+          1.0196,
+          276
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0366,
+            0.3431
+          ]
+        ],
+        "outline": 0.3
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0345,
+          0.6516,
+          1.0,
+          0.8197
+        ],
+        "key": true,
+        "width": 2589,
+        "anchor": [
+          0.9638,
+          274
+        ],
+        "x": -493,
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.827,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 1494,
+        "anchor": [
+          0.2042,
+          272
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0522,
+            0.2324
+          ]
+        ],
+        "outline": 0.3
+      }
+    }
+  },
+  "cyber": {
+    "off": [
+      "midA"
+    ],
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0345,
+          0.3771,
+          0.4979,
+          0.5839
+        ],
+        "width": 1330,
+        "anchor": [
+          0.0,
+          0
+        ],
+        "x": -286
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.5026,
+          0.3771,
+          1.0,
+          0.5839
+        ],
+        "key": true,
+        "width": 1142,
+        "anchor": [
+          1.0,
+          274
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0735,
+            0.1882
+          ]
+        ],
+        "outline": 0.3
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.5937,
+          1.0,
+          0.8029
+        ],
+        "key": true,
+        "width": 2488,
+        "anchor": [
+          1.0,
+          274
+        ],
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0366,
+            0.1977
+          ]
+        ],
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.8114,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 1436,
+        "anchor": [
+          0.2258,
+          272
+        ],
+        "clipAbove": 0.2258,
+        "outline": 0.3
+      }
+    }
+  },
+  "byd": {
+    "layers": {
+      "sky": {
+        "src": "sheet.png",
+        "crop": [
+          0.0455,
+          0.0,
+          1.0,
+          0.2414
+        ],
+        "width": 2678,
+        "anchor": [
+          0.0,
+          0
+        ],
+        "x": -60
+      },
+      "far": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.2652,
+          1.0,
+          0.5113
+        ],
+        "key": true,
+        "width": 1870,
+        "anchor": [
+          1.0097,
+          274
+        ],
+        "x": -647,
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0428,
+            0.2995
+          ]
+        ],
+        "outline": 0.3
+      },
+      "mid": {
+        "src": "sheet.png",
+        "crop": [
+          0.0,
+          0.5208,
+          1.0,
+          0.7681
+        ],
+        "key": true,
+        "width": 1590,
+        "anchor": [
+          0.9952,
+          274
+        ],
+        "x": -579,
+        "drop": [
+          [
+            0.0,
+            0.0,
+            0.0428,
+            0.2981
+          ]
+        ],
+        "outline": 0.5
+      },
+      "floor": {
+        "src": "sheet.png",
+        "crop": [
+          0.0471,
+          0.7776,
+          1.0,
+          1.0
+        ],
+        "key": true,
+        "width": 1099,
+        "anchor": [
+          0.0107,
           272
         ],
         "outline": 0.3
