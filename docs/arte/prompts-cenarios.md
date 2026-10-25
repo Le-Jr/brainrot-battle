@@ -490,8 +490,18 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 |---------|------|------------|
 | `piazza` | SKY, FAR, MID, FLOOR | As 4 camadas saíram certas. |
 | `beach` | FAR, MID, FLOOR | O céu continua procedural (mar, sol e gaivotas animadas). FAR e FLOOR vieram "sujos" e foram recortados (só as colinas com o farol; só a espuma e a areia). |
+| `jungle` | FAR, MID, FLOOR | Veio só o master, as árvores (MID) e o corte do chão com raízes (FLOOR). O FAR é o miolo do master, entre os troncos (cachoeira), repetido na horizontal; as emendas ficam atrás das árvores. A névoa cinza sobre a grama do FLOOR sai com `haze`. Sem a água animada da cachoeira. |
+| `desert` | SKY, FAR, MID, FLOOR | Folha com as 4 camadas empilhadas (sem rótulos). Sem os ponteiros animados do relógio. |
+| `cafe` | FAR, MID (vazio), FLOOR | Veio só o master (opaco). Parede, balcão e banquetas viram o FAR; o xadrez vira o FLOOR; o MID fica vazio (`blank`). Sem o neon "ESPRESSO", o vapor e os cones de luz. |
+| `villaggio` | FAR | Só a silhueta da mesquita com palmeiras; céu, casas e chão continuam procedurais (com lanternas e vaga-lumes). |
+| `cielo` | SKY, FAR, MID, FLOOR | Arquivos separados. Sem as nuvens procedurais passando (as linhas de vento continuam). |
+| `teatro` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem a ribalta e as cabeças da plateia procedurais (a arte já tem as duas); os holofotes continuam. |
+| `piantagione` | SKY, FAR, MID, FLOOR | Folha com rótulos. |
+| `saturno` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem a poeira animada do anel. Também é o fundo da tela de título. |
+| `strada` | SKY, FAR, MID, FLOOR | Folha com rótulos. Os varais agora estão na arte (sem o balanço procedural). |
+| `cyber` | SKY, FAR, MID, FLOOR | Folha com rótulos. Sem os letreiros de texto piscando e a chuva. |
+| `byd` | SKY, FAR, MID, FLOOR | Folha com rótulos. |
 | `map` | MAP | Mapa de Brainrotália; os 11 locais foram reposicionados nos marcos da arte. |
-| os outros 11 cenários | – | Pintura procedural. |
 
 ### Lições das duas primeiras gerações
 
@@ -499,6 +509,9 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 - **Nada de areia ou chão na camada MID.** Se vier, dá para cortar com `clipBelow`, mas o ideal é o objeto terminar na linha do chão.
 - **O FLOOR pode vir mais alto que 75%.** Não tem problema: o `anchor` diz qual linha da imagem vira a linha do chão do jogo.
 - Proporção 21:9 funcionou bem (o Gemini entregou 3168×1344).
+- **Folhas de camadas também servem.** Quando a IA entrega as camadas numa imagem só (master em cima, SKY/FAR/MID/FLOOR em painéis), não precisa separar à mão: cada camada usa `crop` com o retângulo do painel. Os rótulos ("SKY (16:9)", "FAR"…) saem com `drop` quando estão sobre o magenta, ou ficam de fora do `crop` quando estão sobre o desenho. As divisórias brancas têm 1–3 px a mais do que parece: recorte uns pixels para dentro.
+- **Painéis de folha são baixos.** Um SKY de folha tem ~200 px de altura: em vez de esticar, o céu fica numa escala menor e o pipeline repete a linha pintada mais próxima para cobrir o resto da camada (topo liso).
+- **Só o master?** Também dá: o master opaco vira o FAR (ou o miolo dele, repetido) e o chão vira o FLOOR; `blank` esvazia uma camada procedural que ficaria por cima.
 
 ### Posicionamento (`stages.json`)
 
@@ -510,9 +523,13 @@ Scene: a sunny Brazilian seaside neighborhood inspired by Rio de Janeiro. Bright
 | `x` | Onde começa a imagem na camada (padrão: centralizada). |
 | `key` | Recorta o fundo magenta. |
 | `keep` | Retângulos da imagem (em frações) a manter; o resto vira transparente. Bom para aproveitar só parte de uma imagem. |
+| `crop` | Retângulo (frações) de uma folha com várias camadas. Todas as outras frações passam a ser relativas a ele. |
+| `drop` | Retângulos (frações) a apagar, como os rótulos dos painéis de uma folha. |
 | `clipAbove` / `clipBelow` | Descarta tudo acima/abaixo de uma linha (fração da altura). |
+| `haze` | Acima dessa linha, descarta os pixels desbotados (névoa que a IA pintou atrás da grama). |
 | `tile` | `"mirror"` ou `"repeat"` para preencher a largura da camada. |
 | `outline` | Escurece a borda das silhuetas (0 a 1), como o contorno dos sprites. |
+| `blank` | Camada vazia: esconde a pintura procedural quando a arte já cobre aquela profundidade. |
 | `off` (no cenário) | Animações procedurais que não combinam mais com a arte (ex.: as lâmpadas da Piazza, que agora estão desenhadas). |
 
 O pipeline recorta, escala, posiciona e aplica a mesma paleta limitada e o mesmo contorno dos cenários pintados, para a arte, os sprites e o HUD terem um visual só.

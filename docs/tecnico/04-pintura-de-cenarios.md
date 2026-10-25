@@ -65,7 +65,7 @@ Pintar e converter os 13 cenários leva cerca de 1,3 s, uma única vez no boot: 
 Um cenário pode trocar qualquer camada pintada por uma imagem. O fluxo:
 
 1. A arte fica em `assets/stage-art/<id>/` (gerada a partir dos prompts em [../arte/prompts-cenarios.md](../arte/prompts-cenarios.md)).
-2. `npm run stages:art` ([`tools/process-stage-art.js`](../../tools/process-stage-art.js)) lê `assets/stage-art/stages.json`, recorta o magenta, posiciona a camada (linha do chão em y=272), repete na horizontal se precisar e aplica `stagePalette()` + `mapLayer()` (paleta de 64 cores, contorno). Saída: `public/stages/<id>/<camada>.png` e o manifesto [`src/game/data/stage-art.js`](../../src/game/data/stage-art.js).
+2. `npm run stages:art` ([`tools/process-stage-art.js`](../../tools/process-stage-art.js)) lê `assets/stage-art/stages.json`, recorta o painel da folha de camadas (`crop`), o magenta, os rótulos (`drop`) e a névoa (`haze`), posiciona a camada (linha do chão em y=272), repete na horizontal se precisar e aplica `stagePalette()` + `mapLayer()` (paleta de 64 cores, contorno). Saída: `public/stages/<id>/<camada>.png` e o manifesto [`src/game/data/stage-art.js`](../../src/game/data/stage-art.js). Uma camada `blank` sai vazia (esconde a pintura procedural). As fontes não vão para o git: se uma não estiver na máquina, a camada já processada em `public/stages/` é mantida.
 3. No boot, `loadStageArt()` ([`stages/art.js`](../../src/game/stages/art.js)) carrega as imagens junto com os atlas. `buildNextStage()` pinta o cenário procedural normalmente e `applyArt()` troca as camadas que têm imagem e remove os ganchos de animação listados em `off`.
 
 Assim cada cenário pode ganhar arte aos poucos, camada por camada, sem quebrar os outros.
