@@ -1,12 +1,14 @@
 /* Projectile drawing for every special. */
 import { FLOOR } from '../config.js';
 import { ctx, fe } from '../core/canvas.js';
+import { drawProjectileArt } from '../sprites/projectile-art.js';
 
 function drawProj(p, cam, tk) {
   const x = Math.round(p.x - cam),
     y = Math.round(p.y),
     s = p.sup ? 1.5 : 1,
     d = p.dir || 1;
+  if (drawProjectileArt(ctx, p, x, y, tk)) return;
   switch (p.type) {
     case 'wave': {
       const rx = Math.round(6 * s),

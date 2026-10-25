@@ -10,6 +10,7 @@ import { XP } from './progression/xp.js';
 import { Intro } from './scenes/intro.js';
 import { Title } from './scenes/title.js';
 import { loadHD } from './sprites/hd.js';
+import { loadProjectileArt } from './sprites/projectile-art.js';
 import { artImage, loadStageArt } from './stages/art.js';
 import { useMapArt } from './world/map.js';
 import { buildStages } from './stages/index.js';
@@ -29,7 +30,12 @@ function boot(assetBase, intro, stageBase) {
     document.fonts && document.fonts.load
       ? Promise.race([document.fonts.load('8px ' + FONT), new Promise((r) => setTimeout(r, 2500))])
       : Promise.resolve();
-  booting = Promise.all([fontReady.catch(() => {}), loadHD(assetBase), loadStageArt(stageBase)]).then(() => {
+  booting = Promise.all([
+    fontReady.catch(() => {}),
+    loadHD(assetBase),
+    loadProjectileArt(assetBase),
+    loadStageArt(stageBase),
+  ]).then(() => {
     const map = artImage('map', 'map');
     if (map) useMapArt(map);
     XP.load();

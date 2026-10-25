@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "style": "Use case: stylized-concept. Production asset for 2D arcade fighting game. Modern HD pixel art, Neo Geo/KOF-inspired sprite, matching the attached reference's identity and proportions, improved readable anatomy and clean silhouette. Exactly one full-body character, side view facing RIGHT, orthographic camera. 256x208 logical sprite canvas, about 130 pixels tall for upright humanoids, limited 48-color palette, hard-edged square pixels, dark-purple one-pixel outline, purple shadows and warm highlights, light upper left. No blur, no antialiasing, no gradient, no painterly texture. Full character and equipment uncropped, 15% clear margin. Genuine transparent background, no floor, no cast shadow, no text, no border, no labels, no duplicates. Reference is identity and style guide.",
+  "characters": {
+    "tralalero": "Tralalero Tralala: a blue shark with white belly, three sneaker-wearing legs, blue sneakers, cheeky determined face. Preserve shark silhouette, fins and all THREE legs from reference.",
+    "tung": "Tung Tung Tung Sahur: a living cylindrical golden-brown wooden log man with wood-grain face, large expressive eyes, thin wooden arms and legs, bare wooden feet, one wooden baseball bat. Preserve exactly one bat.",
+    "bombardiro": "Bombardiro Crocodilo: olive-green crocodile merged with a vintage twin-propeller bomber airplane fuselage, wings, cockpit and tail. Four reptilian legs, long toothed crocodile snout. Preserve aircraft-crocodile hybrid anatomy and reference markings.",
+    "ballerina": "Ballerina Cappuccina: graceful female ballet fighter, porcelain cappuccino cup head with latte-art coffee surface and cup handle, pink tutu and pink ballet slippers, expressive face on cup. Preserve exact costume and cup identity.",
+    "patapim": "Brr Brr Patapim: moss-covered forest guardian, brown bark and fur body, very long drooping nose, leafy head and shoulders, muscular arms, huge bare feet and toes. Preserve long nose and oversized feet.",
+    "chimp": "Chimpanzini Bananini: muscular brown chimpanzee emerging from a peeled yellow banana suit, friendly determined face, bare hands and feet, yellow banana peel framing head and torso. Preserve chimp-banana hybrid.",
+    "assassino": "Cappuccino Assassino: anthropomorphic takeaway coffee cup ninja, brown lid, cream-and-brown cup body, black ninja mask and headband, red trailing scarf, black limbs, two short silver katanas. Preserve cup silhouette and costume.",
+    "lirili": "Lirili Larila: elephant-cactus hybrid, elephant head and curled trunk, green cactus humanoid body with ribs and tiny spines, broad cactus arms, brown strapped sandals. Preserve elephant ears and cactus body.",
+    "saturnita": "La Vacca Saturno Saturnita: cosmic cow boss, black-and-white horned cow head on a round purple-brown Saturn planet body, golden orbital ring around torso, small dark legs and broad bare feet. Preserve cow head, horns, planet and ring."
+  },
+  "poses": {
+    "idle": "Neutral alert fighting guard, feet planted.",
+    "walk-contact": "Walking to the right, contact frame: front/right-facing leg reaches forward with heel touching ground, rear leg extends back, opposing arm swing. For quadrupeds, front near leg forward and rear near leg back. Same body proportions.",
+    "walk-down": "Walking to the right, down/compression frame: weight settling onto forward leg, knees bent, torso a few pixels lower; rear heel lifting. Clearly different from contact.",
+    "walk-pass": "Walking to the right, passing frame: supporting leg straight under hips, rear leg bent moving forward past it, opposite arm swing. For shark all three legs remain, one supporting and others passing.",
+    "walk-up": "Walking to the right, up frame: weight rising onto toes, previously rear leg reaches forward ready for opposite contact, arms reversed from first contact. A readable fourth phase of locomotion.",
+    "punch-windup": "Standing attack anticipation: pull striking arm or weapon backward, shoulders twist slightly back, knees brace. Face stays right. Shark winds snout and front fin back; crocodile coils neck with jaws beginning to open.",
+    "punch-hit": "Standing attack IMPACT: extend front fist or bat/katana strongly to the RIGHT beyond body silhouette. Rear foot firmly planted. Shark thrusts snout/front fin right; crocodile lunges open jaws right. No energy effects or duplicate limbs.",
+    "punch-recover": "Standing attack recovery: retract extended striking arm or weapon halfway from impact back to guard, weight returns to rear foot. Distinct follow-through pose. Face right.",
+    "kick-windup": "Kick anticipation: lift near knee bent in front of body, balance on other planted foot. Shark lifts one of its three blue sneakers, crocodile lifts front clawed leg, cosmic cow lifts one foot. Equipment stays attached.",
+    "kick-hit": "Kick impact: near leg fully extends to RIGHT in a strong horizontal side kick, clear foot beyond front of body, body leans slightly back, other foot planted. Shark kicks one blue sneaker while two others support; crocodile extends front clawed leg. Preserve anatomy.",
+    "kick-recover": "Kick recovery: striking knee folds back after extension, foot moving down toward guard stance, arms and equipment balance. Distinct from windup and impact.",
+    "crouch": "A REAL low crouching fighting pose with bent knees, lowered torso and guarding arms. Full body visibly shorter by bending joints, not by squashing. Shark folds its three legs; crocodile crouches all four reptilian legs.",
+    "block": "Standing defensive guard, forearms or weapon in front protecting face and chest, feet braced, alert eyes facing right. No shield unless present in identity.",
+    "jump": "Airborne jump pose: both knees or all creature legs tucked, body lifted, arms/equipment balancing, facing right. No ground or effects.",
+    "special-prep": "Special move anticipation: clearly gathering power and bracing to release signature special to RIGHT. Shark draws fins back; wooden log raises bat; crocodile opens underbody bomb bay; ballerina coils for pirouette; forest guardian raises heavy hands to slam; chimp draws banana back; ninja prepares both katanas; cactus elephant raises trunk and hands; cosmic cow gathers orbital ring.",
+    "special-release": "Special move release pose directed RIGHT: shark extends fins pushing ocean wave, wooden log swings bat forward, crocodile opens bomb bay to drop bomb, ballerina extends one leg and arms in pirouette, forest guardian slams fists down, chimp follows through banana throw, ninja slashes katanas forward, cactus elephant extends trunk launching clock, cosmic cow extends arms launching orbital ring. Draw ONLY character, not the separate projectile.",
+    "hit": "Hit reaction: torso recoils backward to left, surprised or pained face, arms displaced, knees buckling. Still generally facing right. No blood, injury or impact effects.",
+    "down": "Knocked-down resting pose, whole character lying horizontally on its side on invisible ground, head toward right, equipment resting beside or attached, dazed expression. No floor or shadow.",
+    "win": "Distinct celebratory victory pose: expressive triumphant face, raised fist/weapon/fin, proud posture. Preserve identity and full equipment. Body still primarily facing right."
+  },
+  "projectiles": [
+    "wave",
+    "bomb",
+    "boom",
+    "banana",
+    "clock",
+    "ring",
+    "meteor",
+    "quake"
+  ]
+}

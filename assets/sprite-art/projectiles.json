@@ -1,0 +1,106 @@
+{
+  "wave": {
+    "owner": "tralalero",
+    "size": [
+      24,
+      24
+    ],
+    "description": "Compact curling turquoise ocean wave projectile moving RIGHT, cobalt water body, cyan rim, white sea foam crest curling forward, three small trailing droplets. No shark.",
+    "phases": [
+      "Crest leaning forward, compact launch shape.",
+      "Crest curls farther forward and white foam breaks into a fresh pattern.",
+      "Crest reforms and droplets shift backward, seamless flight cycle."
+    ]
+  },
+  "bomb": {
+    "owner": "bombardiro",
+    "size": [
+      14,
+      12
+    ],
+    "description": "Small stylized olive-green aerial bomb for crocodile bomber, rounded metal body, tail fins on LEFT, rounded nose pointing RIGHT, a tiny red-white-green painted band, metallic gold highlight, compact orange fuse spark behind. No aircraft, no crocodile.",
+    "phases": [
+      "Bomb level, fuse spark a short orange star.",
+      "Same bomb tilted nose down slightly, fuse spark bright yellow.",
+      "Same bomb tilted nose down more, fuse spark a smaller red-orange flicker."
+    ]
+  },
+  "boom": {
+    "owner": "bombardiro",
+    "size": [
+      36,
+      34
+    ],
+    "description": "Arcade bomb explosion effect only, rounded jagged white-yellow core, orange and coral fire lobes, a few charcoal smoke puffs, dark purple outline. No bomb, no character.",
+    "phases": [
+      "Initial tight starburst ignition, mostly brilliant pale yellow with small orange rim.",
+      "Expanded fireball with broad orange lobes and white-yellow core.",
+      "Dissipating fireball with shrinking orange core and three thick charcoal-violet smoke puffs."
+    ]
+  },
+  "banana": {
+    "owner": "chimp",
+    "size": [
+      16,
+      14
+    ],
+    "description": "Single bright yellow curved banana boomerang projectile, warm ochre underside, cream highlight and small brown stem, dynamic readable silhouette. No chimp or character.",
+    "phases": [
+      "Banana crescent curving upward, stem on right.",
+      "Same banana rotated 120 degrees clockwise.",
+      "Same banana rotated 240 degrees clockwise."
+    ]
+  },
+  "clock": {
+    "owner": "lirili",
+    "size": [
+      16,
+      16
+    ],
+    "description": "Small round golden magical pocket clock projectile, ivory dial, dark brown hour ticks, no numerals, cyan time-energy rim, two clearly readable hands, chunky brass casing. No elephant or character.",
+    "phases": [
+      "Clock hands at 12 and 3, cyan rim sparks upper left.",
+      "Same clock, hands turned to 4 and 7, cyan rim sparks right.",
+      "Same clock, hands turned to 8 and 11, cyan rim sparks lower left."
+    ]
+  },
+  "ring": {
+    "owner": "saturnita",
+    "size": [
+      30,
+      16
+    ],
+    "description": "Horizontal elliptical cosmic Saturn ring projectile, golden and lavender concentric bands, dark-purple outline, small amber planet core, bright cream moving glint. No cow or limbs.",
+    "phases": [
+      "Ring glint on left arc.",
+      "Same ring and proportions, glint at front-center arc.",
+      "Same ring and proportions, glint on right arc."
+    ]
+  },
+  "meteor": {
+    "owner": "saturnita",
+    "size": [
+      16,
+      24
+    ],
+    "description": "Compact craggy brown-violet meteor stone falling DOWN, warm golden rim on upper left, tapered orange-red flame tail extending UP, yellow inner flame and two hot sparks. No planet or character.",
+    "phases": [
+      "Flame tail bends slightly left, front stone craters clear.",
+      "Same stone, flame tail straighter and longer, fresh sparks.",
+      "Same stone, flame tail bends slightly right, shorter flickering tip."
+    ]
+  },
+  "quake": {
+    "owner": "patapim",
+    "size": [
+      24,
+      16
+    ],
+    "description": "Traveling ground shockwave effect moving RIGHT, jagged brown earthen rock spikes bursting from a short baseline, green moss fragments and ochre dirt chips, violet shadows, no continuous ground plane. No forest guardian.",
+    "phases": [
+      "Small emerging stone spikes with a leading grass-topped shard.",
+      "Tall central stone spikes, leading shard thrusts forward, dirt chips rising.",
+      "Spikes crumble behind leading shard, chips falling, next small spike forming."
+    ]
+  }
+}

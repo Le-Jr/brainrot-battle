@@ -19,3 +19,9 @@ tests/out-*.png
 assets/stage-art/**/*.jpg
 assets/stage-art/**/*.jpeg
 assets/stage-art/**/*.png
+
+# High-resolution sprite generation sources; packed sheets and atlases are shipped.
+assets/sprite-art/**/*.png
+
+# Reproducible local previews and generation progress.
+output/

@@ -224,6 +224,14 @@ class Fighter {
         break;
       case 'special':
         pose = 'special';
+        // Match the anticipation/release artwork to the existing gameplay release frame.
+        a =
+          this.spec.t >=
+          ({ wave: 8, bomb: 9, banana: 7, clock: 10, quake: 12, bat: 6, spin: 4, ring: 10, slash: 10 }[
+            this.spec.type
+          ] || 8)
+            ? 1
+            : 0.5;
         break;
       case 'down':
       case 'ko':
