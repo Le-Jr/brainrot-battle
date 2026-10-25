@@ -47,11 +47,23 @@ O jogo também foi aberto no Chromium headless (Playwright), em produção e em 
 
 ## Pipeline de sprites
 
+O pipeline atual usa quadros individuais gerados com uma referência fixa por personagem:
+
+```bash
+npm run sprites              # personagens: 19 quadros, folha 5×4 e atlas horizontal
+npm run sprites:projectiles  # oito artefatos, três quadros cada
+node tests/sprite-art.js     # fases distintas, agachamento, disparo e efeitos
+```
+
+As entradas ficam em `assets/sprite-art/`; os prompts completos e o roteiro de poses estão em [../arte/prompts-sprites.md](../arte/prompts-sprites.md). Os PNGs originais são locais, como os originais dos cenários. As folhas empacotadas, atlas e metadados são versionados.
+
+### Pipeline legado
+
 [`tools/process_sprites.py`](../../tools/process_sprites.py) transforma as folhas 4×3 em atlas:
 
 ```bash
 pip install pillow numpy scipy
-npm run sprites
+npm run sprites:legacy
 ```
 
 1. **Separa as poses pela forma, não por caixa:** alfa acima de 128, dilatação de 2 px, rotulação dos componentes conectados. Mantém as 12 partes grandes e prende os fragmentos pequenos (brilhos, linhas de movimento) à pose mais próxima. Cada pose é recortada com **a própria máscara**, então as vizinhas nunca vazam. Se não achar 12, tenta de novo com menos dilatação.

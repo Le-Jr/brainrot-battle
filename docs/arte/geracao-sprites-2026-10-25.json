@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-25",
+  "tool": "image_gen",
+  "characters": 9,
+  "framesPerCharacter": 19,
+  "projectileTypes": 8,
+  "framesPerProjectile": 3,
+  "prompts": [
+    "assets/sprite-art/prompts.json",
+    "assets/sprite-art/projectiles.json"
+  ],
+  "files": [
+    {
+      "file": "public/atlases/tralalero.png",
+      "sha256": "ee5f9fa269702ca1d8107da03ffd21515f3e8d82bcab92b7dcc0630e5ed83642"
+    },
+    {
+      "file": "public/atlases/tung.png",
+      "sha256": "00b9043b5e0c9479a979939725068714d5cf18661a0b40e88ac8eae26533b410"
+    },
+    {
+      "file": "public/atlases/bombardiro.png",
+      "sha256": "52df72b7c0600accd7fe1964cff212e4e28b81ce53c27e02408e864b3c53b1bd"
+    },
+    {
+      "file": "public/atlases/ballerina.png",
+      "sha256": "21a7f2f516fbd1d5a27ece3009685c87323f348d98d224aa06c32e2409bdb159"
+    },
+    {
+      "file": "public/atlases/patapim.png",
+      "sha256": "ca8b4cd05a84b5c4fd8576d33a8958f4b29c6ed4f290e3408be7a50db684b9c2"
+    },
+    {
+      "file": "public/atlases/chimp.png",
+      "sha256": "123fc4b8e62d845759251c2ef185c85361232965e2c209717c6b07f18a074c26"
+    },
+    {
+      "file": "public/atlases/assassino.png",
+      "sha256": "2f03ac29e242c527500fd0e79fb1da20e18c931dee33bf1b6faad8ba03174b6d"
+    },
+    {
+      "file": "public/atlases/lirili.png",
+      "sha256": "7c96d44bb96c50377ea74352ec57d57b3879a7dafc089d3a10f49803ea6fec37"
+    },
+    {
+      "file": "public/atlases/saturnita.png",
+      "sha256": "34a90ae00ea4406601492b944ea7e43707a39a4d6985acd5932b78e9ce071ed7"
+    },
+    {
+      "file": "public/atlases/projectile-wave.png",
+      "sha256": "bde87f9c0018053d98e290280f999f4c2a2703b0416229ac5bb1a59bd0fd8cf4"
+    },
+    {
+      "file": "public/atlases/projectile-bomb.png",
+      "sha256": "ec3a78a53564e75cc94be8284e8e983ac6fa584c17d6cc0532311fd44ac952d3"
+    },
+    {
+      "file": "public/atlases/projectile-boom.png",
+      "sha256": "94d4de7561f5d58a7ecd66b650e6411a0d734f364ec7cefa9bc6882f5cb1ae31"
+    },
+    {
+      "file": "public/atlases/projectile-banana.png",
+      "sha256": "8b30270f3a63bd2fc30ad9fb58c349b66922958962e0eea0c454a6cf68674262"
+    },
+    {
+      "file": "public/atlases/projectile-clock.png",
+      "sha256": "c2131848e2fbd45e0bb7897bea653ecbd06f300fa7fe205def4e0497e0a374af"
+    },
+    {
+      "file": "public/atlases/projectile-ring.png",
+      "sha256": "fe1fabac0fb1cfe677ebd8bb0bf8e91e387b4c4866fa8845611066da9b9184e6"
+    },
+    {
+      "file": "public/atlases/projectile-meteor.png",
+      "sha256": "1037522ba1f53014f90fc489c6d4466162ff8c343422e95541c229a04a0f7870"
+    },
+    {
+      "file": "public/atlases/projectile-quake.png",
+      "sha256": "f34bdb5c855ec37de0e88c4804bfdac77b672985f964f8b6cd58890c1e5e78a1"
+    }
+  ]
+}

@@ -207,7 +207,7 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 
 ## 🛠️ Desenvolvimento
 
-> Requer **Node.js 20.9+**. O pipeline de sprites (opcional) usa Python com `pillow`, `numpy` e `scipy`.
+> Requer **Node.js 20.9+**. O pipeline atual de sprites usa Node.js; somente o pipeline legado requer Python com `pillow`, `numpy` e `scipy`.
 
 | Comando | O que faz |
 |---------|-----------|
@@ -218,7 +218,8 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 | `npm test` | Campanha completa, 24 lutas CPU × CPU, textos e snapshots visuais, tudo headless |
 | `npm run test:snapshot:update` | Aceita uma mudança visual intencional |
 | `npm run readme:art` | Regera as imagens deste README com o próprio motor |
-| `npm run sprites` | Folhas de sprite → atlas em `public/atlases/` |
+| `npm run sprites` | 19 poses por personagem → atlas em `public/atlases/` |
+| `npm run sprites:projectiles` | Empacota os oito artefatos com três fases cada |
 
 ### 🧱 Arquitetura
 

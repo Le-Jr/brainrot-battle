@@ -4,7 +4,7 @@
 
 | Área | Limitação | Caminho possível |
 |------|-----------|------------------|
-| Animação | Cada personagem tem 12 poses desenhadas; a fluidez extra vem de transformações (compressão, rotação, balanço). | Folhas com mais quadros (caminhada de 4 quadros, 3 por ataque, agachado e rasteira próprios) e estender `hdPick`. |
+| Animação | Os personagens têm 19 quadros próprios, incluindo caminhada de quatro fases, ataques com três fases e agachamento. Ataques baixos/aéreos e quedas ainda usam transformações. | Acrescentar quadros específicos de rasteira, ataques aéreos e queda. |
 | Vozes | A síntese de voz depende das vozes instaladas; no celular costumam ser robóticas. | Gravar ou licenciar falas e tocá-las de `public/audio/`. |
 | Áudio dos memes | Os clipes originais do TikTok não são usados. | Tocar arquivos fornecidos no lugar da voz sintetizada. |
 | Tempo de boot | Cerca de 0,4 s para pintar os 13 cenários (já escondido pela tela de carregamento animada). | Pré-renderizar os cenários para PNG no build. |

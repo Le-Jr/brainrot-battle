@@ -10,7 +10,17 @@
 - O HUD da luta (barras, retratos, cronômetro, barras de especial, combo e avisos) fica em [`ui/hud.js`](../../src/game/ui/hud.js), e os retratos recortados da cabeça do sprite (usados no HUD, na pausa e nas cutscenes) em [`ui/portrait.js`](../../src/game/ui/portrait.js).
 - Elementos de interface no estilo arcade (placas inclinadas, molduras, brilhos de estrela, texto com franja cromática, glitch, cortinas) ficam em [`ui/arcade.js`](../../src/game/ui/arcade.js).
 
-## Arte original
+## Arte e animação atual
+
+Os nove personagens usam **19 quadros próprios** por personagem: idle; caminhada em quatro fases; soco e chute com preparação, impacto e recuperação; defesa; pulo; agachamento; preparação e liberação do especial; reação de acerto; caído; vitória. Os quadros individuais e as referências ficam em `assets/sprite-art/<id>/`; os prompts estão em [../arte/prompts-sprites.md](../arte/prompts-sprites.md).
+
+`npm run sprites` usa `tools/process-sprite-art.js`: normaliza a escala a partir do atlas anterior, aplica alfa binário e uma paleta compartilhada de 64 cores e monta células de 256×208 com pivô fixo nos pés. A folha de revisão usa grade 5×4; o jogo lê o atlas horizontal e os nomes em `atlas-animations.js`. Os primeiros 12 índices continuam compatíveis com a organização anterior.
+
+No motor, os quadros de caminhada seguem contato → compressão → passagem → subida. Socos e chutes seguem a fase real do golpe, incluindo a recuperação. O especial troca de preparação para liberação no quadro em que cada personagem dispara ou inicia o golpe. Ataques aéreos e baixos ainda derivam dos novos quadros de ataque com transformações; quedas usam a reação de acerto com rotação. O agachamento neutro é um desenho próprio.
+
+Os oito tipos de projéteis/efeitos usam três quadros cada: onda, bomba, explosão, banana, relógio, anel, meteoro e terremoto. `npm run sprites:projectiles` empacota esses arquivos; o carregamento ocorre junto aos personagens. Caso uma imagem falhe, o desenho procedural continua disponível. A troca é visual: trajetórias, dano, velocidades e quadros de disparo permanecem definidos pelo combate.
+
+## Arte anterior (pipeline legado)
 
 Cada personagem tem uma folha em `assets/sprite-sheets/<id>.png`: PNG transparente de 1536×1024 com uma grade 4×3 de 12 poses, virado para a direita.
 
@@ -35,7 +45,7 @@ O pipeline que transforma a folha em atlas está em [06-ferramentas-e-testes.md]
 - `alt`: paleta com os canais rotacionados, para o espelho.
 - A tela de VS pré-renderiza as poses dos dois lutadores (`warmList`) para a luta não engasgar.
 
-`hdPick(pose, frame, a)` converte a pose do jogo numa das 12 molduras **mais uma transformação**. É isso que faz 12 desenhos parecerem animação fluida:
+`hdPick(pose, frame, a)` usa os nomes de `atlas-animations.js` para os novos atlas. Sem esse mapeamento, mantém a conversão legada de 12 molduras **mais uma transformação** descrita abaixo:
 
 | Pose do jogo | Moldura | Transformação |
 |--------------|---------|---------------|
