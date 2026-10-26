@@ -1,3 +1,4 @@
+import { UI, screenBackdrop, screenHeader, screenFooter, fitLabel } from '../ui/theme.js';
 /* Versus stage select: live preview with its music, both fighters' portraits and a grid of every stage plus RANDOM. */
 import { AU } from '../audio/synth.js';
 import { ANN, VO } from '../audio/voice.js';
@@ -14,7 +15,7 @@ import { VS } from './vs.js';
 
 const COLS = 7,
   TW = 40,
-  TH = 22,
+  TH = 17,
   GX = (W - COLS * (TW + 2) + 2) / 2,
   GY = 124;
 /** Fight stages that the random tile can land on (the bonus streets are pickable, but not drawn at random). */
@@ -94,20 +95,14 @@ function StageSelect(c1, c2, opts, label) {
         random = this.i >= STAGES.length,
         show = random ? Math.floor(t / 10) % RANDOM_POOL : this.i,
         st = STAGES[show];
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(0, 0, W, H);
-      for (let y = 0; y < H; y += 12) {
-        ctx.fillStyle = (y / 12) % 2 ? '#1a1028' : '#160d22';
-        ctx.fillRect(0, y, W, 12);
-      }
-      plate(W / 2 - 76, 3, 152, 12, vgrad(3, 12, ['#fff6b0', '#ffd23a', '#e8901a']), 6);
-      txt('ESCOLHA O CENÁRIO', W / 2 + 3, 5, 8, '#1a0a24', 'center', null);
+      screenBackdrop(t);
+      screenHeader('ARENAS', 'STAGE SELECT');
       // live preview (the real stage renderer, scaled into the frame)
-      const px = 80,
-        py = 20,
-        pw = 160,
-        ph = 90;
-      frameBox(px, py, pw, ph, '#ffd23a', '#000');
+      const px = 94,
+        py = 34,
+        pw = 132,
+        ph = 74;
+      frameBox(px, py, pw, ph, '#f8cd55', '#000');
       ctx.save();
       ctx.beginPath();
       ctx.rect(px, py, pw, ph);
@@ -126,45 +121,46 @@ function StageSelect(c1, c2, opts, label) {
           W / 2,
           py + ph / 2 - 12,
           24,
-          vgrad(py + 33, 24, ['#ffffff', '#ffd23a', '#ff8a2a']),
+          vgrad(py + 33, 24, ['#ffffff', '#f8cd55', '#ff8a2a']),
           'center',
         );
       }
       // the two fighters on each side
       const chip = (ch, x, flip, col) => {
-        frameBox(x, 44, 44, 44, ch.col, vgrad(44, 44, ['#2a1838', '#120a1c']));
+        frameBox(x, 44, 44, 44, col, vgrad(44, 44, ['#203455', '#080e20']));
         headShot(ch, x + 1, 45, 42, { flip, t, alt: flip && c1 === c2 });
-        txt(ch.short.length > 9 ? ch.short.slice(0, 9) : ch.short, x + 22, 92, 6, col, 'center');
+        fitLabel(ch.short, x + 22, 99, 66, 6, col, 'center');
       };
-      chip(c1, 18, false, '#ff8a96');
-      chip(c2, W - 62, true, '#9adcff');
-      txt(opts.cpu ? 'CPU' : '2P', W - 40, 36, 6, '#9adcff', 'center', null);
-      txt('1P', 40, 36, 6, '#ff8a96', 'center', null);
+      chip(c1, 18, false, UI.p1);
+      chip(c2, W - 62, true, UI.p2);
+      txt(opts.cpu ? 'CPU' : '2P', W - 40, 35, 6, '#9adcff', 'center', null);
+      txt('1P', 40, 35, 6, '#ff8a96', 'center', null);
       // stage name plate
       const name = random ? 'ALEATÓRIO' : PLACE(show),
-        nw = name.length * 8 + 24;
-      plate(W / 2 - nw / 2 - 1, 112, nw + 2, 11, '#05020a', 5);
-      plate(W / 2 - nw / 2, 113, nw, 9, vgrad(113, 9, ['#3a2456', '#1e1030']), 5);
-      txt(name, W / 2 + 2, 114, 8, random ? '#ffd23a' : '#ffffff', 'center', null);
+        nw = Math.min(216, name.length * 6 + 24);
+      plate(W / 2 - nw / 2 - 1, 112, nw + 2, 11, '#050812', 5);
+      plate(W / 2 - nw / 2, 113, nw, 9, vgrad(113, 9, ['#2d4165', '#14233d']), 5);
+      txt(name, W / 2 + 2, 114, 6, random ? '#f8cd55' : '#ffffff', 'center', null);
       // thumbnail grid
       const T = thumbs();
       for (let k = 0; k < n; k++) {
         const x = GX + (k % COLS) * (TW + 2),
           y = GY + Math.floor(k / COLS) * (TH + 4),
           sel = k === this.i;
-        ctx.fillStyle = sel ? (blink(t, 16) ? '#ffd23a' : '#fff6b0') : '#05020a';
+        ctx.fillStyle = sel ? (blink(t, 16) ? '#f8cd55' : '#fff6b0') : '#050812';
         ctx.fillRect(x - 1, y - 1, TW + 2, TH + 2);
         if (k < STAGES.length) ctx.drawImage(T[k], x, y, TW, TH);
         else {
-          ctx.fillStyle = vgrad(y, TH, ['#3a2456', '#1e1030']);
+          ctx.fillStyle = vgrad(y, TH, ['#2d4165', '#14233d']);
           ctx.fillRect(x, y, TW, TH);
-          txt('?', x + TW / 2, y + 4, 16, '#ffd23a', 'center');
+          txt('?', x + TW / 2, y + 4, 16, '#f8cd55', 'center');
         }
         if (!sel) {
           ctx.fillStyle = 'rgba(10,4,24,.35)';
           ctx.fillRect(x, y, TW, TH);
         } else sparkle(x + TW - 2, y + 1, (t % 30) / 30);
       }
+      screenFooter('←→ ESCOLHER', 'ENTER LUTAR · ESC VOLTAR');
       if (this.out >= 0 && (t >> 2) & 1) {
         ctx.fillStyle = 'rgba(255,255,255,.15)';
         ctx.fillRect(px, py, pw, ph);

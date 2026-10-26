@@ -15,5 +15,9 @@ export const BONUS_ART = {
   "parrot": {
     "file": "bonus-parrot.png",
     "frames": 5
+  },
+  "elon": {
+    "file": "bonus-elon.png",
+    "frames": 5
   }
 };

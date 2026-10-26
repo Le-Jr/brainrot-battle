@@ -1,6 +1,6 @@
-/* Narrator: picks the most expressive installed voice per role (neural/"Natural" voices first),
-   queues lines instead of cancelling them, and works around Chrome's dropped-after-cancel and
-   garbage-collected-utterance bugs. Voices can be chosen in OPÇÕES. */
+/* Offline Chatterbox clips first; installed browser voices are a fallback. */
+import { VOICE_CLIPS } from '../data/voice-clips.js';
+import { voiceKey } from './voice-key.js';
 const VPREF = {
   ann: [
     /Andrew.*Natural/i,
@@ -38,6 +38,10 @@ const VPREF = {
 const VLANG = { ann: 'en', pt: 'pt', it: 'it' };
 const VO = {
   on: true,
+  clipToken: 0,
+  clipAudio: null,
+  pendingLines: [],
+  fallbackTimer: null,
   voices: [],
   live: [],
   lastStart: 0,
@@ -103,6 +107,7 @@ const VO = {
     return L[i].name;
   },
   label(role) {
+    if (Object.keys(VOICE_CLIPS).length) return 'CHATTERBOX';
     const v = this.pick(role);
     return v
       ? v.name
@@ -123,7 +128,9 @@ const VO = {
       u.rate = o.rate === undefined ? 1 : o.rate;
       u.volume = 1;
       const done = () => {
+        const active = this.live.includes(u);
         this.live = this.live.filter((x) => x !== u);
+        if (active) this.drain();
       };
       u.onstart = () => {
         this.lastStart = performance.now();
@@ -135,24 +142,87 @@ const VO = {
       speechSynthesis.speak(u);
     } catch (e) {}
   },
+  clip(id, text, o = {}) {
+    this.say(text, o);
+  },
+  startLine(text, o, token) {
+    if (!this.on || token !== this.clipToken) return;
+    const files = VOICE_CLIPS[voiceKey(text, o.role || 'pt')];
+    if (!files || typeof Audio === 'undefined') {
+      this.fallback(text, o, token);
+      return;
+    }
+    const play = (index) => {
+      if (!this.on || token !== this.clipToken) return;
+      if (index === files.length) {
+        this.clipAudio = null;
+        this.drain();
+        return;
+      }
+      const audio = new Audio('/audio/voices/' + files[index]);
+      this.clipAudio = audio;
+      let failed = false;
+      const fail = () => {
+        if (failed || token !== this.clipToken) return;
+        failed = true;
+        audio.pause();
+        this.clipAudio = null;
+        this.fallback(text, o, token);
+      };
+      audio.onended = () => {
+        if (!failed) play(index + 1);
+      };
+      audio.onerror = fail;
+      try {
+        audio.play().catch(fail);
+      } catch {
+        fail();
+      }
+    };
+    play(0);
+  },
+  fallback(text, o, token) {
+    if (!this.on || token !== this.clipToken) return;
+    if (!('speechSynthesis' in window)) {
+      this.drain();
+      return;
+    }
+    // Chrome can drop the first utterance immediately after cancellation.
+    this.fallbackTimer = setTimeout(() => {
+      if (this.on && token === this.clipToken) this.speakNow(text, o);
+    }, 110);
+  },
   say(text, o = {}) {
-    if (!this.on || !text || !('speechSynthesis' in window)) return;
-    try {
-      if (speechSynthesis.speaking || speechSynthesis.pending) {
-        speechSynthesis.cancel();
-        this.live = [];
-        setTimeout(() => this.speakNow(text, o), 110);
-      } else this.speakNow(text, o);
-    } catch (e) {}
+    this.stop();
+    if (!this.on || !text) return;
+    this.startLine(text, o, this.clipToken);
   },
   queue(text, o = {}) {
-    if (!this.on || !text || !('speechSynthesis' in window)) return;
-    try {
-      if (speechSynthesis.pending) return;
-    } catch (e) {}
-    this.speakNow(text, o);
+    if (!this.on || !text) return;
+    if (this.clipAudio || this.live.length || this.fallbackTimer) {
+      if (this.pendingLines.length < 2) this.pendingLines.push({ text, o });
+    } else this.startLine(text, o, this.clipToken);
+  },
+  drain() {
+    this.fallbackTimer = null;
+    if (!this.on || this.clipAudio || this.live.length) return;
+    const next = this.pendingLines.shift();
+    if (next) this.startLine(next.text, next.o, this.clipToken);
+  },
+  stopClip() {
+    this.clipToken++;
+    clearTimeout(this.fallbackTimer);
+    this.fallbackTimer = null;
+    this.pendingLines = [];
+    if (this.clipAudio) {
+      this.clipAudio.pause();
+      this.clipAudio.onended = null;
+      this.clipAudio.onerror = null;
+      this.clipAudio = null;
+    }
   },
   stop() {
+    this.stopClip();
     try {
       if ('speechSynthesis' in window) speechSynthesis.cancel();
     } catch (e) {}

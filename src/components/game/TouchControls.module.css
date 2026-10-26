@@ -8,8 +8,8 @@
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06) 0 18%, transparent 19%),
     radial-gradient(
       circle at 50% 50%,
-      rgba(23, 16, 36, 0.78) 0 66%,
-      rgba(44, 33, 66, 0.9) 67% 70%,
+      rgba(17, 29, 50, 0.85) 0 66%,
+      rgba(67, 86, 117, 0.9) 67% 70%,
       transparent 71%
     );
   touch-action: none;
@@ -52,7 +52,7 @@
   width: 36%;
   height: 36%;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #4a3a6a, #1d1430 70%);
+  background: radial-gradient(circle at 35% 30%, #526c90, #17273f 70%);
   box-shadow:
     0 0 0 2px rgba(255, 204, 58, 0.55),
     0 4px 10px rgba(0, 0, 0, 0.5);
@@ -110,9 +110,11 @@
   bottom: 0;
   width: 30%;
   aspect-ratio: 2.2;
+  min-height: 44px;
+  min-width: 64px;
   border-radius: 999px;
   font-size: 7px;
-  background: #2c2142;
+  background: #203451;
 }
 
 /* ---------- dock: under the screen on the page ---------- */
@@ -121,6 +123,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  padding: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--gold);
   touch-action: none;
 }
 .dock.on {
@@ -132,10 +138,10 @@
   }
 }
 .dock .dpad {
-  width: min(42vw, 170px);
+  width: min(40%, 170px);
 }
 .dock .acts {
-  width: min(48vw, 210px);
+  width: min(48%, 210px);
   aspect-ratio: 1.25;
 }
 

@@ -1,9 +1,10 @@
+import { UI, panel, screenHeader, screenFooter, fitLabel } from '../ui/theme.js';
 /* Bonus stage result and XP screen. */
 import { AU } from '../audio/synth.js';
 import { ANN, VO } from '../audio/voice.js';
 import { BONUS_STAGE } from '../combat/bonus.js';
 import { H, W } from '../config.js';
-import { ctx, txt, vgrad } from '../core/canvas.js';
+import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed } from '../core/input.js';
 import { go, tick } from '../core/scene.js';
 import { XP } from '../progression/xp.js';
@@ -41,22 +42,17 @@ function BonusResult(ch, destroyed, gain, up, next, type) {
     draw() {
       const t = this.t;
       drawStage(STAGES[BONUS_STAGE[type]], 80, tick);
-      ctx.fillStyle = 'rgba(10,5,20,.72)';
+      ctx.fillStyle = 'rgba(5,8,18,.8)';
       ctx.fillRect(0, 0, W, H);
-      drawSpr(sprite(ch, 'win', Math.floor(tick / 7) % 8, 0, false, ''), 74, 172, 1, 2);
-      if (destroyed)
-        txt('DESTRUÍDO!', 214, 24, 16, vgrad(24, 16, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
-      else txt('TEMPO ESGOTADO', 214, 28, 8, '#9adcff', 'center');
-      txt('+' + Math.min(gain, Math.floor(t * 6)) + ' XP', 214, 58, 16, '#7aff9a', 'center');
-      xpBar(ch.id, 160, 90, 90);
-      txt('XP TOTAL ' + XP.get(ch.id), 214, 104, 8, '#cbbfe6', 'center');
-      if (up && t > 40 && (t >> 3) & 1) txt('LEVEL UP! NV' + XP.lvl(ch.id), 214, 120, 8, '#ffd23a', 'center');
-      if (t > 40 && (t >> 4) % 2) {
-        if (S.mode === 'bonus') {
-          txt('START: DE NOVO', 214, 146, 8, '#ffffff', 'center');
-          txt('ESC: TROCAR CARRO', 214, 158, 8, '#cbbfe6', 'center');
-        } else txt('START: CONTINUAR', 214, 150, 8, '#ffffff', 'center');
-      }
+      screenHeader('BÔNUS', 'RESULTADO');
+      drawSpr(sprite(ch, 'win', Math.floor(tick / 7) % 8, 0, false, ''), 70, 153, 1, 1.45);
+      panel(142, 38, 168, 120, UI.gold);
+      fitLabel(destroyed ? 'DESTRUÍDO!' : 'TEMPO ESGOTADO', 226, 49, 148, 8, UI.white, 'center');
+      txt('+' + Math.min(gain, Math.floor(t * 6)) + ' XP', 226, 72, 16, UI.green, 'center');
+      xpBar(ch.id, 154, 101, 120);
+      fitLabel('XP TOTAL ' + XP.get(ch.id), 226, 119, 148, 6, UI.muted, 'center');
+      if (up && t > 40) fitLabel('LEVEL UP! · NV ' + XP.lvl(ch.id), 226, 139, 148, 8, UI.gold, 'center');
+      screenFooter('BONUS CLEAR', S.mode === 'bonus' ? 'ENTER DE NOVO · ESC TROCAR' : 'ENTER CONTINUAR');
     },
   };
 }

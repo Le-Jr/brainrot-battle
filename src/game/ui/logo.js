@@ -13,10 +13,10 @@ function buildLogo() {
   const line = (text, y, size, fill, depth, band) => {
     g.font = size + 'px ' + FONT;
     for (let i = depth; i > 0; i--) {
-      g.fillStyle = i >= depth - 1 ? '#120a1c' : i > depth / 2 ? '#3a0a2a' : '#7a1a3a';
+      g.fillStyle = i >= depth - 1 ? '#080e20' : i > depth / 2 ? '#3a0a2a' : '#7a1a3a';
       g.fillText(text, 320 + i, y + i);
     }
-    g.fillStyle = '#120a1c';
+    g.fillStyle = '#080e20';
     for (const [dx, dy] of [
       [-4, 0],
       [4, 0],
@@ -48,7 +48,7 @@ function buildLogo() {
   };
   const gr = g.createLinearGradient(0, 14, 0, 66);
   gr.addColorStop(0, '#fff7b0');
-  gr.addColorStop(0.35, '#ffd23a');
+  gr.addColorStop(0.35, '#f8cd55');
   gr.addColorStop(0.7, '#ff8a2a');
   gr.addColorStop(1, '#e8343f');
   line('BRAINROT', 12, 52, gr, 9, 7);
@@ -68,7 +68,7 @@ function buildLogo() {
     [464, 182],
     [170, 188],
   ];
-  g.fillStyle = '#120a1c';
+  g.fillStyle = '#080e20';
   g.beginPath();
   rb.forEach(([x, y], i) => (i ? g.lineTo(x + 4, y + 4) : g.moveTo(x + 4, y + 4)));
   g.fill();
@@ -79,7 +79,7 @@ function buildLogo() {
   g.fillStyle = '#ff5a6a';
   g.fillRect(180, 147, 284, 4);
   g.font = '22px ' + FONT;
-  g.fillStyle = '#120a1c';
+  g.fillStyle = '#080e20';
   g.fillText('ULTRA CAOS', 322, 157);
   g.fillStyle = '#ffffff';
   g.fillText('ULTRA CAOS', 320, 155);
@@ -87,7 +87,7 @@ function buildLogo() {
     [46, 1],
     [594, -1],
   ]) {
-    g.fillStyle = '#120a1c';
+    g.fillStyle = '#080e20';
     g.beginPath();
     [
       [0, 0],
@@ -99,7 +99,7 @@ function buildLogo() {
       [-12, 36],
     ].forEach(([a, b], i) => (i ? g.lineTo(x + a * s + 3, 30 + b + 3) : g.moveTo(x + a * s + 3, 30 + b + 3)));
     g.fill();
-    g.fillStyle = '#ffd23a';
+    g.fillStyle = '#f8cd55';
     g.beginPath();
     [
       [0, 0],

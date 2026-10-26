@@ -131,7 +131,7 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
 - Cena antes e depois de **cada rival**, com rivalidades especiais
 - Mapa animado de **Brainrotália** entre as lutas
 - Intro e derrota do chefe, epílogo e créditos
-- Narração por síntese de voz em 🇧🇷 🇮🇹 🇬🇧
+- Narração Chatterbox pré-gerada em 🇧🇷 🇮🇹 🇬🇧
 
   </td>
   </tr>
@@ -207,7 +207,7 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 
 ## 🛠️ Desenvolvimento
 
-> Requer **Node.js 20.9+**. O pipeline atual de sprites usa Node.js; somente o pipeline legado requer Python com `pillow`, `numpy` e `scipy`.
+> Requer **Node.js 20.9+**. Os testes de áudio usam **FFmpeg e ffprobe**. O pipeline atual de sprites usa Node.js; somente o pipeline legado requer Python com `pillow`, `numpy` e `scipy`.
 
 | Comando | O que faz |
 |---------|-----------|
@@ -221,6 +221,20 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 | `npm run sprites` | 19 poses por personagem → atlas em `public/atlases/` |
 | `npm run sprites:projectiles` | Empacota os oito artefatos com três fases cada |
 | `npm run sprites:bonus` | Empacota os estados de dano dos carros e as expressões do papagaio |
+
+### Vozes pré-geradas com Chatterbox
+
+Todas as falas usam arquivos MP3 locais em `public/audio/voices/`, gerados com [Chatterbox Multilingual](https://github.com/resemble-ai/chatterbox). Não é necessária chave de API para jogar. As chamadas de confronto reutilizam os nomes dos lutadores. O navegador só sintetiza uma fala caso o arquivo não possa ser reproduzido.
+
+O Elon usa cinco sprites cartunescos gerados por imagem, do sorriso ao choro, no mesmo formato de atlas do papagaio. Para reempacotar os originais locais: `npm run sprites:bonus -- --only=elon`.
+
+Para regenerar as vozes, veja [tools/voices/README.md](tools/voices/README.md). O catálogo inclui narrador, menus, nomes, golpes, história completa, papagaio e Elon. Os áudios usam a voz sintética incluída no modelo, com ajustes por personagem, sem gravações de pessoas reais. A procedência e os parâmetros de cada clipe ficam em `public/audio/voices/generation.json`.
+
+### Interface arcade
+
+A intro, os menus, as seleções, a pausa, o HUD e os resultados compartilham a paleta e os componentes de `src/game/ui/theme.js`: azul escuro, dourado, branco quente, vermelho para 1P e azul para 2P. Títulos usam Press Start 2P; os textos menores usam a fonte bitmap 5×7 de `src/game/core/pixel-font.js`, com acentos em português e italiano.
+
+O desenho usa a resolução lógica 320×180 e escala mantendo 16:9. Cabeçalhos, rodapés, margens, foco e painéis seguem o mesmo padrão. `npm run render:ui` gera uma galeria dos estados da interface em `output/ui/after/`; para reproduzir, coloque a fonte TTF Press Start 2P em `output/ui/PressStart2P-Regular.ttf`. O teste manual `node tools/review-ui-browser.js` usa Chromium e uma instância de produção em `localhost:3011` para capturar desktop, tablet e celular.
 
 ### 🧱 Arquitetura
 

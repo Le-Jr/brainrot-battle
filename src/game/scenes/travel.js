@@ -1,3 +1,4 @@
+import { UI, screenBackdrop, screenHeader, screenFooter, panel, fitLabel } from '../ui/theme.js';
 /* Travel scene: animated flight across the Brainrotália map. */
 import { AU } from '../audio/synth.js';
 import { VO } from '../audio/voice.js';
@@ -5,7 +6,7 @@ import { BOSS } from '../characters/fighters/saturnita.js';
 import { CH } from '../characters/roster.js';
 import { H, W } from '../config.js';
 import { ctx, fe, txt } from '../core/canvas.js';
-import { shade } from '../core/color.js';
+
 import { CONFIRM, anyPressed } from '../core/input.js';
 import { clamp } from '../core/math.js';
 import { drawSpr, sprite } from '../sprites/sprite.js';
@@ -28,6 +29,10 @@ function Travel(from, to, next) {
     },
     draw() {
       const t = this.t;
+      screenBackdrop(t);
+      ctx.save();
+      ctx.translate(44, 20);
+      ctx.scale(0.72, 0.72);
       ctx.drawImage(getMap(), 0, 0, W, H);
       for (const [x, y, ph] of MAPW)
         if (Math.sin(t * 0.06 + ph) > 0.8) {
@@ -60,7 +65,7 @@ function Travel(from, to, next) {
       if (DECOR.clock) {
         const ha = t / 20,
           [cx, cy] = DECOR.clock;
-        ctx.fillStyle = '#120a1c';
+        ctx.fillStyle = '#080e20';
         for (let k = 0; k < 3; k++) {
           ctx.fillRect(Math.round(cx + Math.cos(ha) * k), Math.round(cy + Math.sin(ha) * k), 1, 1);
           ctx.fillRect(
@@ -119,7 +124,7 @@ function Travel(from, to, next) {
           ctx.fillRect(Math.round(SL.x + (L.x - SL.x) * f), Math.round(SL.y + (L.y - SL.y) * f), 1, 1);
         }
       }
-      fe(ctx, SL.x, SL.y, 8, 8, '#120a1c');
+      fe(ctx, SL.x, SL.y, 8, 8, '#080e20');
       fe(ctx, SL.x, SL.y, 7, 7, '#e8b06a');
       for (let y = -5; y <= 5; y += 3) ((ctx.fillStyle = '#c8904a'), ctx.fillRect(SL.x - 6, SL.y + y, 12, 1));
       for (let a = 0; a < 6.28; a += 0.08) {
@@ -141,7 +146,7 @@ function Travel(from, to, next) {
         ctx.fillRect(SL.x + 2, SL.y - 11, 1, 1);
       }
       const mark = (L, col, r = 1) => {
-        ctx.fillStyle = '#120a1c';
+        ctx.fillStyle = '#080e20';
         ctx.fillRect(L.x - r - 1, L.y - r - 1, r * 2 + 3, r * 2 + 3);
         ctx.fillStyle = col;
         ctx.fillRect(L.x - r, L.y - r, r * 2 + 1, r * 2 + 1);
@@ -150,7 +155,7 @@ function Travel(from, to, next) {
         const L = LOC[si];
         if (beaten.includes(si)) {
           mark(L, '#2fbf5a');
-          ctx.fillStyle = '#120a1c';
+          ctx.fillStyle = '#080e20';
           ctx.fillRect(L.x, L.y - 8, 1, 7);
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(L.x + 1, L.y - 8, 4, 3);
@@ -185,24 +190,14 @@ function Travel(from, to, next) {
         dd = B.x >= A.x ? 1 : -1;
       minePlane(q[0], q[1] + 6, dd, t);
       drawSpr(sprite(CH[S.p1], 'idle', 0, 0, false, ''), q[0], q[1] + 3, dd, 0.28);
-      ctx.fillStyle = 'rgba(12,6,22,.9)';
-      ctx.fillRect(0, 0, W, 16);
-      txt('BRAINROTÁLIA', 6, 4, 8, '#ff6ad5');
-      txt('FRAGMENTOS ' + S.li + '/7', W - 6, 4, 8, '#b060ff', 'right');
+      ctx.restore();
       const opp = S.li < 7 ? CH[S.ladder[S.li]] : BOSS;
-      ctx.fillStyle = 'rgba(12,6,22,.9)';
-      ctx.fillRect(0, 146, W, 34);
-      ctx.fillStyle = '#ffd23a';
-      ctx.fillRect(0, 146, W, 1);
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(5, 149, 30, 28);
-      ctx.fillStyle = shade(opp.col, -0.5);
-      ctx.fillRect(6, 150, 28, 26);
-      headShot(opp, 7, 150, 26, { flip: true, t });
-      txt('PRÓXIMA PARADA', 42, 151, 8, '#ffd23a');
-      txt(B.n, 42, 163, 8, '#ffffff');
-      txt(S.li < 7 ? 'DESAFIO ' + (S.li + 1) + '/7' : 'CHEFE FINAL', W - 6, 151, 8, '#ff8a96', 'right');
-      txt(opp.short, W - 6, 163, 8, opp.col, 'right');
+      screenHeader('BRAINROTÁLIA', 'FRAGMENTOS ' + S.li + '/7');
+      panel(10, 132, 300, 27, UI.gold);
+      txt('PRÓXIMA PARADA', 20, 138, 6, UI.muted, 'left', null);
+      fitLabel(B.n, 20, 148, 246, 6, UI.white);
+      headShot(opp, 282, 135, 21, { flip: true, t });
+      screenFooter(S.li < 7 ? 'DESAFIO ' + (S.li + 1) + '/7' : 'CHEFE FINAL', 'ENTER CONTINUAR');
     },
   };
 }

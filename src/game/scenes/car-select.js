@@ -1,9 +1,10 @@
+import { UI, screenBackdrop, screenHeader, screenFooter, paragraph, panel } from '../ui/theme.js';
 /* Bonus mode: pick which car to smash. */
 import { AU } from '../audio/synth.js';
 import { CARS } from '../characters/cars.js';
 import { CH } from '../characters/roster.js';
-import { H, W } from '../config.js';
-import { ctx, txt, vgrad, wrap } from '../core/canvas.js';
+
+import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed, menuPad } from '../core/input.js';
 import { go } from '../core/scene.js';
 import { drawSpr, sprite } from '../sprites/sprite.js';
@@ -44,37 +45,29 @@ const CarSelect = {
     }
   },
   draw() {
-    const t = this.t;
-    ctx.fillStyle = '#120a1c';
-    ctx.fillRect(0, 0, W, H);
-    for (let y = 0; y < H; y += 12) {
-      ctx.fillStyle = (y / 12) % 2 ? '#1a1028' : '#160d22';
-      ctx.fillRect(0, y, W, 12);
-    }
-    txt('ESCOLHA O ALVO', W / 2, 8, 16, vgrad(8, 16, ['#fff7b0', '#ffb03a', '#ff5a2a']), 'center');
-    CARLIST.forEach(([id, n], i) => {
-      const x = 12 + i * 101,
-        sel = i === this.i;
-      ctx.fillStyle = sel ? 'rgba(255,210,58,.2)' : 'rgba(255,255,255,.05)';
-      ctx.fillRect(x, 34, 94, 84);
-      if (sel) {
-        ctx.strokeStyle = (t >> 3) & 1 ? '#ffd23a' : '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, 34, 94, 84);
+    screenBackdrop(this.t);
+    screenHeader('BÔNUS', 'TARGET SELECT');
+    CARLIST.forEach(([id, name], i) => {
+      const x = 10 + i * 102,
+        selected = i === this.i;
+      panel(x, 38, 96, 82, selected ? UI.gold : UI.line);
+      txt('0' + (i + 1), x + 6, 44, 6, selected ? UI.gold : UI.muted, 'left', null);
+      drawSpr(sprite(CARS[id], 'd0', 0, 0, false, ''), x + 48, 94, 1, 0.84);
+      paragraph(name, x + 48, 102, 84, {
+        size: 6,
+        align: 'center',
+        lineHeight: 9,
+        maxLines: 2,
+        color: selected ? UI.white : UI.muted,
+      });
+      if (selected) {
+        ctx.fillStyle = UI.gold;
+        ctx.fillRect(x + 1, 117, 94, 2);
       }
-      drawSpr(
-        sprite(CARS[id], 'd' + (sel ? 0 : Math.min(3, (t >> 5) % 4)), 0, 0, false, ''),
-        x + 47,
-        96,
-        1,
-        0.95,
-      );
-      wrap(n, 11).forEach((l, k) =>
-        txt(l, x + 47, 100 + k * 9, 8, sel ? '#ffffff' : '#9a8fb3', 'center', null),
-      );
     });
-    wrap(CARLIST[this.i][2], 36).forEach((l, k) => txt(l, W / 2, 132 + k * 10, 8, '#f1e9ff', 'center', null));
-    txt('← →  ENTER: QUEBRAR   ESC: VOLTAR', W / 2, 166, 8, '#9a8fb3', 'center', null);
+    panel(10, 128, 300, 29, UI.line);
+    paragraph(CARLIST[this.i][2], 20, 135, 280, { size: 6, lineHeight: 10, maxLines: 2 });
+    screenFooter('←→ ESCOLHER', 'ENTER QUEBRAR · ESC VOLTAR');
   },
 };
 

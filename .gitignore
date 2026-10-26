@@ -26,3 +26,8 @@ assets/bonus-art/**/*.png
 
 # Reproducible local previews and generation progress.
 output/
+
+# Local speech generation environments
+.venv-chatterbox/
+.venv-tts/
+__pycache__/

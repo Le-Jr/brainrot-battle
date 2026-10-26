@@ -1,14 +1,18 @@
 import fs from 'node:fs';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
+import { BONUS_ART } from '../src/game/data/bonus-art.js';
 
-const sizes = { nonno: [88, 40], cyber: [96, 46], byd: [88, 40], parrot: [32, 36] };
-const metadata = {};
-const preview = createCanvas(1000, 320),
+const sizes = { nonno: [88, 40], cyber: [96, 46], byd: [88, 40], parrot: [32, 36], elon: [38, 52] };
+const only = process.argv.find((arg) => arg.startsWith('--only='))?.slice(7);
+if (only && !sizes[only]) throw new Error('Unknown bonus asset: ' + only);
+const metadata = only ? { ...BONUS_ART } : {};
+const preview = createCanvas(1000, only ? 104 : 520),
   pg = preview.getContext('2d');
 pg.fillStyle = '#32283f';
-pg.fillRect(0, 0, 1000, 320);
+pg.fillRect(0, 0, preview.width, preview.height);
 let row = 0;
 for (const [id, [width, height]] of Object.entries(sizes)) {
+  if (only && id !== only) continue;
   const sheet = createCanvas(256 * 5, 208),
     g = sheet.getContext('2d');
   g.imageSmoothingEnabled = false;
@@ -37,7 +41,7 @@ for (const [id, [width, height]] of Object.entries(sizes)) {
       }
     if (r < l) throw new Error('Empty bonus frame: ' + id + frame);
     sg.putImageData(pixels, 0, 0);
-    const h = height * 2 * (id === 'parrot' ? 1 : frame === 4 ? 0.5 : frame === 3 ? 0.85 : 1);
+    const h = height * 2 * (['parrot', 'elon'].includes(id) ? 1 : frame === 4 ? 0.5 : frame === 3 ? 0.85 : 1);
     const scale = Math.min((width * 2) / (r - l + 1), h / (b - t + 1));
     const dw = Math.round((r - l + 1) * scale),
       dh = Math.round((b - t + 1) * scale);
@@ -60,4 +64,4 @@ fs.writeFileSync(
 );
 fs.mkdirSync('output/bonus-art', { recursive: true });
 fs.writeFileSync('output/bonus-art/preview.png', preview.toBuffer('image/png'));
-console.log('3 cars × 5 damage states; parrot × 5 poses.');
+console.log(only ? `${only}: 5 poses packed.` : '3 cars × 5 damage states; parrot and Elon × 5 poses.');

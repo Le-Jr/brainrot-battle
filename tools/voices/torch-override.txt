@@ -1,0 +1,4 @@
+# RTX 50-series needs Blackwell support, introduced after Chatterbox's torch 2.6 pin.
+# Explicit CUDA wheel URLs keep other dependencies on PyPI (NVIDIA's mirror can time out).
+torch @ https://download.pytorch.org/whl/cu128/torch-2.7.1%2Bcu128-cp311-cp311-manylinux_2_28_x86_64.whl
+torchaudio @ https://download.pytorch.org/whl/cu128/torchaudio-2.7.1%2Bcu128-cp311-cp311-manylinux_2_28_x86_64.whl

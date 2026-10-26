@@ -1,16 +1,18 @@
+import { UI, screenBackdrop, screenHeader, screenFooter, panel, fitLabel } from '../ui/theme.js';
+import { headShot } from '../ui/portrait.js';
 /* Character select for every mode. */
 import { AU } from '../audio/synth.js';
 import { IT, VO } from '../audio/voice.js';
 import { CH } from '../characters/roster.js';
 import { Training } from '../combat/training.js';
-import { H, W } from '../config.js';
-import { ctx, txt, vgrad } from '../core/canvas.js';
-import { shade } from '../core/color.js';
+
+import { ctx, txt } from '../core/canvas.js';
+
 import { CONFIRM, CONFIRM2, anyPressed, readPad } from '../core/input.js';
 import { clamp, shuffle } from '../core/math.js';
 import { go } from '../core/scene.js';
 import { XP } from '../progression/xp.js';
-import { drawSpr, portrait, sprite } from '../sprites/sprite.js';
+import { drawSpr, sprite } from '../sprites/sprite.js';
 import { S } from '../state.js';
 import { STORY } from '../story/character-arcs.js';
 import { CALL_PANEL, WORLD_PRO } from '../story/world.js';
@@ -125,126 +127,108 @@ const Select = {
   draw() {
     const t = this.t,
       vs = S.mode === 'versus';
-    ctx.fillStyle = '#120a1c';
-    ctx.fillRect(0, 0, W, H);
-    for (let y = 0; y < H; y += 12) {
-      ctx.fillStyle = (y / 12) % 2 ? '#1a1028' : '#160d22';
-      ctx.fillRect(0, y, W, 12);
-    }
-    ctx.fillStyle = 'rgba(255,77,94,.12)';
-    ctx.fillRect(0, 0, 128, 126);
-    ctx.fillStyle = vs ? 'rgba(69,180,255,.12)' : 'rgba(255,255,255,.04)';
-    ctx.fillRect(192, 0, 128, 126);
-    txt(
-      {
-        bonus: 'BÔNUS: QUEM VAI FARMAR XP?',
-        training: 'TREINO: ESCOLHA SEU LUTADOR',
-        versus: !this.cpu
-          ? 'VERSUS'
-          : this.ok[0]
-            ? 'ESCOLHA O RIVAL (CPU)'
-            : 'VERSUS CPU: ESCOLHA SEU LUTADOR',
-        arcade: 'ESCOLHA SEU BRAINROT',
-      }[S.mode],
-      W / 2,
-      6,
-      8,
-      '#ffd23a',
-      'center',
-    );
-    const show = (i, x, d) => {
-      const ch = CH[this.cur[i]];
-      const done = this.ok[i];
+    screenBackdrop(t);
+    const mode = {
+      arcade: 'HISTÓRIA',
+      versus: this.cpu ? '1P VS CPU' : '1P VS 2P',
+      training: 'TREINO',
+      bonus: 'BÔNUS',
+    }[S.mode];
+    screenHeader('LUTADORES', mode + ' · PLAYER SELECT');
+    const fighter = (side, x, w) => {
+      const ch = CH[this.cur[side]],
+        color = side ? UI.p2 : UI.p1;
+      panel(x, 37, w, 81, color);
+      txt(side ? (this.cpu ? 'CPU' : '2P') : '1P', x + 6, 42, 6, color, 'left', null);
+      txt(
+        this.ok[side] ? 'PRONTO' : 'NV ' + XP.lvl(ch.id),
+        x + w - 6,
+        42,
+        6,
+        this.ok[side] ? UI.gold : UI.muted,
+        'right',
+        null,
+      );
       drawSpr(
         sprite(
           ch,
-          done ? 'win' : 'idle',
+          this.ok[side] ? 'win' : 'idle',
           Math.floor(t / 7) % 8,
           0,
-          i === 1 && this.cur[0] === this.cur[1],
+          side === 1 && this.cur[0] === this.cur[1],
           '',
         ),
-        x,
-        104,
-        d,
+        x + w / 2,
+        94,
+        side ? -1 : 1,
+        0.8,
       );
-      txt(ch.name[0], x, 108, 8, '#ffffff', 'center');
-      txt(ch.name[1], x, 117, 8, ch.col, 'center');
+      fitLabel(ch.name[0], x + w / 2, 99, w - 8, 6, UI.white, 'center');
+      fitLabel(ch.name[1], x + w / 2, 109, w - 8, 6, UI.gold, 'center');
     };
-    show(0, 64, 1);
     if (vs) {
-      show(1, 256, -1);
-      txt('VS', W / 2, 58, 16, vgrad(58, 16, ['#ffffff', '#ffd23a', '#ff4d5e']), 'center');
-      txt(
-        (this.ok[0] ? 'PRONTO' : '1P') + ' NV' + XP.lvl(CH[this.cur[0]].id),
-        64,
-        20,
-        8,
-        '#ff8a96',
-        'center',
-      );
-      txt(
-        (this.ok[1] ? 'PRONTO' : this.cpu ? 'CPU' : '2P') + ' NV' + XP.lvl(CH[this.cur[this.cpu ? 0 : 1]].id),
-        256,
-        20,
-        8,
-        '#9adcff',
-        'center',
-      );
+      fighter(0, 10, 126);
+      fighter(1, 184, 126);
+      txt('VS', 160, 72, 16, UI.gold, 'center');
     } else {
+      fighter(0, 10, 96);
       const ch = CH[this.cur[0]];
-      const L = [
+      panel(116, 37, 194, 81, UI.line);
+      [
         ['VEL', ch.st.spd / 2],
         ['FOR', ch.st.pow / 1.2],
         ['DEF', ch.st.def / 1.2],
         ['ALC', ch.st.reach / 1.25],
-      ];
-      L.forEach(([n, v], k) => {
-        const y = 30 + k * 12;
-        txt(n, 128, y, 8, '#cbbfe6');
-        ctx.fillStyle = '#2a1838';
-        ctx.fillRect(156, y + 1, 40, 6);
+      ].forEach(([name, value], i) => {
+        const y = 44 + i * 11;
+        txt(name, 124, y, 6, UI.muted, 'left', null);
+        ctx.fillStyle = UI.ink;
+        ctx.fillRect(154, y, 146, 7);
         ctx.fillStyle = ch.col;
-        ctx.fillRect(156, y + 1, Math.round(40 * clamp(v, 0, 1)), 6);
-        ctx.fillStyle = 'rgba(255,255,255,.35)';
-        ctx.fillRect(156, y + 1, Math.round(40 * clamp(v, 0, 1)), 1);
+        ctx.fillRect(155, y + 1, Math.round(144 * clamp(value, 0, 1)), 5);
+        ctx.fillStyle = 'rgba(255,255,255,.3)';
+        ctx.fillRect(155, y + 1, Math.round(144 * clamp(value, 0, 1)), 1);
       });
-      txt('ESPECIAL', 128, 80, 8, '#ffd23a');
-      txt(ch.spName, 128, 90, 8, '#ffffff');
-      xpBar(ch.id, 128, 106, 40);
-      ctx.globalAlpha = 0.5;
-      drawSpr(sprite(CH[Math.floor(t / 12) % 8], 'idle', 0, 0, false, 'b'), 262, 104, -1);
-      ctx.globalAlpha = 1;
-      txt('???', 262, 110, 8, '#9adcff', 'center');
-      txt(S.mode === 'training' ? 'BONECO' : 'DESAFIANTES', 262, 20, 8, '#9adcff', 'center');
+      txt('ESPECIAL', 124, 91, 6, UI.gold, 'left', null);
+      fitLabel(ch.spName, 184, 91, 118, 6, UI.white);
+      xpBar(ch.id, 124, 105, 130);
     }
-    for (let i = 0; i < 8; i++) {
-      const x = 9 + i * 38,
-        y = 130,
-        ch = CH[i];
-      ctx.fillStyle = '#120a1c';
-      ctx.fillRect(x - 1, y - 1, 38, 42);
-      ctx.fillStyle = shade(ch.col, -0.55);
-      ctx.fillRect(x, y, 36, 40);
-      ctx.fillStyle = shade(ch.col, -0.35);
-      ctx.fillRect(x, y, 36, 14);
-      portrait(ch, x, y, 36, 40);
-      txt(String(XP.lvl(ch.id)), x + 35, y + 1, 8, '#ffd23a', 'right');
+    CH.forEach((ch, i) => {
+      const x = 10 + i * 38,
+        y = 126;
       const c1 = this.cur[0] === i,
         c2 = vs && (!this.cpu || this.ok[0]) && this.cur[1] === i;
+      panel(x, y, 34, 31, c1 || c2 ? UI.gold : UI.line);
+      headShot(ch, x + 4, y + 1, 26, { t: 0 });
+      ctx.fillStyle = UI.ink;
+      ctx.fillRect(x + 1, y + 22, 32, 8);
+      txt(
+        c2 ? (this.cpu ? 'CPU' : '2P') : c1 ? '1P' : String(i + 1),
+        x + 17,
+        y + 23,
+        6,
+        c2 ? UI.p2 : c1 ? UI.p1 : UI.muted,
+        'center',
+        null,
+      );
+      if (c1 && c2) {
+        ctx.fillStyle = UI.ink;
+        ctx.fillRect(x + 2, y + 1, 16, 10);
+        txt('1P', x + 4, y + 3, 6, UI.p1, 'left', null);
+      }
       if (c1) {
-        ctx.strokeStyle = (t >> 3) & 1 || this.ok[0] ? '#ff4d5e' : '#ffd0d4';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, 36, 40);
-        txt('1P', x + 1, y + 31, 8, '#ff4d5e');
+        ctx.fillStyle = UI.p1;
+        ctx.fillRect(x, y, 2, 31);
       }
       if (c2) {
-        ctx.strokeStyle = (t >> 3) & 1 || this.ok[1] ? '#45b4ff' : '#d0ecff';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x + (c1 ? 3 : 0), y + (c1 ? 3 : 0), 36 - (c1 ? 6 : 0), 40 - (c1 ? 6 : 0));
-        txt(this.cpu ? 'CPU' : '2P', x + 35, y + 31, 8, '#45b4ff', 'right');
+        ctx.fillStyle = UI.p2;
+        ctx.fillRect(x + 32, y, 2, 31);
       }
-    }
+    });
+    screenFooter(
+      '←→ ESCOLHER',
+      this.cpu && this.ok[0] ? 'ENTER RIVAL · K REFAZER' : 'ENTER CONFIRMAR · ESC VOLTAR',
+    );
   },
 };
 

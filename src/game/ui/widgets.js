@@ -24,7 +24,7 @@ function parrot(x, y, talk, t, startled = false) {
   B(7, -8, 10, 9, '#1b1024');
   B(8, -7, 8, 7, '#3fd05a');
   B(8, -7, 8, 2, '#8af090');
-  B(9, -5, 4, 3, '#ffd23a');
+  B(9, -5, 4, 3, '#f8cd55');
   B(13, -5, 2, 2, '#1b1024');
   B(13, -5, 1, 1, '#ffffff');
   const open = talk && (t >> 2) & 1;
@@ -42,25 +42,25 @@ function bubble(x, y, text, side = 1, col = '#ffffff') {
   let bx = Math.round(clamp(x - (side > 0 ? 10 : w - 10), 4, W - w - 4)),
     by = Math.round(y - h - 8);
   by = Math.max(24, by);
-  ctx.fillStyle = '#120a1c';
+  ctx.fillStyle = '#080e20';
   ctx.fillRect(bx - 1, by - 1, w + 2, h + 2);
   ctx.fillStyle = col;
   ctx.fillRect(bx, by, w, h);
-  ctx.fillStyle = '#120a1c';
+  ctx.fillStyle = '#080e20';
   ctx.fillRect(Math.round(x) - 2, by + h, 5, 3);
   ctx.fillStyle = col;
   ctx.fillRect(Math.round(x) - 1, by + h, 3, 2);
   ctx.fillRect(Math.round(x), by + h + 2, 1, 2);
-  lines.forEach((l, i) => txt(l, bx + 5, by + 5 + i * 10, 8, '#120a1c', 'left', null));
+  lines.forEach((l, i) => txt(l, bx + 5, by + 5 + i * 10, 8, '#080e20', 'left', null));
 }
 function xpBar(id, x, y, w) {
   const l = XP.lvl(id),
     p = XP.prog(id);
-  txt('NV' + l, x, y, 8, '#ffd23a');
-  const bx = x + (l >= 10 ? 36 : 28);
-  ctx.fillStyle = '#120a1c';
+  txt('NV' + l, x, y, 6, '#f8cd55');
+  const bx = x + (l >= 10 ? 30 : 24);
+  ctx.fillStyle = '#080e20';
   ctx.fillRect(bx - 1, y, w + 2, 8);
-  ctx.fillStyle = '#2a1838';
+  ctx.fillStyle = '#203455';
   ctx.fillRect(bx, y + 1, w, 6);
   ctx.fillStyle = '#7aff9a';
   ctx.fillRect(bx, y + 1, Math.round(w * p), 6);

@@ -1,4 +1,7 @@
+import { hudBackdrop } from '../ui/hud.js';
 /* Bonus stage: smash a car before the timer runs out, meme reactions and XP payout. */
+import { ELON_LINES } from '../audio/elon-lines.js';
+import { elon } from '../ui/elon.js';
 import { AU } from '../audio/synth.js';
 import { ANN, IT, VO } from '../audio/voice.js';
 import { CARS } from '../characters/cars.js';
@@ -34,6 +37,7 @@ class Bonus extends Fight {
     this.parTalk = 0;
     this.parReact = 0;
     this.memeN = 0;
+    this.elonDamage = 0;
   }
   input() {
     return readPad('p1', 'p1x');
@@ -41,6 +45,16 @@ class Bonus extends Fight {
   say(text, o, who = 'car', dur = 130) {
     this.bub = { text, t: dur, who };
     if (o) VO.say(text.replace(/\.\.\./g, ', '), o);
+  }
+  elonSay(level) {
+    this.elonDamage = level;
+    const { text } = ELON_LINES[level];
+    this.say(text, null, 'elon', 210);
+    VO.clip(level, text, {
+      role: level === 0 ? 'ann' : 'pt',
+      pitch: 0.9 + level * 0.1,
+      rate: 1 + level * 0.04,
+    });
   }
   onKO(a, d) {
     d.dead = true;
@@ -53,8 +67,7 @@ class Bonus extends Fight {
     AU.sfx('boom');
     spark(d.x, d.y - 20, ['#fff2b0', '#ffb040', '#ff5a2a', '#5a4a50', d.ch.col, '#c8ccd6'], 60, 4, 0.1);
     if (this.type === 'byd') this.say('NÃÃÃO... ERA ZERO KM!', { role: 'pt', pitch: 1.4, rate: 0.85 });
-    else if (this.type === 'cyber')
-      this.say('É... TEM ESPAÇO PRA MELHORAR.', { role: 'pt', pitch: 0.9, rate: 0.95 });
+    else if (this.type === 'cyber') this.elonSay(4);
     else this.say('MAMMA MIA! LA MIA MACCHINA!', IT);
   }
   update() {
@@ -94,6 +107,7 @@ class Bonus extends Fight {
     this.pt++;
     if (this.phase === 'intro') {
       if (this.pt === 2) VO.say('Bonus stage!', ANN);
+      if (this.type === 'cyber' && this.pt === 88) this.elonSay(0);
       if (this.pt >= 90) {
         this.phase = 'fight';
         this.pt = 0;
@@ -119,9 +133,7 @@ class Bonus extends Fight {
       if (car.state !== undefined && ps !== 'd4') {
         if (this.type === 'cyber') {
           AU.sfx('crack');
-          const L = ['OPS...', '...BEM, PELO MENOS NÃO ATRAVESSOU.', 'VIDRO BLINDADO, ELES DISSERAM...'];
-          if (this.memeN < 3) this.say(L[this.memeN], { role: 'pt', pitch: 0.9, rate: 0.92 });
-          this.memeN++;
+          if (!car.dead) this.elonSay(Number(ps.slice(1)));
         } else {
           AU.sfx('glass');
           if (this.type === 'byd') {
@@ -180,6 +192,9 @@ class Bonus extends Fight {
     if (this.phase === 'end' && this.pt >= 190) this.done = 0;
   }
   drawExtra(cam) {
+    if (this.type === 'cyber') {
+      elon(W - 30, 136, this.elonDamage, this.bub?.who === 'elon', this.tick);
+    }
     if (this.type === 'byd') {
       parrot(10, 108, this.parTalk > 0 && this.bub?.who === 'parrot', this.tick, this.parReact > 0);
       ctx.fillStyle = '#5a3a20';
@@ -187,11 +202,13 @@ class Bonus extends Fight {
     }
     if (this.bub) {
       const car = this.f[1];
-      if (this.bub.who === 'parrot') bubble(26, 104, this.bub.text, 1, '#fff8d8');
+      if (this.bub.who === 'elon') bubble(W - 40, 80, this.bub.text, -1, '#e7f6ff');
+      else if (this.bub.who === 'parrot') bubble(26, 104, this.bub.text, 1, '#fff8d8');
       else bubble(car.x - cam, car.y - 50, this.bub.text, -1);
     }
   }
   drawHUD() {
+    hudBackdrop();
     const P1 = this.f[0],
       car = this.f[1];
     portraitChip(0, P1, this.tick);
@@ -199,7 +216,7 @@ class Bonus extends Fight {
     lifeBar(0, P1.hp / 100, P1.dhp / 100, this.tick, P1.dhpT > 26);
     lifeBar(1, car.hp / car.maxhp, car.dhp / car.maxhp, this.tick, car.dhpT > 26);
     namePlate(0, P1.ch.short, P1.ch.col, 0, 0, this.tick);
-    txt('NV' + P1.lvl, 4, 28, 6, '#ffd23a');
+    txt('NV' + P1.lvl, 62, 33, 6, '#ffd23a');
     namePlate(1, car.ch.short, car.ch.col, 0, 0, this.tick);
     powerGauge(0, P1.meter, this.tick);
     comboCounter(0, this.combo[0]);

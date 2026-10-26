@@ -25,11 +25,14 @@ for (const ch of Object.values(T.CARS)) {
 }
 const canvas = createCanvas(100, 100),
   g = canvas.getContext('2d');
-const poses = [0, 1, 2, 3, 4].map((frame) => {
-  g.clearRect(0, 0, 100, 100);
-  assert.equal(drawBonusArt(g, 'parrot', frame, 50, 90, 0.5), true);
-  return hash(canvas);
-});
-assert.equal(new Set(poses).size, 5);
+for (const id of ['parrot', 'elon']) {
+  assert.ok(hasBonusArt(id), id + ': loaded atlas');
+  const poses = [0, 1, 2, 3, 4].map((frame) => {
+    g.clearRect(0, 0, 100, 100);
+    assert.equal(drawBonusArt(g, id, frame, 50, 90, 0.5), true);
+    return hash(canvas);
+  });
+  assert.equal(new Set(poses).size, 5, id + ': five distinct expressions');
+}
 assert.equal(drawBonusArt(g, 'missing', 0, 0, 0), false);
-console.log('ALL OK: bonus damage states, fixed collisions and parrot expressions');
+console.log('ALL OK: bonus damage states, fixed collisions and spectator expressions');

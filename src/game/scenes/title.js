@@ -1,10 +1,11 @@
+import { UI, panel, menuRow, paragraph, screenFooter, fitLabel } from '../ui/theme.js';
 /* Title screen: logo slam, attract screen with the cast (APERTE START) and the Neo-Geo-style main menu. */
 import { AU } from '../audio/synth.js';
 import { ANN, VO } from '../audio/voice.js';
 import { BOSS } from '../characters/fighters/saturnita.js';
 import { CH } from '../characters/roster.js';
 import { GAME, H, REDUCED, W } from '../config.js';
-import { ctx, txt, vgrad, wrap } from '../core/canvas.js';
+import { ctx, txt, vgrad } from '../core/canvas.js';
 import { CONFIRM, anyPressed, menuPad } from '../core/input.js';
 import { clamp, rnd } from '../core/math.js';
 import { go } from '../core/scene.js';
@@ -12,7 +13,7 @@ import { XP } from '../progression/xp.js';
 import { drawSpr, sprite } from '../sprites/sprite.js';
 import { STAGES, drawStage } from '../stages/index.js';
 import { S } from '../state.js';
-import { blink, fade, frameBox, plate, sparkle } from '../ui/arcade.js';
+import { blink, fade, sparkle } from '../ui/arcade.js';
 import { drawLogo } from '../ui/logo.js';
 import { Moves } from './moves.js';
 import { Options } from './options.js';
@@ -32,12 +33,12 @@ const MENU = [
     d: 'Boneco parado, vida infinita e dano do combo. Aperte TAB para ver as hitboxes.',
   },
   { id: 'moves', l: 'COMANDOS', d: 'Todos os golpes, combos, cancelamentos e especiais.' },
-  { id: 'options', l: 'OPÇÕES', d: 'Dificuldade, música e escolha das vozes do narrador.' },
+  { id: 'options', l: 'OPÇÕES', d: 'Ajuste a dificuldade, o volume e as vozes do jogo.' },
 ];
 /** VERSUS sub-choice, shown inside the mode card. */
 const VS_MODES = [
-  { cpu: true, l: '1P VS CPU', d: 'Você escolhe os dois lutadores. Nível em OPÇÕES.' },
-  { cpu: false, l: '1P VS 2P', d: 'Dois jogadores no mesmo teclado. Sem piedade.' },
+  { cpu: true, l: '1P VS CPU', d: 'CPU usa o nível definido em OPÇÕES.' },
+  { cpu: false, l: '1P VS 2P', d: 'Dois jogadores, no mesmo teclado.' },
 ];
 /** Cast lineup on the attract screen: x position and facing (everyone looks at the center). */
 const LINEUP = [26, 62, 98, 134, 186, 222, 258, 294];
@@ -157,7 +158,7 @@ const Title = {
     ctx.fillStyle = vgrad(0, H, ['rgba(10,4,24,.86)', 'rgba(24,6,40,.55)', 'rgba(10,4,24,.92)']);
     ctx.fillRect(-10, 0, W + 20, H);
     for (let i = 0; i < 16; i++) {
-      const a = t / 120 + (i * Math.PI) / 8;
+      const a = (REDUCED ? 0 : t / 120) + (i * Math.PI) / 8;
       ctx.fillStyle = i % 2 ? 'rgba(255,90,170,.06)' : 'rgba(255,210,58,.06)';
       ctx.beginPath();
       ctx.moveTo(160, 46);
@@ -185,7 +186,7 @@ const Title = {
         t < SLAM
           ? 0.8 + (1 - e) * 2.2
           : 0.8 + (t < SLAM + 8 ? Math.sin(((t - SLAM) / 8) * Math.PI) * 0.06 : 0);
-    drawLogo(160, 4 + (1 - e) * 20, sc, t);
+    drawLogo(160, (inMenu ? -2 : 5) + (1 - e) * 20, sc * (inMenu ? 0.78 : 1), t);
     if (t > SLAM + 10) {
       const k = Math.floor(t / 40),
         [gx, gy] = GLINTS[k % GLINTS.length];
@@ -203,84 +204,30 @@ const Title = {
         const label = 'APERTE START';
         ctx.globalAlpha = 1 - mk;
         txt(label, W / 2 + 2, 102 + 2, 16, 'rgba(0,0,0,.5)', 'center', null);
-        txt(label, W / 2, 102, 16, vgrad(102, 16, ['#fff7b0', '#ffd23a', '#ff8a2a']), 'center');
+        txt(label, W / 2, 102, 16, vgrad(102, 16, ['#fff7b0', '#f8cd55', '#ff8a2a']), 'center');
         ctx.globalAlpha = 1;
       }
     }
     if (mk > 0) this.drawMenu(mk);
-    // bottom strip: total XP, copyright, free play
-    ctx.fillStyle = 'rgba(5,2,10,.9)';
-    ctx.fillRect(0, 170, W, 10);
-    ctx.fillStyle = '#ffd23a';
-    ctx.fillRect(0, 170, W, 1);
-    const tot = CH.reduce((s, c) => s + XP.get(c.id), 0);
-    txt('XP ' + tot, 4, 172, 8, '#7aff9a', 'left', null);
-    txt('© 2026 TUPINICODE', W / 2, 172, 8, '#cbbfe6', 'center', null);
-    if (inMenu) txt('ESC', W - 4, 172, 8, '#9a8fb3', 'right', null);
-    else txt('FREE PLAY', W - 4, 172, 8, blink(t, 60) ? '#ffffff' : '#9a8fb3', 'right', null);
+    const total = CH.reduce((sum, ch) => sum + XP.get(ch.id), 0);
+    screenFooter('XP ' + total + ' · FREE PLAY', inMenu ? '↑↓ ESCOLHER · ENTER OK' : '© 2026 TUPINICODE');
   },
   /** Slanted plates on the left, mode card on the right; both slide in with `mk` (0 → 1). */
   drawMenu(mk) {
-    const t = this.t;
-    MENU.forEach((it, i) => {
-      const k = ease(mk * 1.6 - i * 0.12),
-        sel = i === this.m,
-        w = sel ? 124 : 112,
-        x = 10 - (1 - k) * 170,
-        y = 86 + i * 13;
-      plate(x - 1, y - 1, w + 2, 13, '#05020a', 7);
-      plate(x, y, w, 11, sel ? vgrad(y, 11, ['#fff6b0', '#ffd23a', '#e8901a']) : 'rgba(34,16,58,.94)', 6);
-      if (sel) {
-        plate(x, y, w, 2, 'rgba(255,255,255,.55)', 6);
-        const sx = x + ((t * 4) % (w + 30)) - 10;
-        if (sx < x + w) plate(Math.max(x, sx), y, 6, 11, 'rgba(255,255,255,.35)', 6);
-        const bx = x + w + 10 + (blink(t, 16) ? 1 : 0);
-        ctx.fillStyle = '#ffd23a';
-        ctx.fillRect(bx, y + 2, 2, 7);
-        ctx.fillRect(bx + 2, y + 3, 2, 5);
-        ctx.fillRect(bx + 4, y + 4, 2, 3);
-        sparkle(x + w + 4, y + 1, (t % 30) / 30);
-      }
-      txt(it.l, x + 14, y + 2, 8, sel ? '#1a0a24' : '#cbbfe6', 'left', sel ? null : '#05020a');
-    });
-    // mode card
-    const k = ease(mk * 1.4 - 0.2),
-      x = 170 + (1 - k) * 170;
-    frameBox(x, 90, 140, 74, '#ff6ad5');
-    plate(x + 4, 82, 92, 11, vgrad(82, 11, ['#ff9ae0', '#ff6ad5', '#b02a90']), 5);
-    txt(MENU[this.m].l, x + 14, 84, 8, '#ffffff', 'left', '#3a0a2a');
-    if (this.sub) {
-      // VERSUS sub-choice inside the card
-      VS_MODES.forEach((v, i) => {
-        const sel = i === this.sub.m,
-          y = 98 + i * 14;
-        plate(x + 8, y - 1, 124, 12, '#05020a', 5);
-        plate(
-          x + 9,
-          y,
-          122,
-          10,
-          sel ? vgrad(y, 10, ['#fff6b0', '#ffd23a', '#e8901a']) : 'rgba(34,16,58,.94)',
-          5,
-        );
-        txt(v.l, x + 72, y + 1, 8, sel ? '#1a0a24' : '#cbbfe6', 'center', null);
-      });
-      wrap(VS_MODES[this.sub.m].d, 16)
-        .slice(0, 3)
-        .forEach((l, i) => txt(l, x + 6, 130 + i * 10, 8, '#f1e9ff', 'left'));
-      return;
-    }
-    // the showcased fighter stands behind the text, like key art
-    const ch = CH[this.show];
     ctx.save();
-    ctx.beginPath();
-    ctx.rect(x + 1, 91, 138, 72);
-    ctx.clip();
-    drawSpr(sprite(ch, 'idle', Math.floor(t / 7) % 8, 0, false, ''), x + 104, 168, -1, 0.95, false, 0.4);
+    ctx.globalAlpha = mk;
+    MENU.forEach((item, i) => menuRow(item.l, 10, 69 + i * 15, 124, i === this.m, { height: 13 }));
+    panel(146, 69, 164, 88, UI.gold);
+    if (this.sub) {
+      txt('VERSUS', 156, 76, 8, UI.gold, 'left', null);
+      VS_MODES.forEach((mode, i) => menuRow(mode.l, 154, 91 + i * 19, 148, i === this.sub.m, { height: 16 }));
+      paragraph(VS_MODES[this.sub.m].d, 156, 135, 144, { size: 6, lineHeight: 10, maxLines: 2 });
+    } else {
+      txt('0' + (this.m + 1) + ' / MODE SELECT', 156, 76, 6, UI.gold, 'left', null);
+      paragraph(MENU[this.m].d, 156, 94, 144, { size: 6, lineHeight: 11, maxLines: 5 });
+      fitLabel('BRAINROT BATTAGLIA', 156, 147, 144, 6, UI.muted);
+    }
     ctx.restore();
-    wrap(MENU[this.m].d, 16)
-      .slice(0, 6)
-      .forEach((l, i) => txt(l, x + 6, 97 + i * 10, 8, '#f1e9ff', 'left'));
   },
 };
 

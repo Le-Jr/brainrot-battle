@@ -1,3 +1,4 @@
+import { UI, screenFooter } from '../ui/theme.js';
 /* Story cutscenes: panel rendering, effects, typewriter text and narration. */
 import { AU } from '../audio/synth.js';
 import { VO } from '../audio/voice.js';
@@ -164,48 +165,50 @@ function Cutscene(panels, next, opp) {
         sp = p.sp,
         who = sp === 'B' ? BOSS : sp === 'O' ? opp : sp === 'P' ? CH[S.p1] : null,
         right = sp === 'B' || sp === 'O',
-        sc = who ? who.col : '#ffd23a';
+        sc = who ? who.col : '#f8cd55';
       drawPanel(p, this.t, opp);
       // dialog band
-      ctx.fillStyle = vgrad(126, 54, ['rgba(8,4,18,.96)', 'rgba(14,6,28,.97)']);
-      ctx.fillRect(0, 126, W, 54);
-      ctx.fillStyle = '#ffd23a';
-      ctx.fillRect(0, 126, W, 1);
+      ctx.fillStyle = vgrad(120, 46, ['rgba(8,4,18,.96)', 'rgba(14,6,28,.97)']);
+      ctx.fillRect(0, 120, W, 46);
+      ctx.fillStyle = '#f8cd55';
+      ctx.fillRect(10, 120, W - 20, 1);
       ctx.fillStyle = '#8a5a10';
-      ctx.fillRect(0, 127, W, 1);
+      ctx.fillRect(10, 121, W - 20, 1);
       ctx.fillStyle = sc;
-      ctx.fillRect(0, 179, W, 1);
+      ctx.fillRect(10, 164, W - 20, 1);
       if (who) {
         const hyp = sp === 'O' && p.a.some((a) => a[0] === 'O' && a[7]);
-        bust(who, right ? W - 52 : 6, 78, hyp ? 'p' : '', right, tick);
+        bust(who, right ? W - 56 : 10, 62, hyp ? 'p' : '', right, tick);
         const nm = who.short,
-          pw = nm.length * 8 + 16,
+          pw = nm.length * 6 + 16,
           px = right ? W - 56 - pw : 56;
-        plate(px - 1, 114, pw + 2, 12, '#05020a', 5);
-        plate(px, 115, pw, 10, vgrad(115, 10, [shade(sc, 0.35), sc, shade(sc, -0.35)]), 5);
-        txt(nm, px + 9, 116, 8, '#ffffff', 'left', '#120a1c');
+        plate(px - 1, 108, pw + 2, 12, '#050812', 5);
+        plate(px, 109, pw, 10, vgrad(109, 10, [shade(sc, 0.35), sc, shade(sc, -0.35)]), 5);
+        txt(nm, px + 9, 111, 6, '#ffffff', 'left', '#080e20');
       }
       let left = shown;
-      wrap(p.tx, 37)
+      wrap(p.tx, 48)
         .slice(0, 4)
         .forEach((l, i) => {
           if (left <= 0) return;
-          txt(l.slice(0, left), 10, 134 + i * 10, 8, who ? '#ffffff' : '#f1e9ff', 'left', null);
+          txt(l.slice(0, left), 16, 126 + i * 10, 6, who ? '#ffffff' : '#fff3d6', 'left', null);
           left -= l.length + 1;
         });
       if (shown >= p.tx.length && blink(this.t, 32)) {
-        ctx.fillStyle = '#ffd23a';
+        ctx.fillStyle = '#f8cd55';
         for (let k = 0; k < 4; k++)
-          ctx.fillRect(304 + k, 167 + k + (blink(this.t, 16) ? 1 : 0), 1, 8 - 2 * k);
+          ctx.fillRect(304 + k, 155 + k + (blink(this.t, 16) ? 1 : 0), 1, 8 - 2 * k);
       }
       // top bar: progress dots and skip hint
       panels.forEach((_, i) => {
-        ctx.fillStyle = i === this.i ? '#ffd23a' : i < this.i ? '#8a5a10' : '#2a1838';
-        ctx.fillRect(6 + i * 6, 4, 4, 4);
+        ctx.fillStyle = i === this.i ? '#f8cd55' : i < this.i ? '#8a5a10' : '#203455';
+        ctx.fillRect(W / 2 - panels.length * 3 + i * 6, 5, 3, 3);
       });
       ctx.globalAlpha = 0.7;
-      txt('ESC: PULAR', W - 6, 2, 8, '#ffffff', 'right', null);
+      txt('STORY MODE', 10, 4, 6, UI.gold, 'left', null);
+      txt('ESC PULAR', W - 10, 4, 6, UI.white, 'right', null);
       ctx.globalAlpha = 1;
+      screenFooter('BRAINROTÁLIA', 'ENTER AVANÇAR · ESC PULAR');
       if (this.tr > 0) fade(1 - Math.abs(this.tr - 8) / 8);
     },
   };

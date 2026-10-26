@@ -325,10 +325,10 @@ function screenLine(c, s, x, y, col = '#62ff8e', size = 16) {
 /** CRT window chrome: title bar with three buttons. */
 function screenWindow(c, x, y, w, title) {
   c.fillStyle = '#1d7a3a';
-  c.fillRect(x + 8, y + 8, w - 16, 12);
-  c.fillStyle = '#0a3a18';
-  for (let i = 0; i < 3; i++) c.fillRect(x + 12 + i * 8, y + 11, 5, 6);
-  if (title) screenLine(c, title, x + 40, y + 10, '#c8ffd4', 8);
+  c.fillRect(x + 8, y + 8, w - 16, 14);
+  c.fillStyle = '#c8ffd4';
+  c.fillRect(x + 8, y + 22, w - 16, 1);
+  if (title) screenLine(c, title, x + 14, y + 11, '#c8ffd4', 8);
 }
 
 /** The big studio logo under the computer: chromatic fringe, side dashes and an optional slam scale. */

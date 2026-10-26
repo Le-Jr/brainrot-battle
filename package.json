@@ -2,7 +2,7 @@
   "name": "brainrot-battaglia",
   "version": "1.0.0",
   "private": true,
-  "description": "Brainrot Battaglia: Ultra Caos \u2014 jogo de luta 2D estilo Street Fighter II com memes do Italian brainrot, feito em Next.js e Canvas 2D.",
+  "description": "Brainrot Battaglia: Ultra Caos — jogo de luta 2D estilo Street Fighter II com memes do Italian brainrot, feito em Next.js e Canvas 2D.",
   "type": "module",
   "engines": {
     "node": ">=20.9.0"
@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/bonus-art.js && node tests/visual-snapshot.js",
+    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/bonus-art.js && node tests/elon-reactions.js && node tests/visual-snapshot.js && node tests/voice-clips.js",
     "render": "node tests/render-poses.js && node tests/render-stages.js",
     "sprites": "node tools/process-sprite-art.js",
     "sprites:legacy": "python3 tools/process_sprites.py",
@@ -23,7 +23,11 @@
     "sprites:bonus": "node tools/process-bonus-art.js",
     "readme:art": "node tools/render-readme-art.js",
     "test:snapshot:update": "node tests/visual-snapshot.js --update",
-    "stages:art": "node tools/process-stage-art.js"
+    "stages:art": "node tools/process-stage-art.js",
+    "voices:catalog": "node tools/voices/catalog.js",
+    "voices:generate": ".venv-tts/bin/python tools/voices/generate.py",
+    "test:voices": "node tests/voice-clips.js",
+    "render:ui": "node tools/render-ui.js"
   },
   "dependencies": {
     "next": "16.4.2",

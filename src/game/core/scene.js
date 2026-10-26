@@ -1,10 +1,12 @@
 /* Scene manager (go/step) and the fixed-timestep render loop. */
+import { VO } from '../audio/voice.js';
 import { ctx } from './canvas.js';
 import { pressedQ } from './input.js';
 
 let scene = null,
   tick = 0;
 function go(s) {
+  VO.stop();
   scene = s;
   if (s.enter) s.enter();
 }

@@ -1,5 +1,6 @@
 /* Neo-Geo-style UI kit shared by the intro, title and cutscenes: slanted plates, framed boxes, sparkles, glitches and wipes. */
-import { H, W } from '../config.js';
+import { panel, UI } from './theme.js';
+import { H, REDUCED, W } from '../config.js';
 import { ctx, cv, txt } from '../core/canvas.js';
 import { rnd } from '../core/math.js';
 
@@ -10,28 +11,13 @@ function plate(x, y, w, h, fill, skew = 6) {
 }
 
 /** Arcade dialog frame: dark outline, accent line, inner bevel and a translucent body. */
-function frameBox(x, y, w, h, accent = '#ffd23a', fill = 'rgba(10,5,22,.92)') {
-  ctx.fillStyle = '#05020a';
-  ctx.fillRect(x - 2, y - 2, w + 4, h + 4);
-  ctx.fillStyle = accent;
-  ctx.fillRect(x - 1, y - 1, w + 2, h + 2);
-  ctx.fillStyle = '#120a1c';
-  ctx.fillRect(x, y, w, h);
-  ctx.fillStyle = fill;
-  ctx.fillRect(x + 1, y + 1, w - 2, h - 2);
-  // corner rivets
-  ctx.fillStyle = accent;
-  for (const [cx, cy] of [
-    [x + 2, y + 2],
-    [x + w - 4, y + 2],
-    [x + 2, y + h - 4],
-    [x + w - 4, y + h - 4],
-  ])
-    ctx.fillRect(cx, cy, 2, 2);
+function frameBox(x, y, w, h, accent = UI.gold, fill = UI.panel) {
+  panel(x, y, w, h, accent, fill);
 }
 
 /** Four-point star glint; `p` goes 0 → 1 over its life (grows, then shrinks). Drawn in half pixels for a fine line. */
 function sparkle(x, y, p, col = '#ffffff') {
+  if (REDUCED) return;
   const k = Math.sin(Math.min(1, Math.max(0, p)) * Math.PI);
   if (k <= 0) return;
   const L = 1 + k * 7,
@@ -48,7 +34,7 @@ function sparkle(x, y, p, col = '#ffffff') {
 
 /** Text with a chromatic-aberration fringe (magenta left, cyan right) and an outline. */
 function chromaText(s, x, y, size, col, align = 'center', shift = 1) {
-  txt(s, x - shift, y, size, 'rgba(255,58,208,.85)', align, '#05020a');
+  txt(s, x - shift, y, size, 'rgba(255,58,208,.85)', align, '#050812');
   txt(s, x + shift, y, size, 'rgba(74,240,255,.6)', align, null);
   txt(s, x, y, size, col, align, null);
 }
@@ -69,6 +55,7 @@ function fade(alpha, col = '0,0,0') {
 
 /** Slide horizontal bands of what is already on screen sideways, with RGB tints (digital glitch). */
 function glitchBands(n, y0 = 0, y1 = H, maxOff = 8) {
+  if (REDUCED) return;
   for (let k = 0; k < n; k++) {
     const y = Math.floor(rnd(y0, y1 - 6)),
       h = Math.floor(rnd(2, 7)),
@@ -80,7 +67,7 @@ function glitchBands(n, y0 = 0, y1 = H, maxOff = 8) {
 }
 
 /** Diagonal wipe in the style of 90s arcade screen changes. `p` 0 → 1 covers the screen, 1 → 2 uncovers it. */
-function wipe(p, col = '#05020a', accent = '#ffd23a') {
+function wipe(p, col = '#050812', accent = '#f8cd55') {
   if (p <= 0 || p >= 2) return;
   const cover = p <= 1,
     k = cover ? p : p - 1,
@@ -110,6 +97,6 @@ function wipe(p, col = '#05020a', accent = '#ffd23a') {
 }
 
 /** True during the "on" half of a blink cycle of `period` frames. */
-const blink = (t, period = 32) => t % period < period / 2;
+const blink = (t, period = 32) => REDUCED || t % period < period / 2;
 
 export { blink, chromaText, fade, frameBox, glitchBands, letterbox, plate, sparkle, wipe };

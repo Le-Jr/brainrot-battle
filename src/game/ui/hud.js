@@ -1,3 +1,4 @@
+import { UI, fitLabel } from './theme.js';
 /* Fight HUD in the Neo-Geo style: slanted life bars, portrait chips, name plates, timer emblem, power gauges,
    combo counter and the round/K.O. banners. Side 0 is the left player, side 1 the right one (mirrored). */
 import { W } from '../config.js';
@@ -7,7 +8,7 @@ import { sprite } from '../sprites/sprite.js';
 import { frameBox, plate, sparkle } from './arcade.js';
 import { fitShot, headShot } from './portrait.js';
 
-const BAR = { y: 6, h: 7, w: 114, skew: 4, inset: 28 };
+const BAR = { y: 9, h: 8, w: 105, skew: 3, inset: 33 };
 const ease = (k) => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
 
 /** Rows r0..r1 of a slanted bar of height h: row r is shifted by skew·(1 − r/(h−1)). Keeps every row pixel-crisp. */
@@ -29,7 +30,7 @@ function lifeBar(side, frac, trail, t, hitFlash) {
   const { y, h, w } = BAR,
     sk = side ? -BAR.skew : BAR.skew,
     x = side ? W - BAR.inset - w : BAR.inset;
-  rows(x - 2, y - 2, w + 4, h + 4, sk, '#05020a');
+  rows(x - 2, y - 2, w + 4, h + 4, sk, '#050812');
   rows(x - 1, y - 1, w + 2, h + 2, sk, vgrad(y - 1, h + 2, ['#fff2b0', '#c98a2a', '#6a3a08']));
   rows(x, y, w, h, sk, vgrad(y, h, ['#2e0c1c', '#12040c']));
   const hw = Math.round(w * Math.max(0, frac)),
@@ -46,7 +47,7 @@ function lifeBar(side, frac, trail, t, hitFlash) {
     sk,
     low
       ? vgrad(y, h, [hot ? '#ffe0b0' : '#ffb070', '#ff5a2a', '#a8180c'])
-      : vgrad(y, h, ['#fff9c8', '#ffd23a', '#e8860e']),
+      : vgrad(y, h, ['#fff9c8', '#f8cd55', '#e8860e']),
   );
   rows(hx, y, hw, h, sk, 'rgba(255,255,255,.6)', 1, 2);
   rows(hx, y, hw, h, sk, 'rgba(90,30,0,.35)', h - 2, h);
@@ -59,9 +60,9 @@ function lifeBar(side, frac, trail, t, hitFlash) {
 /** Framed head shot next to the life bar; flashes white when hit, blue when frozen, darkens on K.O. */
 function portraitChip(side, f, t) {
   const S = 22,
-    x = side ? W - 4 - S : 4,
-    y = 3;
-  frameBox(x, y, S, S, f.ch.col, vgrad(y, S, [shade(f.ch.col, -0.35), shade(f.ch.col, -0.75)]));
+    x = side ? W - 6 - S : 6,
+    y = 6;
+  frameBox(x, y, S, S, side ? UI.p2 : UI.p1, vgrad(y, S, [shade(f.ch.col, -0.35), shade(f.ch.col, -0.75)]));
   if (f.isCar) fitShot(sprite(f.ch, f.poseInfo().pose, 0, 0, false, ''), x + 1, y + 1, S - 2, !!side);
   else {
     const tint = f.flash > 0 && f.flash & 2 ? 'w' : f.frozen > 0 ? 'b' : '';
@@ -75,96 +76,74 @@ function portraitChip(side, f, t) {
 
 /** Slanted plate with the fighter's name in their color, followed by the round-win medals. */
 function namePlate(side, name, col, wins, need, t) {
-  const y = 16,
-    w = name.length * 6 + 12,
-    sk = side ? -3 : 3,
-    x = side ? W - BAR.inset - w : BAR.inset;
-  plate(x - 1, y - 1, w + 2, 10, '#05020a', sk);
-  plate(x, y, w, 8, vgrad(y, 8, ['#3a2456', '#1e1030', '#120a1c']), sk);
-  plate(side ? x + w - 3 : x, y, 3, 8, col, sk);
-  plate(x, y + 7, w, 1, shade(col, -0.2), sk);
-  txt(name, side ? x + w - 6 : x + 6, y + 1, 6, shade(col, 0.45), side ? 'right' : 'left', '#05020a');
-  // round-win medals under the portrait chip
+  const x = side ? W - BAR.inset - BAR.w : BAR.inset,
+    y = 21;
+  plate(x, y, BAR.w, 9, UI.panel, side ? -2 : 2);
+  fitLabel(name, side ? x + BAR.w - 4 : x + 4, y + 1, BAR.w - 8, 6, UI.white, side ? 'right' : 'left');
+  ctx.fillStyle = side ? UI.p2 : UI.p1;
+  ctx.fillRect(x, y + 8, BAR.w, 1);
+  txt(side ? '2P' : '1P', side ? W - 6 : 6, 32, 6, side ? UI.p2 : UI.p1, side ? 'right' : 'left', null);
   for (let k = 0; k < need; k++) {
-    const my = 28,
-      mx = side ? W - 11 - k * 9 : 5 + k * 9,
-      won = k < wins;
-    ctx.fillStyle = '#05020a';
-    ctx.fillRect(mx - 1, my - 1, 8, 8);
-    ctx.fillStyle = won ? vgrad(my, 6, ['#fff7b0', '#ffd23a', '#c07010']) : '#2a1838';
-    ctx.fillRect(mx, my, 6, 6);
-    if (won) {
-      ctx.fillStyle = 'rgba(255,255,255,.7)';
-      ctx.fillRect(mx + 1, my + 1, 2, 1);
-      if ((t + k * 20) % 90 < 30) sparkle(mx + 5, my + 1, ((t + k * 20) % 90) / 30);
-    } else {
-      ctx.fillStyle = '#3a2a50';
-      ctx.fillRect(mx + 2, my + 2, 2, 2);
+    const mx = side ? W - BAR.inset - 5 - k * 8 : BAR.inset + k * 8;
+    ctx.fillStyle = UI.ink;
+    ctx.fillRect(mx - 1, 32, 7, 7);
+    ctx.fillStyle = k < wins ? UI.gold : UI.raised;
+    ctx.fillRect(mx, 33, 5, 5);
+    if (k < wins) {
+      ctx.fillStyle = UI.white;
+      ctx.fillRect(mx + 1, 34, 2, 1);
     }
   }
 }
 
 /** Timer emblem between the bars; red and pulsing in the last 10 seconds. */
 function timerEmblem(label, warn, t) {
-  const x = 148,
-    y = 3,
-    w = 24,
-    h = 19;
-  chamfer(x - 2, y - 2, w + 4, h + 4, '#05020a', 5);
-  chamfer(x - 1, y - 1, w + 2, h + 2, vgrad(y, h, ['#fff2b0', '#c98a2a', '#6a3a08']), 4);
-  chamfer(x, y, w, h, vgrad(y, h, ['#3a1a5a', '#1a0a2e', '#0e0618']), 3);
-  ctx.fillStyle = 'rgba(255,255,255,.12)';
-  ctx.fillRect(x + 4, y + 1, w - 8, 1);
-  const k = warn ? 1 + Math.max(0, Math.sin((t / 30) * Math.PI * 2)) * 0.12 : 1;
-  ctx.save();
-  ctx.translate(160, y + 10);
-  ctx.scale(k, k);
-  txt(
-    label,
-    0,
-    -6,
-    12,
-    warn
-      ? vgrad(-6, 12, ['#ffd0d0', '#ff4d5e', '#a8102a'])
-      : vgrad(-6, 12, ['#ffffff', '#e8e0ff', '#a898d8']),
-    'center',
-  );
-  ctx.restore();
+  const x = W / 2 - 15,
+    y = 4,
+    w = 30,
+    h = 29;
+  chamfer(x - 1, y - 1, w + 2, h + 2, UI.ink, 4);
+  chamfer(x, y, w, h, warn ? UI.danger : UI.gold, 3);
+  chamfer(x + 1, y + 1, w - 2, h - 2, UI.panel, 3);
+  txt('TIME', W / 2, 8, 6, warn ? UI.danger : UI.muted, 'center', null);
+  txt(label, W / 2, 16, 12, warn ? UI.danger : UI.white, 'center');
 }
 
 /** Power gauge at the bottom: two segments (EX at half, MAX when full, with a rainbow shimmer). */
 function powerGauge(side, meter, t) {
-  const w = 84,
-    h = 4,
+  const w = 88,
+    h = 5,
     y = 171,
-    sk = side ? -3 : 3,
-    x = side ? W - 8 - w : 8,
-    mw = Math.round((w * Math.min(100, meter)) / 100),
+    x = side ? W - 10 - w : 10,
+    sk = side ? -2 : 2;
+  const fill = Math.round((w * Math.max(0, Math.min(100, meter))) / 100),
     full = meter >= 100,
-    half = meter >= 50,
-    fx = side ? x + w - mw : x;
-  rows(x - 2, y - 2, w + 4, h + 4, sk, '#05020a');
-  rows(x - 1, y - 1, w + 2, h + 2, sk, vgrad(y - 1, h + 2, ['#c8d8ff', '#5a6aa8', '#2a3260']));
-  rows(x, y, w, h, sk, '#100820');
-  if (full) {
-    const C = ['#ff6ad5', '#45b4ff', '#ffd23a', '#7aff9a'];
-    for (let i = 0; i < mw; i += 4) rows(fx + i, y, Math.min(4, mw - i), h, sk, C[((i >> 2) + (t >> 1)) % 4]);
-  } else {
-    rows(
-      fx,
-      y,
-      mw,
-      h,
-      sk,
-      vgrad(y, h, half ? ['#c8ffff', '#4af0ff', '#1a8ab8'] : ['#9ac8ff', '#2a7ad8', '#1a3a80']),
-    );
-  }
-  rows(fx, y, mw, h, sk, 'rgba(255,255,255,.45)', 1, 2);
-  rows(x + w / 2, y, 1, h, sk, '#05020a');
-  const lx = side ? x - 6 : x + w + 6,
-    al = side ? 'right' : 'left';
-  if (full) txt('MAX', lx, y - 1, 6, (t >> 3) & 1 ? '#ffffff' : '#ffd23a', al);
-  else if (half) txt('EX', lx, y - 1, 6, '#4af0ff', al);
+    half = meter >= 50;
+  rows(x - 1, y - 1, w + 2, h + 2, sk, UI.line);
+  rows(x, y, w, h, sk, UI.ink);
+  rows(
+    side ? x + w - fill : x,
+    y,
+    fill,
+    h,
+    sk,
+    vgrad(y, h, full ? [UI.white, UI.gold, UI.goldDark] : ['#bceeff', UI.p2, '#246c9b']),
+  );
+  for (let i = 1; i < 4; i++) rows(x + Math.round((w * i) / 4), y, 1, h, sk, UI.ink);
+  txt(
+    full ? 'MAX' : half ? 'EX' : 'POW',
+    side ? x - 7 : x + w + 7,
+    y,
+    6,
+    full ? UI.gold : half ? UI.p2 : UI.muted,
+    side ? 'right' : 'left',
+  );
+}
+export function hudBackdrop() {
+  ctx.fillStyle = vgrad(0, 42, ['rgba(5,8,18,.94)', 'rgba(5,8,18,.7)', 'rgba(5,8,18,0)']);
+  ctx.fillRect(0, 0, W, 42);
+  ctx.fillStyle = 'rgba(5,8,18,.9)';
+  ctx.fillRect(0, 167, W, 13);
 }
 
 /** Big combo counter that pops on every new hit and fades out at the end. */
@@ -173,19 +152,19 @@ function comboCounter(side, c) {
   const age = 70 - c.t,
     pop = 1 + Math.max(0, 6 - age) / 10,
     n = String(c.n),
-    nw = n.length * 16,
-    x = side ? W - 10 : 10,
-    y = 38;
+    width = n.length * 16 * pop;
+  const x = side ? W - 10 : 10,
+    y = 46;
   ctx.save();
   ctx.globalAlpha = Math.min(1, c.t / 12);
-  ctx.translate(side ? x - nw / 2 : x + nw / 2, y + 8);
+  ctx.translate(side ? x - width / 2 : x + width / 2, y + 8);
   ctx.scale(pop, pop);
-  txt(n, 0, -8, 16, vgrad(-8, 16, ['#ffffff', '#ffd23a', '#ff5a2a']), 'center');
+  txt(n, 0, -8, 16, vgrad(-8, 16, ['#ffffff', UI.gold, '#ff8a2a']), 'center');
   ctx.restore();
+  ctx.save();
   ctx.globalAlpha = Math.min(1, c.t / 12);
-  txt('HITS', side ? x - nw - 3 : x + nw + 3, y + 9, 6, '#ffffff', side ? 'right' : 'left');
-  txt('COMBO', side ? x - nw - 3 : x + nw + 3, y + 2, 6, '#ffb0e8', side ? 'right' : 'left');
-  ctx.globalAlpha = 1;
+  txt('HIT COMBO', x, y + Math.ceil(16 * pop) + 5, 6, UI.white, side ? 'right' : 'left');
+  ctx.restore();
 }
 
 /**
@@ -198,7 +177,7 @@ function band(y, h, k, col = '10,4,24') {
   if (bw <= 0) return;
   ctx.fillStyle = `rgba(${col},.82)`;
   ctx.fillRect(x, y, bw, h);
-  ctx.fillStyle = '#ffd23a';
+  ctx.fillStyle = '#f8cd55';
   ctx.fillRect(x, y, bw, 1);
   ctx.fillRect(x, y + h - 1, bw, 1);
   ctx.fillStyle = 'rgba(255,210,58,.35)';
@@ -211,11 +190,11 @@ function winnerPlate(label, col, perfect, t) {
   const w = label.length * 8 + 24,
     x = (W - w) / 2,
     y = 102;
-  plate(x - 1, y - 1, w + 2, 12, '#05020a', 5);
+  plate(x - 1, y - 1, w + 2, 12, '#050812', 5);
   plate(x, y, w, 10, vgrad(y, 10, [shade(col, 0.3), col, shade(col, -0.45)]), 5);
-  txt(label, W / 2 + 2, y + 1, 8, '#ffffff', 'center', '#120a1c');
+  txt(label, W / 2 + 2, y + 1, 8, '#ffffff', 'center', '#080e20');
   if (perfect) {
-    txt('PERFEITO!', W / 2, y + 16, 12, vgrad(y + 16, 12, ['#fff7b0', '#ffd23a', '#ff8a2a']), 'center');
+    txt('PERFEITO!', W / 2, y + 16, 12, vgrad(y + 16, 12, ['#fff7b0', '#f8cd55', '#ff8a2a']), 'center');
     sparkle(W / 2 - 58, y + 18, (t % 40) / 40);
     sparkle(W / 2 + 58, y + 26, ((t + 20) % 40) / 40);
   }

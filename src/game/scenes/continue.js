@@ -1,3 +1,4 @@
+import { UI, screenHeader, screenFooter } from '../ui/theme.js';
 /* Continue countdown after losing a story fight (arcade style): the beaten fighter, a big 9..0 count with a draining
    ring, punch to speed it up, START to continue, then GAME OVER. */
 import { AU } from '../audio/synth.js';
@@ -9,7 +10,7 @@ import { shade } from '../core/color.js';
 import { anyPressed } from '../core/input.js';
 import { go } from '../core/scene.js';
 import { S } from '../state.js';
-import { blink, chromaText, fade, frameBox, glitchBands, plate } from '../ui/arcade.js';
+import { chromaText, fade, frameBox, glitchBands, plate } from '../ui/arcade.js';
 import { headShot } from '../ui/portrait.js';
 import { goVs } from './flow.js';
 import { Title } from './title.js';
@@ -68,8 +69,7 @@ const Continue = {
     else if (++this.st >= SECOND) this.tick();
   },
   draw() {
-    const t = this.t,
-      ch = CH[S.p1],
+    const ch = CH[S.p1],
       n = Math.max(0, this.n);
     ctx.fillStyle = vgrad(0, H, ['#1a0410', '#3a0818', '#0c0208']);
     ctx.fillRect(0, 0, W, H);
@@ -93,16 +93,18 @@ const Continue = {
     plate(
       26,
       134,
-      ch.short.length * 8 + 16,
+      ch.short.length * 6 + 16,
       11,
       vgrad(134, 11, [shade(ch.col, 0.2), shade(ch.col, -0.4)]),
       5,
     );
-    txt(ch.short, 34, 135, 8, '#ffffff', 'left', '#120a1c');
-    if (this.over >= 0) return this.drawGameOver();
-    // CONTINUE? header and the big number
-    plate(150, 16, 152, 20, vgrad(16, 20, ['#ff9a8a', '#d8343f', '#6a0a18']), 7);
-    txt('CONTINUE?', 228, 18, 16, '#ffffff', 'center', '#3a0410');
+    txt(ch.short, 34, 136, 6, '#ffffff', 'left', '#080e20');
+    if (this.over >= 0) {
+      this.drawGameOver();
+      screenFooter('FREE PLAY', 'ENTER MENU');
+      return;
+    }
+    screenHeader('CONTINUE?', 'FREE PLAY');
     const cx = 226,
       cy = 92,
       p = this.st / SECOND;
@@ -110,7 +112,7 @@ const Continue = {
     for (let i = 0; i < 48; i++) {
       const a = -Math.PI / 2 + (i / 48) * Math.PI * 2,
         on = i / 48 >= p;
-      ctx.fillStyle = on ? (n <= 3 ? '#ff4d5e' : '#ffd23a') : '#3a1020';
+      ctx.fillStyle = on ? (n <= 3 ? '#ff4d5e' : '#f8cd55') : '#3a1020';
       ctx.fillRect(Math.round(cx + Math.cos(a) * 42) - 1, Math.round(cy + Math.sin(a) * 42) - 1, 3, 3);
     }
     const slam = 1 + Math.max(0, 1 - this.st / 8) * 0.5;
@@ -124,19 +126,18 @@ const Continue = {
       32,
       n <= 3
         ? vgrad(-16, 32, ['#ffd0d0', '#ff4d5e', '#8a1020'])
-        : vgrad(-16, 32, ['#ffffff', '#ffd23a', '#ff8a2a']),
+        : vgrad(-16, 32, ['#ffffff', '#f8cd55', '#ff8a2a']),
       'center',
     );
     ctx.restore();
     if (this.pick >= 0) {
       fade(Math.max(0, 1 - this.pick / 12), '255,255,255');
-      txt('CONTINUAR!', cx, 142, 16, vgrad(142, 16, ['#ffffff', '#ffd23a', '#ff8a2a']), 'center');
+      txt('CONTINUAR!', cx, 142, 16, vgrad(142, 16, ['#ffffff', '#f8cd55', '#ff8a2a']), 'center');
       if (this.pick > 18) fade((this.pick - 18) / 16);
       return;
     }
-    txt('START: CONTINUAR', cx, 142, 8, blink(t, 30) ? '#ffffff' : '#ffd23a', 'center');
-    txt('SOCO: ACELERAR   ESC: DESISTIR', cx, 154, 6, '#c89aa8', 'center', null);
-    txt('CRÉDITOS: FREE PLAY', W - 6, 170, 6, '#8a6070', 'right', null);
+    txt('APERTE START', cx, 145, 8, UI.white, 'center');
+    screenFooter('SOCO ACELERAR', 'ENTER CONTINUAR · ESC SAIR');
   },
   drawGameOver() {
     const k = Math.min(1, this.over / 40);

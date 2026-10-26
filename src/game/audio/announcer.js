@@ -22,4 +22,4 @@ function hype(k, q) {
   (q ? VO.queue : VO.say).call(VO, pick(HYPE[k]), ANN);
 }
 
-export { hype };
+export { HYPE, hype };

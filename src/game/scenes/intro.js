@@ -1,13 +1,14 @@
+import { UI, panel, screenBackdrop, screenHeader, screenFooter, paragraph } from '../ui/theme.js';
 /* Boot sequence: loading on the Tupinicode CRT, press start, studio logo with the developer credit, arcade warning. */
 import { AU } from '../audio/synth.js';
 import { ANN, VO } from '../audio/voice.js';
 import { H, REDUCED, W } from '../config.js';
-import { ctx, txt, vgrad, wrap } from '../core/canvas.js';
+import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed } from '../core/input.js';
-import { rnd } from '../core/math.js';
+
 import { go } from '../core/scene.js';
 import { BUILDERS, STAGES, buildNextStage } from '../stages/index.js';
-import { blink, fade, frameBox, glitchBands, plate, sparkle } from '../ui/arcade.js';
+import { blink, fade, sparkle } from '../ui/arcade.js';
 import {
   buildTupinicodeArt,
   drawStudioLogo,
@@ -94,42 +95,36 @@ const Intro = {
   draw() {
     if (this.phase === 'warn') return this.drawWarning();
     const t = this.t,
-      p = this.pt,
-      sh = this.shake > 0 ? Math.round(rnd(-this.shake, this.shake) * 0.5) : 0;
-    ctx.fillStyle = '#000';
+      p = this.pt;
+    ctx.fillStyle = UI.ink;
     ctx.fillRect(0, 0, W, H);
-    ctx.save();
-    ctx.translate(sh, 0);
     const power = this.phase === 'load' ? Math.min(1, Math.max(0, (t - 6) / 22)) : 1;
     drawTupinicode(t, { power, screen: (c, x, y, w) => this.drawScreen(c, x, y, w) });
-    // the studio logo
+    panel(10, 8, 300, 16, UI.line, 'rgba(5,8,18,.92)');
+    txt('TUPINICODE', 18, 13, 6, UI.gold, 'left', null);
+    txt('ARCADE SYSTEM · 2026', 302, 13, 6, UI.white, 'right', null);
     if (this.phase === 'logo' && p >= 60) {
-      const k = Math.min(1, (p - 60) / 8),
-        scale = 1 + (1 - k) * 1.4;
-      drawStudioLogo(134, scale);
-      if (p > 70) sparkle(40 + ((p * 3) % 240), 138 + Math.sin(p / 7) * 6, ((p * 3) % 60) / 60);
-      const sub = p < 200 ? 'A P R E S E N T A' : 'UM JOGO DE ' + DEV;
-      const a = p < 200 ? Math.min(1, (p - 96) / 20) : Math.min(1, (p - 206) / 16);
-      if (a > 0) {
-        ctx.globalAlpha = a;
-        txt(sub, W / 2, 162, 8, p < 200 ? '#c8ffd4' : '#ffd23a', 'center');
-        ctx.globalAlpha = 1;
+      const scale = REDUCED ? 0.75 : 0.75 + Math.max(0, 1 - (p - 60) / 10) * 0.35;
+      drawStudioLogo(124, scale, UI.gold);
+      if (!REDUCED && p > 70) sparkle(74 + (p % 172), 126, (p % 60) / 60, UI.white);
+      const sub = p < 200 ? 'APRESENTA' : 'UM JOGO DE ' + DEV;
+      panel(28, 151, 264, 14, UI.line, 'rgba(5,8,18,.94)');
+      txt(sub, W / 2, 155, 6, UI.white, 'center', null);
+    } else {
+      panel(28, 138, 264, 27, this.phase === 'ready' ? UI.gold : UI.line, 'rgba(5,8,18,.94)');
+      if (this.phase === 'ready') {
+        txt('APERTE START', W / 2, 143, 8, UI.gold, 'center');
+        txt('ENTER OU TOQUE NA TELA', W / 2, 155, 6, UI.white, 'center', null);
+      } else {
+        txt('SYSTEM CHECK', 40, 146, 6, UI.white, 'left', null);
+        txt(Math.round(this.progress() * 100) + '%', 280, 146, 6, UI.gold, 'right', null);
+        ctx.fillStyle = UI.raised;
+        ctx.fillRect(40, 156, 240, 2);
+        ctx.fillStyle = UI.gold;
+        ctx.fillRect(40, 156, Math.round(240 * this.progress()), 2);
       }
     }
-    if (this.phase === 'load' && t > 28) {
-      ctx.globalAlpha = 0.7;
-      txt('TUPINICODE', W / 2, 150, 8, '#3a8a4a', 'center', null);
-      ctx.globalAlpha = 1;
-    }
-    if (this.phase === 'ready' && blink(t, 40))
-      txt('APERTE ENTER OU TOQUE NA TELA', W / 2, 152, 8, '#ffffff', 'center');
-    ctx.restore();
-    // impact flash and glitches
-    if (this.phase === 'logo') {
-      if (p >= 64 && p < 74) fade(1 - (p - 64) / 10, '220,255,230');
-      if ((p >= 64 && p < 84 && p % 2) || (p > 100 && p % 97 < 3)) glitchBands(5, 120, 176, 10);
-      if (p >= 330) fade((p - 330) / 30);
-    }
+    if (this.phase === 'logo' && p >= 330) fade((p - 330) / 30);
     if (this.phase === 'load' && t < 6) fade(1);
   },
   /** CRT contents for each phase, in HD pixels. */
@@ -137,7 +132,7 @@ const Intro = {
     const t = this.t,
       p = this.pt;
     if (this.phase === 'load' || this.phase === 'ready') {
-      screenWindow(c, x, y, w, 'tupinicode.exe');
+      screenWindow(c, x, y, w, 'ARCADE BOOT');
       const k = this.progress(),
         done = this.phase === 'ready';
       if (!done) {
@@ -165,7 +160,7 @@ const Intro = {
       return;
     }
     // logo phase: binary, studio name, then the developer credit
-    screenWindow(c, x, y, w, p < 200 ? 'tupinicode.exe' : 'créditos.txt');
+    screenWindow(c, x, y, w, p < 200 ? 'ARCADE BOOT' : 'STAFF');
     if (p < 200) {
       const l1 = typed('10101', p, 0),
         l2 = typed('TUPINICODE', p, 12),
@@ -186,21 +181,13 @@ const Intro = {
   /** Arcade-style warning card (a tribute to the 90s boot warnings), with a joke instead of legal text. */
   drawWarning() {
     const p = this.pt;
-    ctx.fillStyle = vgrad(0, H, ['#070a2a', '#0c1450', '#070a2a']);
-    ctx.fillRect(0, 0, W, H);
-    for (let y = 0; y < H; y += 4) {
-      ctx.fillStyle = 'rgba(0,0,0,.18)';
-      ctx.fillRect(0, y, W, 2);
-    }
-    frameBox(22, 22, 276, 130, '#ffd23a', 'rgba(6,10,40,.9)');
-    plate(110, 14, 100, 16, vgrad(14, 16, ['#ff6a5a', '#d8343f', '#8a1424']), 6);
-    txt('AVISO', W / 2 + 3, 18, 8, blink(p, 24) ? '#ffffff' : '#ffd23a', 'center');
-    const lines = wrap(WARNING, 33),
-      top = 30 + Math.round((122 - lines.length * 12) / 2);
-    lines.forEach((l, i) => txt(l, W / 2, top + i * 12, 8, '#e8ecff', 'center', null));
-    sparkle(214, 16, (p % 50) / 50);
-    txt(`© ${YEAR} TUPINICODE · ${DEV}`, W / 2, 164, 8, '#7a86c8', 'center', null);
-    fade(p < 20 ? 1 - p / 20 : p > 280 ? (p - 280) / 20 : 0);
+    screenBackdrop();
+    screenHeader('AVISO', 'ARCADE EXPERIENCE');
+    panel(16, 40, 288, 112, UI.gold);
+    txt('ULTRA CAOS', W / 2, 50, 16, UI.gold, 'center');
+    paragraph(WARNING, W / 2, 77, 264, { align: 'center', size: 6, lineHeight: 11, maxLines: 6 });
+    screenFooter('© ' + YEAR + ' TUPINICODE', 'ENTER CONTINUAR');
+    fade(p < 16 ? 1 - p / 16 : p > 284 ? (p - 284) / 16 : 0);
   },
 };
 

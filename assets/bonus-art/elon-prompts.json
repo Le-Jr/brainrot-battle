@@ -1,0 +1,27 @@
+{
+  "tool": "image_gen (built-in)",
+  "subject": "Cartoon Elon Musk spectator for the Cybertruck bonus stage",
+  "referencePolicy": "All emotional variants reference elon-0.png directly.",
+  "prompts": [
+    {
+      "frame": 0,
+      "prompt": "Single full-body comical exaggerated Elon Musk caricature; recognizable broad face, short swept brown hair, oversized head, small stocky body; black rocket t-shirt, dark jeans, black shoes. Confident smug grin, arms on hips, looking LEFT three-quarter view. Crisp Neo Geo arcade pixel art, dark purple outline, vibrant 24-color palette, 96x104 logical grid. Transparent, no ground/shadow/text/other objects/sheet, no blur or photorealism."
+    },
+    {
+      "frame": 1,
+      "prompt": "Use case: identity-preserve. Asset type: single full-body cartoon arcade game spectator reaction sprite. The reference is the approved pristine Elon Musk cartoon sprite. Preserve exactly the same character identity, face proportions, oversized head, short swept brown hair, black rocket t-shirt, dark jeans and black sneakers, left-facing three-quarter view, dark purple outlines, crisp pixel clusters and vibrant 24-color palette. Change ONLY the expression and arm pose: Eyes widened, eyebrows raised, mouth open in a small shocked gasp, hands lifted in front of chest with palms outward. Same full body scale and standing baseline as the reference. Full character visible, centered, transparent background, no ground, no shadow, no text, no other objects, no sprite sheet, no blur, no photorealism."
+    },
+    {
+      "frame": 2,
+      "prompt": "Use case: identity-preserve. Asset type: single full-body cartoon arcade game spectator reaction sprite. The reference is the approved pristine Elon Musk cartoon sprite. Preserve exactly the same character identity, face proportions, oversized head, short swept brown hair, black rocket t-shirt, dark jeans and black sneakers, left-facing three-quarter view, dark purple outlines, crisp pixel clusters and vibrant 24-color palette. Change ONLY the expression and arm pose: Very worried eyebrows, clenched teeth grimace, shoulders hunched, both hands pressed onto his cheeks. Same full body scale and standing baseline as the reference. Full character visible, centered, transparent background, no ground, no shadow, no text, no other objects, no sprite sheet, no blur, no photorealism."
+    },
+    {
+      "frame": 3,
+      "prompt": "Use case: identity-preserve. Asset type: single full-body cartoon arcade game spectator reaction sprite. The reference is the approved pristine Elon Musk cartoon sprite. Preserve exactly the same character identity, face proportions, oversized head, short swept brown hair, black rocket t-shirt, dark jeans and black sneakers, left-facing three-quarter view, dark purple outlines, crisp pixel clusters and vibrant 24-color palette. Change ONLY the expression and arm pose: Frantic desperate panic, eyes bulging, mouth wide open yelling, both hands gripping the top sides of his hair, elbows outward. Same full body scale and standing baseline as the reference. Full character visible, centered, transparent background, no ground, no shadow, no text, no other objects, no sprite sheet, no blur, no photorealism."
+    },
+    {
+      "frame": 4,
+      "prompt": "Use case: identity-preserve. Asset type: single full-body cartoon arcade game spectator reaction sprite. The reference is the approved pristine Elon Musk cartoon sprite. Preserve exactly the same character identity, face proportions, oversized head, short swept brown hair, black rocket t-shirt, dark jeans and black sneakers, left-facing three-quarter view, dark purple outlines, crisp pixel clusters and vibrant 24-color palette. Change ONLY the expression and arm pose: Devastated crying with two large bright cyan streams of cartoon tears, eyes squeezed shut, mouth wailing, both hands gripping his head. Remain standing, feet fully visible. Same full body scale and standing baseline as the reference. Full character visible, centered, transparent background, no ground, no shadow, no text, no other objects, no sprite sheet, no blur, no photorealism."
+    }
+  ]
+}

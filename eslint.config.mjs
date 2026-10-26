@@ -8,7 +8,17 @@ const config = [
   ...nextTs,
   prettier,
   {
-    ignores: ['.next/**', 'out/**', 'node_modules/**', 'legacy/**', '.agents/**', 'next-env.d.ts'],
+    ignores: [
+      '.next/**',
+      'out/**',
+      'node_modules/**',
+      'legacy/**',
+      '.agents/**',
+      'next-env.d.ts',
+      'output/**',
+      '.venv-chatterbox/**',
+      '.venv-tts/**',
+    ],
   },
   {
     // Canvas engine: plain ES modules, no React.

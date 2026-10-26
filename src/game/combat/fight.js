@@ -1,3 +1,4 @@
+import { hudBackdrop } from '../ui/hud.js';
 /* A match: rounds, timer, hit resolution, projectiles, camera, HUD and banners. */
 import { hype } from '../audio/announcer.js';
 import { AU } from '../audio/synth.js';
@@ -691,6 +692,7 @@ class Fight {
     txt(f.ch.spName, f.side ? 100 : W - 100, y + 28, 8, '#fff07a', 'center');
   }
   drawHUD() {
+    hudBackdrop();
     for (let i = 0; i < 2; i++) {
       const F = this.f[i];
       portraitChip(i, F, this.tick);

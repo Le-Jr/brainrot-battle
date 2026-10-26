@@ -1,4 +1,5 @@
 /* Main canvas binding plus low-level drawing helpers (offscreen canvases, rects, pixel ellipses, outlined text). */
+import { pixelText } from './pixel-font.js';
 import { FONT } from '../config.js';
 
 /** Main 640x360 canvas and its context, bound once by initCanvas(). */
@@ -96,6 +97,10 @@ function drawMarks(marks, n, x, y, size, align, col, o) {
 }
 
 function txt(s, x, y, size = 8, col = '#ffffff', align = 'left', ol = '#120a1c') {
+  if (size <= 7 && typeof col === 'string') {
+    pixelText(ctx, s, Math.round(x), Math.round(y), size, col, align, ol);
+    return;
+  }
   const acc = splitAccents(s);
   if (acc) s = acc.plain;
   ctx.font = size + 'px ' + FONT;

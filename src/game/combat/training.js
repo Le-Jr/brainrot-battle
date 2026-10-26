@@ -1,3 +1,4 @@
+import { UI, panel } from '../ui/theme.js';
 /* Training mode: dummy opponent, infinite health, combo damage readout. */
 import { W } from '../config.js';
 import { txt } from '../core/canvas.js';
@@ -57,10 +58,19 @@ class Training extends Fight {
   }
   onKO() {}
   drawBanner() {
-    txt('TREINO', W / 2, 30, 8, '#4af0ff', 'center');
-    txt('ESC: PAUSA   TAB: HITBOXES', W / 2, 150, 8, 'rgba(255,255,255,.7)', 'center');
-    if (this.show && this.show.t > 0)
-      txt('DANO DO COMBO: ' + this.show.dmg, W / 2, 44, 8, '#ffd23a', 'center');
+    panel(W / 2 - 64, 40, 128, 48, UI.line, 'rgba(5,8,18,.93)');
+    txt('TREINO', W / 2, 45, 6, UI.p2, 'center', null);
+    txt(
+      this.show && this.show.t > 0 ? 'DANO: ' + this.show.dmg : 'PRATIQUE COMBOS',
+      W / 2,
+      56,
+      6,
+      UI.gold,
+      'center',
+      null,
+    );
+    txt('ESC PAUSA', W / 2, 67, 6, UI.muted, 'center', null);
+    txt('TAB HITBOXES', W / 2, 78, 6, UI.white, 'center', null);
   }
 }
 

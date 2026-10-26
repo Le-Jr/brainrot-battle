@@ -1,14 +1,14 @@
 /* Design tokens and base styles shared by the arcade cabinet page */
 :root {
-  --bg: #0c0814;
-  --panel: #171024;
-  --line: #2c2142;
-  --fg: #f1e9ff;
-  --muted: #a395c2;
-  --gold: #ffcc3a;
-  --red: #ff4d5e;
-  --blue: #45b4ff;
-  --pink: #ff6ad5;
+  --bg: #080d1c;
+  --panel: #111d32;
+  --line: #435675;
+  --fg: #fff3d6;
+  --muted: #b0bdd0;
+  --gold: #f8cd55;
+  --red: #ef625c;
+  --blue: #62c9ee;
+  --pink: #8ba9cd;
   --pix: var(--font-pixel), ui-monospace, 'Courier New', monospace;
   color-scheme: dark;
 }
@@ -30,7 +30,12 @@ body {
   font-family: var(--pix);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 14px 28px;
+  padding-block: 24px 32px;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 23px,
+    rgba(111, 143, 184, 0.035) 23px 24px
+  );
 }
 
 button:focus-visible {
@@ -42,6 +47,7 @@ kbd {
   font: inherit;
   background: var(--bg);
   border: 1px solid var(--line);
+  box-shadow: 0 2px 0 #050812;
   padding: 2px 5px;
   color: var(--fg);
 }

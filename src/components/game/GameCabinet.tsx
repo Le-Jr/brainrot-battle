@@ -52,7 +52,9 @@ export function GameCabinet({ legend }: { legend: ReactNode }) {
     <div className={styles.cabinet}>
       <header className={styles.marquee}>
         <h1 className={styles.title}>
-          <b>BRAINROT</b> BATTAGLIA <span>ULTRA CAOS</span>
+          <span className={styles.eyebrow}>TUPINICODE · ARCADE SYSTEM</span>
+          <b>BRAINROT BATTAGLIA</b>
+          <span>ULTRA CAOS · FREE PLAY</span>
         </h1>
         <ControlBar toggles={toggles} onToggle={toggle} onFullscreen={fullscreen} />
       </header>
@@ -82,10 +84,10 @@ export function GameCabinet({ legend }: { legend: ReactNode }) {
               )}
               <div className={styles.fsBar}>
                 <button type="button" onClick={fullscreen} aria-label="Sair da tela cheia">
-                  ✕ SAIR
+                  SAIR
                 </button>
                 <button type="button" aria-pressed={toggles.music} onClick={() => toggle('music')}>
-                  {toggles.music ? '♪ SOM' : '♪ MUDO'}
+                  {toggles.music ? 'SOM' : 'MUDO'}
                 </button>
               </div>
             </>
@@ -95,7 +97,7 @@ export function GameCabinet({ legend }: { legend: ReactNode }) {
 
       {!fs.active && coarse && (
         <button type="button" className={styles.playFs} onClick={fullscreen}>
-          ⛶ JOGAR EM TELA CHEIA
+          JOGAR EM TELA CHEIA
         </button>
       )}
       {!fs.active && <TouchControls variant="dock" forceVisible={toggles.touch} {...handlers} />}

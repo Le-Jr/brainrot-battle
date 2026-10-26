@@ -1,8 +1,10 @@
 .cabinet {
-  max-width: 1080px;
+  max-width: 1120px;
   margin: 0 auto;
   display: grid;
-  gap: 12px;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
 }
 
 .marquee {
@@ -10,22 +12,35 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 20px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--gold);
+  background: linear-gradient(115deg, #203451, #111d32 65%);
+  box-shadow: inset 0 -3px 0 #050812;
 }
-
 .title {
   margin: 0;
-  font-size: 12px;
+  display: grid;
+  gap: 8px;
+  font-size: 8px;
   font-weight: 400;
-  letter-spacing: 0.08em;
-  line-height: 1.6;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
 }
 .title b {
+  font-size: clamp(11px, 1.5vw, 16px);
   color: var(--gold);
   font-weight: 400;
+  text-shadow: 2px 2px #050812;
 }
 .title span {
-  color: var(--pink);
+  color: var(--muted);
+}
+.title .eyebrow {
+  font-size: 7px;
+  color: var(--blue);
+  letter-spacing: 0.1em;
 }
 
 .screen {
@@ -34,9 +49,10 @@
   aspect-ratio: 16 / 9;
   background: #000;
   box-shadow:
-    0 0 0 3px var(--line),
-    0 0 0 7px #08050d,
-    0 18px 60px rgba(255, 90, 170, 0.18);
+    0 0 0 2px #7890af,
+    0 0 0 6px #050812,
+    0 0 0 7px #94672a,
+    0 16px 36px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
 .canvas {
@@ -88,9 +104,11 @@
   display: grid;
   place-items: center;
   container-type: size;
+  --fs-controls-space: calc(56px + env(safe-area-inset-bottom, 0px));
 }
 .fs .screen {
-  width: min(100cqw, calc(100cqh * 16 / 9));
+  width: min(100cqw, calc((100cqh - var(--fs-controls-space)) * 16 / 9));
+  margin-bottom: var(--fs-controls-space);
   box-shadow: none;
 }
 /* phone held upright: turn the game 90° clockwise so it plays in landscape */
@@ -107,19 +125,23 @@
 }
 .fsBar {
   position: absolute;
-  top: max(10px, 2cqh);
-  left: max(12px, 2cqw);
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 8px;
 }
 .fsBar button {
   font: inherit;
-  font-size: 8px;
+  font-size: 9px;
+  min-height: 40px;
+  min-width: 44px;
   color: var(--fg);
-  background: rgba(23, 16, 36, 0.7);
+  background: rgba(5, 8, 18, 0.88);
   border: 2px solid rgba(255, 204, 58, 0.45);
-  border-radius: 6px;
-  padding: 7px 9px;
+  border-radius: 0;
+  padding: 4px;
+  cursor: pointer;
   letter-spacing: 0.06em;
   -webkit-tap-highlight-color: transparent;
 }
@@ -140,4 +162,23 @@
     0 8px 24px rgba(255, 204, 58, 0.25);
   padding: 14px 12px;
   cursor: pointer;
+}
+
+.canvas:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -3px;
+}
+@media (max-width: 760px) {
+  .marquee {
+    gap: 16px;
+    padding: 14px;
+  }
+  .cabinet {
+    gap: 16px;
+  }
+}
+@media (pointer: coarse) {
+  .fsBar button {
+    min-height: 44px;
+  }
 }
