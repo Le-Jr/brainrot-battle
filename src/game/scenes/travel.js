@@ -12,6 +12,7 @@ import { clamp } from '../core/math.js';
 import { drawSpr, sprite } from '../sprites/sprite.js';
 import { S } from '../state.js';
 import { DECOR, LOC, MAPW, getMap, minePlane } from '../world/map.js';
+import { drawMapSaturn } from '../world/saturn.js';
 import { headShot } from '../ui/portrait.js';
 
 function Travel(from, to, next) {
@@ -31,8 +32,8 @@ function Travel(from, to, next) {
       const t = this.t;
       screenBackdrop(t);
       ctx.save();
-      ctx.translate(44, 20);
-      ctx.scale(0.72, 0.72);
+      ctx.translate(29, 16);
+      ctx.scale(0.82, 0.82);
       ctx.drawImage(getMap(), 0, 0, W, H);
       for (const [x, y, ph] of MAPW)
         if (Math.sin(t * 0.06 + ph) > 0.8) {
@@ -124,27 +125,7 @@ function Travel(from, to, next) {
           ctx.fillRect(Math.round(SL.x + (L.x - SL.x) * f), Math.round(SL.y + (L.y - SL.y) * f), 1, 1);
         }
       }
-      fe(ctx, SL.x, SL.y, 8, 8, '#080e20');
-      fe(ctx, SL.x, SL.y, 7, 7, '#e8b06a');
-      for (let y = -5; y <= 5; y += 3) ((ctx.fillStyle = '#c8904a'), ctx.fillRect(SL.x - 6, SL.y + y, 12, 1));
-      for (let a = 0; a < 6.28; a += 0.08) {
-        const x = Math.round(SL.x + Math.cos(a + t / 30) * 14),
-          y = Math.round(SL.y + Math.sin(a + t / 30) * 4);
-        if (Math.sin(a + t / 30) < 0 && Math.hypot(x - SL.x, y - SL.y) < 7) continue;
-        ctx.fillStyle = '#ecdcb0';
-        ctx.fillRect(x, y, 1, 1);
-      }
-      fe(ctx, SL.x, SL.y - 10, 4, 3, '#f4f0ea');
-      ctx.fillStyle = '#2a2230';
-      ctx.fillRect(SL.x - 2, SL.y - 11, 1, 1);
-      ctx.fillRect(SL.x + 2, SL.y - 11, 1, 1);
-      ctx.fillStyle = '#f0a0b4';
-      ctx.fillRect(SL.x - 1, SL.y - 8, 3, 1);
-      ctx.fillStyle = '#b060ff';
-      if ((t >> 3) & 1) {
-        ctx.fillRect(SL.x - 2, SL.y - 11, 1, 1);
-        ctx.fillRect(SL.x + 2, SL.y - 11, 1, 1);
-      }
+      drawMapSaturn(ctx, SL.x, SL.y, t);
       const mark = (L, col, r = 1) => {
         ctx.fillStyle = '#080e20';
         ctx.fillRect(L.x - r - 1, L.y - r - 1, r * 2 + 3, r * 2 + 3);
@@ -193,10 +174,10 @@ function Travel(from, to, next) {
       ctx.restore();
       const opp = S.li < 7 ? CH[S.ladder[S.li]] : BOSS;
       screenHeader('BRAINROTÁLIA', 'FRAGMENTOS ' + S.li + '/7');
-      panel(10, 132, 300, 27, UI.gold);
-      txt('PRÓXIMA PARADA', 20, 138, 6, UI.muted, 'left', null);
-      fitLabel(B.n, 20, 148, 246, 6, UI.white);
-      headShot(opp, 282, 135, 21, { flip: true, t });
+      panel(10, 138, 300, 27, UI.gold);
+      txt('PRÓXIMA PARADA', 20, 144, 6, UI.muted, 'left', null);
+      fitLabel(B.n, 20, 154, 246, 6, UI.white);
+      headShot(opp, 282, 141, 21, { flip: true, t });
       screenFooter(S.li < 7 ? 'DESAFIO ' + (S.li + 1) + '/7' : 'CHEFE FINAL', 'ENTER CONTINUAR');
     },
   };

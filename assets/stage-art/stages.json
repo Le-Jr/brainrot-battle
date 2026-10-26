@@ -621,12 +621,29 @@
     "layers": {
       "map": {
         "src": "map.png",
-        "width": 640,
+        "width": 1280,
         "anchor": [
           0,
           0
         ],
-        "colors": 96
+        "resolution": [
+          1280,
+          720
+        ],
+        "colors": 256
+      },
+      "saturn": {
+        "src": "saturn.png",
+        "width": 256,
+        "anchor": [
+          0.5,
+          96
+        ],
+        "resolution": [
+          256,
+          192
+        ],
+        "colors": 128
       }
     }
   }

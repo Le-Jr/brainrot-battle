@@ -85,17 +85,17 @@ let MAPC = null,
 let MAP_ART = null;
 /** Where each location sits on the illustrated map (same order as LOC). */
 const LOC_ART = [
-  [212, 113],
-  [134, 70],
-  [214, 59],
-  [77, 98],
-  [140, 110],
-  [65, 54],
-  [119, 34],
-  [161, 46],
-  [297, 107],
-  [288, 38],
-  [176, 86],
+  [211, 117],
+  [134, 76],
+  [211, 64],
+  [80, 98],
+  [138, 115],
+  [62, 55],
+  [121, 36],
+  [161, 47],
+  [295, 115],
+  [286, 48],
+  [176, 93],
 ];
 /** Spots of the animated decorations (null = drawn by the art itself). */
 const DECOR = {
@@ -111,8 +111,8 @@ function useMapArt(img) {
   MAP_ART = img;
   LOC_ART.forEach(([x, y], i) => Object.assign(LOC[i], { x, y }));
   Object.assign(DECOR, {
-    fin: [246, 140],
-    plane: [119, 26],
+    fin: [240, 144],
+    plane: [121, 28],
     clock: null,
     steam: null,
     logs: null,

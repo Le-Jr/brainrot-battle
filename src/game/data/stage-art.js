@@ -142,7 +142,8 @@ const STAGE_ART = {
   },
   map: {
     layers: [
-      "map"
+      "map",
+      "saturn"
     ],
     off: []
   }

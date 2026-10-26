@@ -60,8 +60,8 @@ function prepareSource(img, o) {
 }
 
 function buildLayer(name, img, o) {
-  const LW = LAYER_W[name],
-    out = createCanvas(LW, H),
+  const [LW, LH] = o.resolution || [LAYER_W[name], H];
+  const out = createCanvas(LW, LH),
     g = out.getContext('2d'),
     src = prepareSource(img, o),
     s = o.width / src.width,
@@ -88,8 +88,8 @@ function buildLayer(name, img, o) {
       d = id.data,
       row = LW * 4,
       painted = [];
-    for (let yy = 0; yy < H; yy++) if (d[yy * row + Math.floor(LW / 2) * 4 + 3] > 0) painted.push(yy);
-    for (let yy = 0; yy < H && painted.length; yy++) {
+    for (let yy = 0; yy < LH; yy++) if (d[yy * row + Math.floor(LW / 2) * 4 + 3] > 0) painted.push(yy);
+    for (let yy = 0; yy < LH && painted.length; yy++) {
       const from =
         yy < painted[0] ? painted[0] : yy > painted[painted.length - 1] ? painted[painted.length - 1] : yy;
       if (from !== yy) d.copyWithin(yy * row, from * row, from * row + row);
@@ -103,8 +103,15 @@ function buildLayer(name, img, o) {
 
 const config = JSON.parse(fs.readFileSync(path.join(SRC, 'stages.json'), 'utf8'));
 const manifest = {};
+// Optional ids make it possible to rebuild the map without touching every arena.
+const only = process.argv.slice(2);
 for (const [id, st] of Object.entries(config)) {
   if (id.startsWith('_')) continue;
+  if (only.length && !only.includes(id)) {
+    const layers = Object.keys(st.layers).filter((name) => fs.existsSync(path.join(OUT, id, name + '.png')));
+    if (layers.length) manifest[id] = { layers, off: st.off || [] };
+    continue;
+  }
   fs.mkdirSync(path.join(OUT, id), { recursive: true });
   const done = [];
   for (const [name, o] of Object.entries(st.layers)) {
@@ -129,7 +136,7 @@ for (const [id, st] of Object.entries(config)) {
     const layer = buildLayer(name, await loadImage(fs.readFileSync(file)), o);
     fs.writeFileSync(path.join(OUT, id, name + '.png'), layer.toBuffer('image/png'));
     done.push(name);
-    console.log(`${id}/${name}.png`, LAYER_W[name] + 'x' + H);
+    console.log(`${id}/${name}.png`, layer.width + 'x' + layer.height);
   }
   if (done.length) manifest[id] = { layers: done, off: st.off || [] };
 }

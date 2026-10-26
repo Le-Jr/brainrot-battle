@@ -544,7 +544,13 @@ O pipeline recorta, escala, posiciona e aplica a mesma paleta limitada e o mesmo
 
 ## Mapa de Brainrotália (`map`)
 
-Uma imagem só, **16:9**, opaca (sem magenta). Salve em `assets/stage-art/map/map.png`. A camada interativa (marcadores, rota, avião, Saturno com os raios roxos, barras de cima e de baixo) continua sendo desenhada pelo jogo, e as posições dos 11 locais são ajustadas na arte gerada.
+Arte principal **16:9**, opaca (sem magenta), em `assets/stage-art/map/map.png`. A versão atual foi refeita em **26/10/2026** com o gerador de imagens integrado, junto de uma segunda imagem transparente, `assets/stage-art/map/saturn.png`, da Vacca Saturnita com corpo de Saturno e anéis. O jogo continua desenhando marcadores, rotas, avião, portal e raios roxos; a vaca-planeta flutua como uma camada independente.
+
+Os **prompts exatos usados nas duas gerações**, referências e caminhos estão em [`assets/stage-art/map/prompts.json`](../../assets/stage-art/map/prompts.json). A geração do mapa usou a arte anterior como referência de geografia; a geração da vaca-planeta usou o sprite de Saturnita (`assets/readme/chars/saturnita.png`) como referência de identidade.
+
+Saídas distribuídas: `public/stages/map/map.png` (**1280×720**, 256 cores) e `public/stages/map/saturn.png` (**256×192**, 128 cores, alpha preservado). Não são ampliações dos arquivos anteriores: são novas gerações, reduzidas a partir dos originais maiores. O pipeline aceita `resolution` por camada para preservar a resolução própria do mapa sem alterar as arenas. Reconstrua somente esses assets com `npm run stages:art -- map`; os originais de geração ficam ignorados pelo Git, e os PNGs processados são distribuídos.
+
+O prompt abaixo é a **versão anterior**, mantida como base histórica. A revisão atual conserva os biomas e marcos, reforça contornos e leitura em escala pequena e gera Saturnita separadamente, sem gravar marcadores ou HUD na arte.
 
 - As faixas de **0–9%** (topo) e **81–100%** (base) da altura ficam atrás das barras do jogo: só mar.
 - O **canto superior direito** fica livre (mar escuro/aberto): é lá que o jogo desenha Saturno e o portal.
