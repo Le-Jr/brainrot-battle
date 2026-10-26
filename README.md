@@ -130,7 +130,10 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
 - Prólogo do mundo + prólogo e final **próprios de cada lutador**
 - Cena antes e depois de **cada rival**, com rivalidades especiais
 - Mapa animado de **Brainrotália** entre as lutas
-- Intro e derrota do chefe, epílogo e créditos
+- Chefe em duas fases: Saturnita, ascensão do Mega Brain e batalha final
+- Cutscene global com Bri Bri jogável e desbloqueável, novas vozes e duas trilhas FM originais
+- Ataque coletivo dos brainrots, salvação do planeta e epílogos separados de cada herói
+- Bri Bri desbloqueável após vencer a segunda forma, com 16 poses e especial próprio
 - Narração Chatterbox pré-gerada em 🇧🇷 🇮🇹 🇬🇧
 
   </td>
@@ -314,3 +317,7 @@ Essa rede de segurança continua no projeto como `tests/visual-snapshot.js`.
 <br>
 <sub><b>TRALALERO TRALALÀ!</b> · feito no Brasil com 🇮🇹 no coração</sub>
 </div>
+
+### Testes locais / God Mode
+
+Em `localhost`, clique em **TESTES (F2)** ou pressione **F2**. O primeiro item abre a última luta como Bri Bri, com God Mode, especial infinito e relógio parado. O painel também acessa cutscenes, bônus, personagens, cenários, músicas e vozes, com XP isolado do progresso salvo. [Guia do painel local](docs/tecnico/09-testes-locais.md).

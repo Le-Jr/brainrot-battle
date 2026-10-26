@@ -243,6 +243,12 @@ const AU = {
   leadNote(tr, f, t, dur) {
     const L = this.lead;
     switch (tr.lw) {
+      case 'cosmic':
+        // Detuned FM brass/guitar attack with an octave halo, rather than a reused stage voice.
+        this.fm(f, t, dur, 0.12, L, { r: 1, i: 3.2, i2: 0.85, id: 0.12, a: 0.012, sus: 0.78, vib: 1 });
+        this.fm(f * 1.004, t, dur, 0.045, L, { r: 2, i: 1.8, i2: 0.4, filter: 3800, sus: 0.65 });
+        this.osc('triangle', f * 2, t, dur * 0.85, 0.035, L, { a: 0.025, sus: 0.7 });
+        break;
       case 'brass':
         this.fm(f, t, dur, 0.17, L, { r: 1, i: 2.6, i2: 1.1, id: 0.16, a: 0.03, sus: 0.82, vib: 1 });
         this.fm(f * 1.004, t, dur, 0.06, L, { r: 1, i: 1.4, a: 0.04, sus: 0.8 });
@@ -361,6 +367,20 @@ const AU = {
       this.osc(this.p12, mf(60 + ch.pc + ch.tones[s % 4] + (bar % 2 ? 12 : 0)), t, d * 0.7, 0.04, M, {
         sus: 0.3,
       });
+    if (tr.energy) {
+      const energy = tr.energy[bar % tr.energy.length];
+      if (pos === 0) {
+        this.fm(mf(48 + ch.pc), t, d * spb * 0.9, 0.035 * energy, M, { r: 1, i: 1.2, a: 0.12, sus: 0.85 });
+      }
+      if (energy >= 0.8 && pos % 2 === 0)
+        this.osc(this.p12, mf(72 + ch.pc + ch.tones[(pos / 2) % 4]), t, d * 0.65, 0.035 * energy, this.lead, {
+          sus: 0.25,
+        });
+      if (bar % 4 === 3 && pos >= 12) {
+        this.osc('sine', 180 - (pos - 12) * 18, t, 0.18, 0.25 * energy, M, { slide: 65, sus: 0.2 });
+        this.noise(t, 0.06, 0.06 * energy, M, { hp: 3000 });
+      }
+    }
     const dr = tr.dr,
       at = (k) => (dr[k] || '')[pos] === 'x';
     if (at('k')) this.osc('sine', 155, t, 0.18, 0.9, M, { slide: 40, st: 0.12, sus: 0.2 });

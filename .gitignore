@@ -31,3 +31,6 @@ output/
 .venv-chatterbox/
 .venv-tts/
 __pycache__/
+
+# High-resolution finale masters; processed assets and prompts are shipped.
+assets/finale-art/*.png

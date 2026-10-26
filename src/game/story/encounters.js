@@ -1,5 +1,5 @@
 /* Ladder encounters: arrival lines, hypnotized/freed dialogue, retorts, rivalries and the boss intro. */
-import { CH } from '../characters/roster.js';
+import { PLAYABLE } from '../characters/roster.js';
 import { S } from '../state.js';
 import { STORY } from './character-arcs.js';
 import { PRP, RDT, pnx } from './panels.js';
@@ -97,7 +97,13 @@ const RIVAL = {
 };
 function preFight(me, opp, li) {
   const s = opp.stage,
-    mine = RIVAL[me.id + '>' + opp.id] || RET[me.id][li % 3];
+    mine =
+      RIVAL[me.id + '>' + opp.id] ||
+      (RET[me.id] || [
+        'Bri Bri! Ninguém vai controlar você!',
+        'Meu escudo vai romper esse sinal!',
+        'Vamos lutar pela sua liberdade!',
+      ])[li % 3];
   return [
     pnx([s, PRP, 100], [['O', 'idle', 200, 150, -1, 2, 0, 1]], ARR[s], null, 'zoom'),
     pnx([s, PRP, 100], [['O', 'win', 200, 150, -1, 2, 0, 1]], OPP[opp.id].hyp, 'O', 'glitch'),
@@ -134,7 +140,7 @@ function freedScene(me, opp, n) {
   ];
 }
 function bossIntro() {
-  const id = CH[S.p1].id;
+  const id = PLAYABLE[S.p1].id;
   const a = [
     pnx(
       [9, 'rgba(0,0,0,.5)', 80],

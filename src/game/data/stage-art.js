@@ -146,6 +146,16 @@ const STAGE_ART = {
       "saturn"
     ],
     off: []
+  },
+  finale: {
+    layers: [
+      "storm",
+      "hero",
+      "boss",
+      "bribri",
+      "coalition"
+    ],
+    off: []
   }
 };
 

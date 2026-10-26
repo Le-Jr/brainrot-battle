@@ -1,3 +1,4 @@
+import { hasFinaleArt, drawFinaleArt } from './finale-art.js';
 /* Sprite cache, drawing with facing/scale, and collision profiles measured from the sprite pixels. */
 import { ctx, mk } from '../core/canvas.js';
 import { HD, drawHD } from './hd.js';
@@ -10,7 +11,8 @@ function sprite(ch, pose, f, a, alt, tint) {
   let c = SPR.get(k);
   if (c) return c;
   const bonus = ch.id !== 'parrot' && hasBonusArt(ch.id);
-  const hd = !!HD[ch.id] || bonus;
+  const finale = hasFinaleArt(ch);
+  const hd = !!HD[ch.id] || bonus || finale;
   c = mk(SW * (hd ? 2 : 1), SH * (hd ? 2 : 1));
   c.hd = hd;
   c.own = hd && (pose === 'down' || pose === 'fall');
@@ -21,7 +23,8 @@ function sprite(ch, pose, f, a, alt, tint) {
     g.fillStyle = tint === 'w' ? '#ffffff' : tint === 'p' ? 'rgba(170,60,255,.42)' : 'rgba(90,180,255,.55)';
     g.fillRect(0, 0, c.width, c.height);
   } else {
-    if (bonus) drawBonusArt(g, ch.id, Number(pose.slice(1)) || 0, OX * 2, OY * 2);
+    if (finale) drawFinaleArt(g, ch, pose, f, a);
+    else if (bonus) drawBonusArt(g, ch.id, Number(pose.slice(1)) || 0, OX * 2, OY * 2);
     else if (hd) drawHD(g, ch, pose, f, a);
     else {
       setTarget(g);

@@ -1,3 +1,5 @@
+import { UNLOCKS } from './progression/unlocks.js';
+import { isLocalHost } from './dev/local.js';
 /* Engine entry point. The React shell calls createGame() once the <canvas> is mounted. */
 import { AU } from './audio/synth.js';
 import { VO } from './audio/voice.js';
@@ -41,6 +43,7 @@ function boot(assetBase, intro, stageBase) {
     const map = artImage('map', 'map');
     if (map) useMapArt(map);
     XP.load();
+    UNLOCKS.load();
     VO.init();
     buildLogo();
     if (intro) Intro.assetsReady = true;
@@ -79,7 +82,13 @@ function createGame({
   };
   if (canvas.addEventListener) canvas.addEventListener('pointerdown', onPointer);
   let alive = true;
-  const ready = boot(assetBase, intro, stageBase).then(() => {
+  let inspector = null;
+  const ready = boot(assetBase, intro, stageBase).then(async () => {
+    if (alive && isLocalHost(globalThis.location?.hostname)) {
+      const { installLocalInspector } = await import('./dev/inspector.js');
+      if (alive)
+        inspector = installLocalInspector({ hostname: globalThis.location.hostname, target: keyboardTarget });
+    }
     if (alive && autoStart) startLoop();
   });
   // the intro animates its own loading screen, so the loop starts before the assets arrive
@@ -90,6 +99,7 @@ function createGame({
       alive = false;
       stopLoop();
       detachKeyboard();
+      inspector?.destroy();
       if (canvas.removeEventListener) canvas.removeEventListener('pointerdown', onPointer);
       VO.stop();
     },
@@ -101,6 +111,13 @@ function createGame({
     setNarrator(enabled) {
       VO.on = enabled;
       if (!enabled) VO.stop();
+    },
+    openTests() {
+      AU.init();
+      inspector?.toggle();
+    },
+    get localTestsAvailable() {
+      return !!inspector;
     },
     pressButton: pressVirtual,
     releaseButton: releaseVirtual,

@@ -3,7 +3,8 @@ import { headShot } from '../ui/portrait.js';
 /* Character select for every mode. */
 import { AU } from '../audio/synth.js';
 import { IT, VO } from '../audio/voice.js';
-import { CH } from '../characters/roster.js';
+import { CH as BASE_CH, PLAYABLE as CH, availableRoster } from '../characters/roster.js';
+import { UNLOCKS } from '../progression/unlocks.js';
 import { Training } from '../combat/training.js';
 
 import { ctx, txt } from '../core/canvas.js';
@@ -28,7 +29,8 @@ import { StageSelect } from './stage-select.js';
 const Select = {
   id: 'select',
   enter() {
-    this.cur = [S.p1, S.mode === 'versus' ? S.p2 : S.p1];
+    const max = availableRoster().length - 1;
+    this.cur = [Math.min(S.p1, max), S.mode === 'versus' ? Math.min(S.p2, max) : Math.min(S.p1, max)];
     this.ok = [false, S.mode !== 'versus'];
     this.cpu = S.mode === 'versus' && S.vsCpu;
     this.t = 0;
@@ -49,18 +51,19 @@ const Select = {
     const vs = S.mode === 'versus',
       cpu = vs && S.vsCpu,
       p1 = vs && !cpu ? readPad('p1') : readPad('p1', 'p1x');
+    const count = availableRoster().length;
     const step = (i, p, conf, back) => {
       if (!this.ok[i]) {
         if (p.pleft) {
-          this.cur[i] = (this.cur[i] + 7) % 8;
+          this.cur[i] = (this.cur[i] + count - 1) % count;
           AU.sfx('blip');
         }
         if (p.pright) {
-          this.cur[i] = (this.cur[i] + 1) % 8;
+          this.cur[i] = (this.cur[i] + 1) % count;
           AU.sfx('blip');
         }
         if (p.pup || p.pdown) {
-          this.cur[i] = (this.cur[i] + 4) % 8;
+          this.cur[i] = (this.cur[i] + 4) % count;
           AU.sfx('blip');
         }
         if (conf) {
@@ -97,7 +100,7 @@ const Select = {
     S.p2 = this.cur[1];
     const me = CH[S.p1];
     if (S.mode === 'arcade') {
-      S.ladder = shuffle(CH.map((c, i) => i).filter((i) => i !== S.p1));
+      S.ladder = shuffle(BASE_CH.map((c, i) => i).filter((i) => i !== S.p1)).slice(0, 7);
       S.li = 0;
       S.loc = me.stage;
       S.bdone = {};
@@ -106,7 +109,8 @@ const Select = {
       go(Cutscene(pro, goTravel));
     } else if (S.mode === 'bonus') go(CarSelect);
     else if (S.mode === 'training') {
-      const opp = CH[(S.p1 + 1 + Math.floor(Math.random() * 7)) % 8];
+      const candidates = availableRoster().filter((ch) => ch !== me);
+      const opp = candidates[Math.floor(Math.random() * candidates.length)];
       const F = new Training(me, opp);
       go(FightScene(F, () => go(Select)));
     } else {
@@ -194,17 +198,22 @@ const Select = {
       xpBar(ch.id, 124, 105, 130);
     }
     CH.forEach((ch, i) => {
-      const x = 10 + i * 38,
+      const x = 10 + i * 33,
         y = 126;
       const c1 = this.cur[0] === i,
         c2 = vs && (!this.cpu || this.ok[0]) && this.cur[1] === i;
-      panel(x, y, 34, 31, c1 || c2 ? UI.gold : UI.line);
-      headShot(ch, x + 4, y + 1, 26, { t: 0 });
+      panel(x, y, 30, 31, c1 || c2 ? UI.gold : UI.line);
+      if (ch.id === 'bribri' && !UNLOCKS.has('bribri')) {
+        txt('?', x + 15, y + 2, 16, UI.muted, 'center');
+        txt('LOCK', x + 15, y + 23, 6, UI.muted, 'center', null);
+        return;
+      }
+      headShot(ch, x + 3, y + 1, 24, { t: 0 });
       ctx.fillStyle = UI.ink;
-      ctx.fillRect(x + 1, y + 22, 32, 8);
+      ctx.fillRect(x + 1, y + 22, 28, 8);
       txt(
         c2 ? (this.cpu ? 'CPU' : '2P') : c1 ? '1P' : String(i + 1),
-        x + 17,
+        x + 15,
         y + 23,
         6,
         c2 ? UI.p2 : c1 ? UI.p1 : UI.muted,
@@ -222,7 +231,7 @@ const Select = {
       }
       if (c2) {
         ctx.fillStyle = UI.p2;
-        ctx.fillRect(x + 32, y, 2, 31);
+        ctx.fillRect(x + 28, y, 2, 31);
       }
     });
     screenFooter(

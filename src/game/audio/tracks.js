@@ -1,3 +1,4 @@
+import { FINALE_TRACKS } from './finale-tracks.js';
 /* Music data: note parsing, bass patterns and the 21 tracks played by the synth. */
 const NOTE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
 function noteMidi(s) {
@@ -480,6 +481,7 @@ const TRACKS = {
     dr: { k: 'x.......x.......', s: '........x.......', h: 'x...x...x...x...' },
   },
 };
+Object.assign(TRACKS, FINALE_TRACKS);
 for (const k in TRACKS) {
   const t = TRACKS[k];
   t.bpArr = (BP[t.bp] || BP.oct).split(' ').map((v) => (v === '.' ? null : +v));

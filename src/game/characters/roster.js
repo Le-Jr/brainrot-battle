@@ -1,3 +1,5 @@
+import { BRIBRI } from './fighters/bribri.js';
+import { UNLOCKS } from '../progression/unlocks.js';
 /* The playable roster (select-screen order) and each fighter's story voice pitch. */
 import { assassino } from './fighters/assassino.js';
 import { ballerina } from './fighters/ballerina.js';
@@ -10,6 +12,8 @@ import { tung } from './fighters/tung.js';
 
 /** Playable roster. The order matters: it is the select-screen grid and S.p1/S.p2 index into it. */
 const CH = [tralalero, tung, bombardiro, ballerina, patapim, chimp, assassino, lirili];
+const PLAYABLE = [...CH, BRIBRI];
+const availableRoster = () => (UNLOCKS.has('bribri') ? PLAYABLE : CH);
 /** Voice pitch per character for story narration. */
 const VP = {
   tralalero: 1.2,
@@ -20,6 +24,7 @@ const VP = {
   chimp: 1.4,
   assassino: 0.45,
   lirili: 0.85,
+  bribri: 1.08,
 };
 
-export { CH, VP };
+export { CH, PLAYABLE, availableRoster, VP };

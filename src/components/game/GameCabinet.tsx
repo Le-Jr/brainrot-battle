@@ -13,6 +13,7 @@ import styles from './GameCabinet.module.css';
 export function GameCabinet({ legend }: { legend: ReactNode }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [localTests, setLocalTests] = useState(false);
   const [toggles, setToggles] = useState<Toggles>({ music: true, voice: true, crt: false, touch: false });
   const fs = useFullscreen(stageRef);
   const coarse = useMediaQuery('(pointer: coarse)');
@@ -23,6 +24,7 @@ export function GameCabinet({ legend }: { legend: ReactNode }) {
   const handleReady = useCallback((game: GameHandle) => {
     // The narrator can also be switched from the in-game OPÇÕES screen
     game.on('voice', (on) => setToggles((t) => ({ ...t, voice: on })));
+    void game.ready.then(() => setLocalTests(game.localTestsAvailable));
   }, []);
   const gameRef = useGameEngine(canvasRef, handleReady);
 
@@ -56,7 +58,19 @@ export function GameCabinet({ legend }: { legend: ReactNode }) {
           <b>BRAINROT BATTAGLIA</b>
           <span>ULTRA CAOS · FREE PLAY</span>
         </h1>
-        <ControlBar toggles={toggles} onToggle={toggle} onFullscreen={fullscreen} />
+        <ControlBar
+          toggles={toggles}
+          onToggle={toggle}
+          onFullscreen={fullscreen}
+          onTests={
+            localTests
+              ? () => {
+                  gameRef.current?.openTests();
+                  canvasRef.current?.focus();
+                }
+              : undefined
+          }
+        />
       </header>
 
       <div

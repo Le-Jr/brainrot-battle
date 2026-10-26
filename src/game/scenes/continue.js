@@ -1,9 +1,10 @@
+import { BRIBRI } from '../characters/fighters/bribri.js';
 import { UI, screenHeader, screenFooter } from '../ui/theme.js';
 /* Continue countdown after losing a story fight (arcade style): the beaten fighter, a big 9..0 count with a draining
    ring, punch to speed it up, START to continue, then GAME OVER. */
 import { AU } from '../audio/synth.js';
 import { ANN, VO } from '../audio/voice.js';
-import { CH } from '../characters/roster.js';
+import { PLAYABLE } from '../characters/roster.js';
 import { H, W } from '../config.js';
 import { ctx, txt, vgrad } from '../core/canvas.js';
 import { shade } from '../core/color.js';
@@ -69,7 +70,7 @@ const Continue = {
     else if (++this.st >= SECOND) this.tick();
   },
   draw() {
-    const ch = CH[S.p1],
+    const ch = S.mode === 'arcade' && S.li === 8 ? BRIBRI : PLAYABLE[S.p1],
       n = Math.max(0, this.n);
     ctx.fillStyle = vgrad(0, H, ['#1a0410', '#3a0818', '#0c0208']);
     ctx.fillRect(0, 0, W, H);

@@ -2,7 +2,7 @@ import { UI, screenBackdrop, screenHeader, screenFooter, panel, paragraph } from
 /* Ending celebration and rolling credits. */
 import { AU } from '../audio/synth.js';
 import { IT, VO } from '../audio/voice.js';
-import { CH } from '../characters/roster.js';
+import { PLAYABLE } from '../characters/roster.js';
 import { GAME } from '../config.js';
 import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed } from '../core/input.js';
@@ -15,8 +15,10 @@ import { Title } from './title.js';
 
 const CREDITS = [
   'OBRIGADO POR JOGAR ' + GAME + '!',
-  'ELENCO: 8 BRAINROTS FURIOSOS',
-  'CHEFE: LA VACCA SATURNITA',
+  'ELENCO: 8 BRAINROTS + BRI BRI',
+  'CHEFE: SATURNITA E MEGA BRAIN',
+  'HERÓI FINAL: BRI BRI BICUS DICUS',
+  'TRILHA FINAL: VONTADE LIVRE',
   'MÚSICA: FM AO VIVO NO SEU NAVEGADOR',
   'FARME XP NO MODO BÔNUS',
   'APERTE START',
@@ -56,14 +58,14 @@ const Ending = {
     }
     screenHeader('CAMPIONE', 'ALL CLEAR');
     txt('DEL BRAINROT!', 160, 40, 16, UI.gold, 'center');
-    let k = 0;
-    CH.forEach((ch, i) => {
-      if (i === S.p1) return;
-      const x = 26 + k++ * (268 / 6);
+    const selected = PLAYABLE[S.p1],
+      cast = PLAYABLE.filter((ch) => ch !== selected);
+    cast.forEach((ch, i) => {
+      const x = 26 + i * (268 / Math.max(1, cast.length - 1));
       drawSpr(sprite(ch, 'win', (Math.floor(t / 7) + i) % 8, 0, false, ''), x, 132, x < 160 ? 1 : -1, 0.55);
     });
     panel(145, 116, 30, 17, UI.gold, UI.goldDark);
-    drawSpr(sprite(CH[S.p1], 'win', Math.floor(t / 7) % 8, 0, false, ''), 160, 116, 1, 1.0);
+    drawSpr(sprite(PLAYABLE[S.p1], 'win', Math.floor(t / 7) % 8, 0, false, ''), 160, 116, 1, 1.0);
     panel(10, 139, 300, 23, UI.line);
     paragraph(CREDITS[Math.floor(t / 150) % CREDITS.length], 160, 145, 282, {
       size: 6,

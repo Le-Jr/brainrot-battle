@@ -1,7 +1,7 @@
 import { UI, screenBackdrop, screenHeader, screenFooter, fitLabel } from '../ui/theme.js';
 /* COMANDOS screen: two-page move list. */
 import { AU } from '../audio/synth.js';
-import { CH } from '../characters/roster.js';
+import { availableRoster } from '../characters/roster.js';
 
 import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed, menuPad } from '../core/input.js';
@@ -60,8 +60,17 @@ const Moves = {
     });
     if (this.pg === 1) {
       txt('ESPECIAIS DOS LUTADORES', 16, 120, 6, UI.gold, 'left', null);
-      CH.forEach((ch, i) =>
-        fitLabel(ch.spName, 16 + (i % 4) * 76, 134 + Math.floor(i / 4) * 15, 74, 6, UI.white),
+      const roster = availableRoster(),
+        columns = roster.length > 8 ? 3 : 4;
+      roster.forEach((ch, i) =>
+        fitLabel(
+          ch.spName,
+          16 + (i % columns) * (300 / columns),
+          134 + Math.floor(i / columns) * (columns === 3 ? 12 : 15),
+          300 / columns - 2,
+          6,
+          UI.white,
+        ),
       );
     }
     screenFooter('←→ MUDAR PÁGINA', 'ENTER / ESC VOLTAR');

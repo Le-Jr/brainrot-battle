@@ -10,6 +10,14 @@ function drawProj(p, cam, tk) {
     s = projectileScale(p),
     d = p.dir || 1;
   if (drawProjectileArt(ctx, p, x, y, tk)) return;
+  // Keep the procedural fallback as readable as the shipped sprites.
+  const magnify =
+    { wave: 1.7, bomb: 2, boom: 1.4, banana: 2, clock: 1.9, ring: 1.6, meteor: 2, quake: 1.8 }[p.type] || 1;
+  const anchorY = p.type === 'quake' || p.type === 'boom' ? FLOOR : y;
+  ctx.save();
+  ctx.translate(x, anchorY);
+  ctx.scale(magnify, magnify);
+  ctx.translate(-x, -anchorY);
   switch (p.type) {
     case 'wave': {
       const rx = Math.round(6 * s),
@@ -143,6 +151,7 @@ function drawProj(p, cam, tk) {
       break;
     }
   }
+  ctx.restore();
 }
 
 export { drawProj };

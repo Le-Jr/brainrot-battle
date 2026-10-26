@@ -146,7 +146,7 @@ const CHAIN = {
 };
 const SPCANCEL = new Set(['p', 'cp', 'k', 'hp']);
 const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-const PROJ_SP = new Set(['wave', 'bomb', 'banana', 'clock', 'quake', 'ring']);
+const PROJ_SP = new Set(['wave', 'bomb', 'banana', 'clock', 'quake', 'ring', 'cosmos']);
 const NOINP = {
   left: false,
   right: false,

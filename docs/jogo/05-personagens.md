@@ -98,3 +98,14 @@ Algumas lutas têm falas especiais (`RIVAL` em [`story/encounters.js`](../../src
 ## Espelho
 
 Quando os dois jogadores escolhem o mesmo lutador no versus, o 2P aparece com as cores trocadas (os canais RGB são rotacionados).
+
+
+## Bri Bri Bicus Dicus — personagem especial
+
+Bri Bri assume o controle na segunda e última luta contra a Mega Vaca. Ao vencê-la no modo História, ele é desbloqueado permanentemente no nono slot e pode ser escolhido em História, Versus, Treino e Bônus. O progresso fica no navegador; prévias no painel de testes não gravam o desbloqueio.
+
+| Velocidade | Força | Defesa | Alcance | Especial |
+|---|---|---|---|---|
+| 1,95 | 1,38 | 1,32 | 1,35 | Escudo da Liberdade |
+
+Seu especial é uma investida de escudo com breve proteção inicial. A versão EX tem dois acertos e o super pode acertar quatro vezes. O sprite tem 16 poses próprias de combate. A Mega Vaca também ganhou 16 poses e o especial Fúria do Mega Brain, com anéis, investida gravitacional e meteoros.

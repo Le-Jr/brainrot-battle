@@ -18,10 +18,11 @@ interface Props {
   toggles: Toggles;
   onToggle: (key: keyof Toggles) => void;
   onFullscreen: () => void;
+  onTests?: () => void;
 }
 
 /** Page-level switches above the screen (music, narrator, CRT scanlines, touch pad, fullscreen). */
-export function ControlBar({ toggles, onToggle, onFullscreen }: Props) {
+export function ControlBar({ toggles, onToggle, onFullscreen, onTests }: Props) {
   return (
     <div className={styles.bar}>
       {(Object.keys(LABELS) as (keyof Toggles)[]).map((key) => (
@@ -29,6 +30,11 @@ export function ControlBar({ toggles, onToggle, onFullscreen }: Props) {
           {LABELS[key]}
         </button>
       ))}
+      {onTests && (
+        <button type="button" onClick={onTests}>
+          TESTES (F2)
+        </button>
+      )}
       <button type="button" onClick={onFullscreen}>
         TELA CHEIA
       </button>

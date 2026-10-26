@@ -20,8 +20,10 @@ Seleção
       → VS → Luta → Resultado → rival libertado + fragmento N de 7 (2 painéis)
       → depois do 2º, 4º e 6º rival: fase bônus (Nonno, Cybercaminhão, Bi-ai-di)
  └─ Mapa → intro do chefe (4 painéis)                                            música: boss
-      → VS → Luta contra Saturnita → Resultado
- └─ Derrota do chefe (3) + final do personagem (3) + epílogo (1)                 música: ending
+      → VS → Saturnita, fase 1/2 → Resultado
+ └─ Ascensão do Mega Brain (8 quadros animados)                            música: ascension → laststand
+      → Bri Bri assume como jogador → VS → Saturnita Mega Brain, fase 2/2 → Resultado
+ └─ Ataque coletivo e planeta livre (4 quadros) + finais individuais (9 × 3)    música: ending
  └─ Créditos
 ```
 
@@ -41,7 +43,7 @@ Perder uma luta leva à tela **Continue?**, que refaz a mesma luta.
 | `RET[id]` | `story/encounters.js` | Três respostas do jogador, alternadas ao longo da campanha. |
 | `RIVAL['a>b']` | `story/encounters.js` | Respostas especiais para rivalidades (veja [05-personagens.md](05-personagens.md#rivalidades)). |
 | `bossIntro()` | `story/encounters.js` | Chegada a Saturno, revelação da vaca, ameaça e resposta do jogador. |
-| `BOSS_DEFEAT`, `EPILOGUE` | `story/world.js` | O algoritmo trava, os anéis racham, todos acordam… e um último "muuu" ecoa: *CONTINUA?* |
+| `ASCENSION`, `FINAL_VICTORY` | `story/finale.js` | Segunda forma, ameaça global, auxílio do Bri Bri e salvação definitiva após a segunda vitória. |
 
 ### Os finais
 
@@ -80,3 +82,39 @@ pnx([cenario, filtroOuNull, cameraX], atores, texto, quemFala, efeito)
 - O texto aparece letra por letra (1,3 caractere por frame), quebra em 37 caracteres e ocupa no máximo 4 linhas. O teste `tests/check-texts.js` garante isso para **todas** as combinações de lutador e rival.
 - **Enter** completa o texto ou avança; **Esc** pula a cutscene inteira.
 - Cada painel é lido em voz alta: o narrador com o tom neutro, o chefe com o tom 0,3 e os personagens com o próprio tom (veja [05-personagens.md](05-personagens.md#personalidade-e-voz)).
+
+
+## Segunda e última fase: Mega Brain
+
+A vitória sobre a Saturnita normal quebra sua casca. Ela usa a força total do Mega Brain e seus poderes cósmicos para juntar os brainrots num furacão que ameaça o planeta. Até o lutador escolhido perde a vontade por um momento. **Bri Bri Bicus Dicus de Bicus de Dicus** assume como personagem jogável e enfrenta a Mega Vaca na última luta. O personagem escolhido inicialmente permanece como protagonista da campanha, sem ser substituído no estado da história. Depois da vitória, todos os brainrots unem seus poderes numa cutscene própria para destruir o Mega Brain e romper o controle da vaca. Cada um dos nove heróis recebe então um epílogo separado, começando pelo personagem escolhido.
+
+O Bri Bri foi adaptado aqui como herói final jogável. Seu visual de ave gladiadora, armadura dourada, capa vermelha e colar de frutas usa a descrição de referência do [PlayBrainrot](https://www.playbrainrot.org/en/character/brri-brri-bicus-dicus/). A participação e a história desta campanha são próprias do jogo.
+
+- `scenes/finale.js`: oito quadros de transformação e quatro de vitória coletiva; zoom suave, atores orbitando, hipnose visual, legendas em duas linhas e narração Chatterbox local. Os quadros avançam automaticamente e aguardam o áudio; Enter completa/avança, Esc ou Start pula após 24 frames. Movimento reduzido desliga o zoom e a órbita.
+- `combat/final-fight.js`: luta separada em melhor de três, arena cósmica, Bri Bri contra Mega Vaca, barra de especial cheia para o jogador no começo de cada round e ataques de energia de vários brainrots. Um alvo fixo anuncia cada coluna de projéteis por cerca de 1,2 s. Dá para sair da coluna ou defender. Os comandos permanecem normais durante a luta.
+- Perder permite usar Continue diretamente na segunda forma, novamente como Bri Bri. Reiniciar a luta limpa projéteis, alvos e placares. Pular a transformação nunca pula a batalha. O final só é liberado após as duas vitórias (`S.li`: 7 → 8 → 9).
+- `audio/finale-tracks.js`: composições originais **Mega Brain — O Último Sinal** (96 BPM) e **Vontade Livre — Last Stand** (176 BPM), com voz FM própria, camadas crescentes, bateria e tema heroico. A música abaixa durante a narração e respeita volume e mute.
+
+As três artes foram geradas com a ferramenta integrada. Os prompts cinematográficos estão em [`assets/finale-art/prompts.json`](../../assets/finale-art/prompts.json), a vitória coletiva em [`coalition-prompt.json`](../../assets/finale-art/coalition-prompt.json) e os novos lutadores em [`fighter-prompts.json`](../../assets/finale-art/fighter-prompts.json). Os masters ficam em `assets/finale-art/` e as artes distribuídas em `public/stages/finale/`: três fundos de 1280×720 e duas folhas de 1024×832, com 16 poses cada, de Bri Bri e da Mega Vaca. `npm run sprites:finale` reconstrói as artes a partir dos masters; o manifesto de cenários as carrega junto dos outros assets.
+
+Validação e prévias:
+
+```sh
+npm run test:finale
+npm run render:finale
+npm run render:finale:audio # requer Chromium; renderiza o sintetizador real em WAV
+npm run render:finale:video # requer WAVs anteriores e FFmpeg; filme com trilha e vozes
+```
+
+As prévias ficam em `output/finale/`. `tests/story-flow.js` percorre a campanha e exige as duas formas antes dos créditos; `tests/finale.js` cobre Continue, desbloqueio do final, alvos, colisões, legendas e partitura.
+
+
+### Personagem especial desbloqueável
+
+Ao vencer a **segunda forma** na história, Bri Bri é desbloqueado e salvo em `localStorage` (`brb_unlocks_v1`). Ele ocupa o nono slot da seleção; antes disso, o slot mostra `LOCK` e não aceita confirmação. Depois, pode ser usado em História, Versus, Treino e Bônus, com seu próprio prólogo e final. A história continua com sete rivais originais, mesmo quando Bri Bri é escolhido.
+
+Bri Bri tem força 1,38, defesa 1,32, velocidade 1,95 e o **Escudo da Liberdade**, uma investida com curta proteção inicial e um super de quatro acertos. A Mega Vaca tem força 1,48, defesa 1,5, velocidade 1,65 e **Fúria do Mega Brain**: alterna varredura de anéis, investida gravitacional e chuva de meteoros. O super combina os ataques. Ela acelera as colunas de energia quando fica abaixo de 40% de vida, mantendo o aviso visual.
+
+Os dois sprites têm poses próprias de caminhada, agachamento, soco (preparação/acerto/recuperação), chute (três fases), especial (carga/lançamento), dano, queda, salto e vitória. A paleta de 64 cores e a escala seguem os outros lutadores. `tests/secret-fighter.js` verifica as animações, golpes, desbloqueio e seleção nos quatro modos.
+
+O painel local permite experimentar Bri Bri e liberar seu slot apenas na sessão de testes. Ganhar uma luta de teste, uma luta livre ou apenas assistir ao desfecho não grava o desbloqueio real.

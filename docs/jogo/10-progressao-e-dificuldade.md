@@ -28,7 +28,8 @@ XP = rounds vencidos × 40
    + (venceu ? 120 + dificuldade × 40 : 30)
    + rounds perfeitos × 80
    + max(0, maior combo − 2) × 15
-   + 400 se derrotou o chefe
+   + 400 se derrotou a primeira forma de Saturnita
+   + 800 se derrotou Saturnita Mega Brain
 ```
 
 - No **versus 2P**, os dois jogadores ganham XP. No **versus CPU**, só o jogador; a CPU luta com o mesmo nível de XP do lutador do jogador.
@@ -44,6 +45,7 @@ Escolhida em **OPÇÕES** (Fácil, Normal, Difícil). Ela define o nível da IA 
 | Luta | IA | Boost da IA | Nível do rival |
 |------|----|-------------|----------------|
 | Rival 1 a 7 | a dificuldade escolhida | `luta / 6` (0 a 1) | 1 a 7 |
-| Chefe | sempre **Difícil** | `0,6 + dificuldade × 0,3` | 2 / 5 / 8 |
+| Saturnita, fase 1 | sempre **Difícil** | `0,6 + dificuldade × 0,3` | 2 / 5 / 8 |
+| Saturnita Mega Brain, fase 2 | dificuldade escolhida | `0,55 + dificuldade × 0,2` | 3 / 6 / 9 |
 
 O jogador luta com o nível de XP do personagem escolhido. Farmar XP nas fases bônus é o jeito de compensar uma dificuldade alta.

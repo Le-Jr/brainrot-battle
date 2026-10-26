@@ -12,6 +12,14 @@ const S = {
   bdone: {},
   car: 'nonno',
 };
-const DEBUG = { showBox: false };
+const DEBUG = {
+  showBox: false,
+  local: false,
+  testing: false,
+  god: false,
+  infiniteMeter: false,
+  freezeTimer: false,
+  freezeCpu: false,
+};
 
 export { DEBUG, S, SET };

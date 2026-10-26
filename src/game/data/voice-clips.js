@@ -168,6 +168,15 @@ export const VOICE_CLIPS = {
   "it:lirilì larilà vince": [
     "187f5f216487e747.mp3"
   ],
+  "it:bri bri bicus dicus de bicus de dicus": [
+    "4a5e85fe6fb6bef8.mp3"
+  ],
+  "it:bri bri scudo della libertà": [
+    "41e6c491746741ee.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus vince": [
+    "59af4f165146c995.mp3"
+  ],
   "it:la vacca saturno saturnita": [
     "fe603afd6a35687e.mp3"
   ],
@@ -220,6 +229,11 @@ export const VOICE_CLIPS = {
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
   ],
+  "it:tralalero tralalà contro bri bri bicus dicus de bicus de dicus": [
+    "2e4c6ab5aa14437d.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
   "it:tralalero tralalà contro la vacca saturno saturnita": [
     "2e4c6ab5aa14437d.mp3",
     "4e35a6cf73ddb769.mp3",
@@ -264,6 +278,11 @@ export const VOICE_CLIPS = {
     "dd521aa96aa414a3.mp3",
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
+  ],
+  "it:tung tung tung sahur contro bri bri bicus dicus de bicus de dicus": [
+    "dd521aa96aa414a3.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
   ],
   "it:tung tung tung sahur contro la vacca saturno saturnita": [
     "dd521aa96aa414a3.mp3",
@@ -310,6 +329,11 @@ export const VOICE_CLIPS = {
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
   ],
+  "it:bombardiro crocodilo contro bri bri bicus dicus de bicus de dicus": [
+    "517d0fe5284c3afd.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
   "it:bombardiro crocodilo contro la vacca saturno saturnita": [
     "517d0fe5284c3afd.mp3",
     "4e35a6cf73ddb769.mp3",
@@ -354,6 +378,11 @@ export const VOICE_CLIPS = {
     "c0fca650468f4cad.mp3",
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
+  ],
+  "it:ballerina cappuccina contro bri bri bicus dicus de bicus de dicus": [
+    "c0fca650468f4cad.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
   ],
   "it:ballerina cappuccina contro la vacca saturno saturnita": [
     "c0fca650468f4cad.mp3",
@@ -400,6 +429,11 @@ export const VOICE_CLIPS = {
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
   ],
+  "it:brr brr patapim contro bri bri bicus dicus de bicus de dicus": [
+    "baba161fb316ea9f.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
   "it:brr brr patapim contro la vacca saturno saturnita": [
     "baba161fb316ea9f.mp3",
     "4e35a6cf73ddb769.mp3",
@@ -444,6 +478,11 @@ export const VOICE_CLIPS = {
     "a75a42023f9ec970.mp3",
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
+  ],
+  "it:chimpanzini bananini contro bri bri bicus dicus de bicus de dicus": [
+    "a75a42023f9ec970.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
   ],
   "it:chimpanzini bananini contro la vacca saturno saturnita": [
     "a75a42023f9ec970.mp3",
@@ -490,6 +529,11 @@ export const VOICE_CLIPS = {
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
   ],
+  "it:cappuccino assassino contro bri bri bicus dicus de bicus de dicus": [
+    "e3d230e4a5faf495.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
   "it:cappuccino assassino contro la vacca saturno saturnita": [
     "e3d230e4a5faf495.mp3",
     "4e35a6cf73ddb769.mp3",
@@ -535,8 +579,63 @@ export const VOICE_CLIPS = {
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
   ],
+  "it:lirilì larilà contro bri bri bicus dicus de bicus de dicus": [
+    "34b1574b50a298c9.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
   "it:lirilì larilà contro la vacca saturno saturnita": [
     "34b1574b50a298c9.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "fe603afd6a35687e.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro tralalero tralalà": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "2e4c6ab5aa14437d.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro tung tung tung sahur": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "dd521aa96aa414a3.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro bombardiro crocodilo": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "517d0fe5284c3afd.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro ballerina cappuccina": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "c0fca650468f4cad.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro brr brr patapim": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "baba161fb316ea9f.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro chimpanzini bananini": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "a75a42023f9ec970.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro cappuccino assassino": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "e3d230e4a5faf495.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro lirilì larilà": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "34b1574b50a298c9.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro bri bri bicus dicus de bicus de dicus": [
+    "4a5e85fe6fb6bef8.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
+  ],
+  "it:bri bri bicus dicus de bicus de dicus contro la vacca saturno saturnita": [
+    "4a5e85fe6fb6bef8.mp3",
     "4e35a6cf73ddb769.mp3",
     "fe603afd6a35687e.mp3"
   ],
@@ -579,6 +678,11 @@ export const VOICE_CLIPS = {
     "fe603afd6a35687e.mp3",
     "4e35a6cf73ddb769.mp3",
     "34b1574b50a298c9.mp3"
+  ],
+  "it:la vacca saturno saturnita contro bri bri bicus dicus de bicus de dicus": [
+    "fe603afd6a35687e.mp3",
+    "4e35a6cf73ddb769.mp3",
+    "4a5e85fe6fb6bef8.mp3"
   ],
   "it:la vacca saturno saturnita contro la vacca saturno saturnita": [
     "fe603afd6a35687e.mp3",
@@ -683,6 +787,42 @@ export const VOICE_CLIPS = {
   ],
   "pt:nããão meu cybertruck virou sucata": [
     "64f3824cd1716e5c.mp3"
+  ],
+  "pt:muuu você destruiu meus anéis mas só quebrou a casca": [
+    "70eeabf165c849eb.mp3"
+  ],
+  "pt:mega brain usarei sua força total e meus poderes cósmicos": [
+    "909c5f00d7b53a01.mp3"
+  ],
+  "pt:vou unir todos os brainrots num furacão e destruir você": [
+    "962faafeb061ba72.mp3"
+  ],
+  "pt:oceanos se ergueram o sinal envolveu o planeta até o herói começou a ceder": [
+    "668ec601285ce370.mp3"
+  ],
+  "pt:meus braços estão se movendo sozinhos não consigo resistir": [
+    "da6e891d77bc693e.mp3"
+  ],
+  "pt:bri bri bicus dicus de bicus de dicus nenhuma mente vai se curvar": [
+    "329890f8305b66d3.mp3"
+  ],
+  "pt:eu assumo daqui meu escudo vai libertar todos vocês mega brain enfrente bri bri": [
+    "eca8db0ede290bdc.mp3"
+  ],
+  "pt:pelo meu escudo e por todos os brainrots saturnita seu controle acaba agora": [
+    "79e6dff5d0f0ab81.mp3"
+  ],
+  "pt:o escudo rompeu minha defesa não o mega brain ainda controla vocês": [
+    "a3ec76e807a0e9ee.mp3"
+  ],
+  "pt:agora juntos tralalá sahur bananini cada voz livre contra o mega brain": [
+    "c3264b4023fd2b6a.mp3"
+  ],
+  "pt:os brainrots uniram seus poderes o mega brain explodiu a vaca perdeu o controle para sempre": [
+    "a327ea9d519cde38.mp3"
+  ],
+  "pt:ninguém se curvou todos lutaram agora cada um pode escolher seu próprio caminho": [
+    "53275b0f61bbbe7d.mp3"
   ],
   "pt:muito além da internet existe brainrotália a terra paralela onde moram os memes mais absurdos já criados": [
     "a324403ba307b6a1.mp3"
@@ -1067,5 +1207,35 @@ export const VOICE_CLIPS = {
   ],
   "pt:vou atrasar o seu algoritmo em mil anos": [
     "0b28c003ba6d98f4.mp3"
+  ],
+  "pt:bri bri guardava um escudo antigo nele cada voz de brainrotália brilhava como uma estrela": [
+    "326c4385a09bd3b0.mp3"
+  ],
+  "pt:quando o algoritmo voltou a chamar o escudo respondeu nenhuma mente seria abandonada": [
+    "d59c070e1945b17b.mp3"
+  ],
+  "pt:bri bri partiu para unir os brainrots seu poder não vinha do controle mas da liberdade": [
+    "1b69976535c37f81.mp3"
+  ],
+  "pt:bri bri devolveu o escudo ao povo a vitória pertencia a cada brainrot que escolheu resistir": [
+    "a01b65375f0403e4.mp3"
+  ],
+  "pt:no teatro um novo canto ecoou bri bri bicus dicus e ninguém precisou cantar por obrigação": [
+    "eeab4377b0c602e9.mp3"
+  ],
+  "pt:o guardião continuou viajando onde alguém tentasse controlar uma mente seu escudo brilharia": [
+    "c3ea199e24459c7c.mp3"
+  ],
+  "pt:bri bri nenhum algoritmo manda no nosso coração seu reinado acaba aqui": [
+    "26f1ea33dedec3dd.mp3"
+  ],
+  "pt:bri bri ninguém vai controlar você": [
+    "af3f5329b6ca8bc6.mp3"
+  ],
+  "pt:meu escudo vai romper esse sinal": [
+    "604cfe64c7e685e7.mp3"
+  ],
+  "pt:vamos lutar pela sua liberdade": [
+    "98f263a3a17c47cc.mp3"
   ]
 };

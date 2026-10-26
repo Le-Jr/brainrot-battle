@@ -1,5 +1,5 @@
 {
-  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image (after 'crop'); 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'crop' = source rectangle (fractions x0,y0,x1,y1) to use, for layer sheets with several panels in one image; every other fraction is relative to the crop; 'keep' = source rectangles to keep; 'drop' = source rectangles to cut (the panel labels of a sheet); 'clipAbove'/'clipBelow' = drop source rows above/below this fraction; 'haze' = above this fraction, drop washed-out (fog) pixels; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges; 'blank' = an empty layer (hides the procedural painting when the art already covers that depth). Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art. The 'map' entry is the Brainrotália world map (one opaque 640x360 layer); 'colors' sets the palette size (default 64).",
+  "_doc": "Layer placement for tools/process-stage-art.js. Coordinates: 'width' = destination width (HD px) of the whole source image (after 'crop'); 'anchor' = [source row as a fraction of its height, destination y]; 'x' = destination x of the source's left edge (default: centered); 'crop' = source rectangle (fractions x0,y0,x1,y1) to use, for layer sheets with several panels in one image; every other fraction is relative to the crop; 'keep' = source rectangles to keep; 'drop' = source rectangles to cut (the panel labels of a sheet); 'clipAbove'/'clipBelow' = drop source rows above/below this fraction; 'haze' = above this fraction, drop washed-out (fog) pixels; 'tile' = fill the layer width by 'mirror' or 'repeat'; 'key' = cut the magenta background; 'outline' = darken silhouette edges; 'blank' = an empty layer (hides the procedural painting when the art already covers that depth). Layers not listed keep the procedural painting. 'off' = animation hooks that no longer match the new art. The 'map' entry is the Brainrot\u00e1lia world map (one opaque 640x360 layer); 'colors' sets the palette size (default 64).",
   "beach": {
     "off": [
       "front"
@@ -646,5 +646,70 @@
         "colors": 128
       }
     }
+  },
+  "finale": {
+    "layers": {
+      "storm": {
+        "src": "storm.png",
+        "resolution": [
+          1280,
+          720
+        ],
+        "width": 1280,
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "hero": {
+        "src": "hero.png",
+        "resolution": [
+          1280,
+          720
+        ],
+        "width": 1280,
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "boss": {
+        "src": "boss.png",
+        "resolution": [
+          1024,
+          832
+        ],
+        "width": 1024,
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "bribri": {
+        "src": "bribri.png",
+        "resolution": [
+          1024,
+          832
+        ],
+        "width": 1024,
+        "anchor": [
+          0,
+          0
+        ]
+      },
+      "coalition": {
+        "src": "coalition.png",
+        "resolution": [
+          1280,
+          720
+        ],
+        "width": 1280,
+        "anchor": [
+          0,
+          0
+        ]
+      }
+    },
+    "off": []
   }
 }

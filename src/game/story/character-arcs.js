@@ -1,5 +1,5 @@
 /* Per-character story: 3-panel prologue, 3-panel ending and the retort to the boss. */
-import { DK, pn, solo, vsBoss } from './panels.js';
+import { DK, PRP, pnx, pn, solo, vsBoss } from './panels.js';
 
 const STORY = {
   tralalero: {
@@ -312,6 +312,44 @@ const STORY = {
       ),
     ],
   },
+};
+
+STORY.bribri = {
+  pro: [
+    pnx(
+      [7, null, 80],
+      [['P', 'idle', 150, 150, 1, 1.2]],
+      'Bri Bri guardava um escudo antigo. Nele, cada voz de Brainrotália brilhava como uma estrela.',
+    ),
+    pnx(
+      [9, PRP, 80],
+      [['P', 'block', 150, 150, 1, 1.2]],
+      'Quando o algoritmo voltou a chamar, o escudo respondeu. Nenhuma mente seria abandonada.',
+    ),
+    pnx(
+      [7, null, 80],
+      [['P', 'special', 150, 150, 1, 1.2]],
+      'Bri Bri partiu para unir os brainrots. Seu poder não vinha do controle, mas da liberdade.',
+    ),
+  ],
+  end: [
+    pnx(
+      [1, null, 80],
+      [['P', 'win', 150, 150, 1, 1.2]],
+      'Bri Bri devolveu o escudo ao povo. A vitória pertencia a cada brainrot que escolheu resistir.',
+    ),
+    pnx(
+      [7, null, 80],
+      [['P', 'idle', 150, 150, 1, 1.2]],
+      'No teatro, um novo canto ecoou: Bri Bri Bicus Dicus! E ninguém precisou cantar por obrigação.',
+    ),
+    pnx(
+      [1, null, 80],
+      [['P', 'win', 150, 150, 1, 1.2]],
+      'O guardião continuou viajando. Onde alguém tentasse controlar uma mente, seu escudo brilharia.',
+    ),
+  ],
+  retort: 'Bri Bri! Nenhum algoritmo manda no nosso coração. Seu reinado acaba aqui!',
 };
 
 export { STORY };

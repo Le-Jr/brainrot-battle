@@ -1,9 +1,10 @@
+import { ASCENSION, FINAL_VICTORY } from '../../src/game/story/finale.js';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { HYPE } from '../../src/game/audio/announcer.js';
 import { ELON_LINES } from '../../src/game/audio/elon-lines.js';
 import { voiceKey } from '../../src/game/audio/voice-key.js';
-import { CH } from '../../src/game/characters/roster.js';
+import { CH, PLAYABLE } from '../../src/game/characters/roster.js';
 import { BOSS } from '../../src/game/characters/fighters/saturnita.js';
 import { STORY } from '../../src/game/story/character-arcs.js';
 import { WORLD_PRO, CALL_PANEL, BOSS_DEFEAT, EPILOGUE } from '../../src/game/story/world.js';
@@ -42,7 +43,7 @@ for (const text of [
 add('Um jogo de Leandro Junior');
 add('Muito além da internet existe Brainrotália.');
 add('Campione del Brainrot!', 'it', 'announcer', 0.7);
-const fighters = [...CH, BOSS];
+const fighters = [...PLAYABLE, BOSS];
 for (const ch of fighters) {
   add(ch.voice, 'it', ch.id, 0.7);
   add(ch.call || ch.voice, 'it', ch.id, 0.8);
@@ -69,9 +70,11 @@ for (const text of [
   add(text, 'pt', 'parrot', 0.85);
 add('MAMMA MIA! LA MIA MACCHINA!', 'it', 'nonno', 0.85);
 ELON_LINES.forEach((line, i) => add(line.text, i === 0 ? 'ann' : 'pt', 'elon', 0.5 + i * 0.1));
+for (const p of [...ASCENSION, ...FINAL_VICTORY])
+  add(p.text, 'pt', p.voice, p.voice === 'saturnita' ? 0.8 : 0.65);
 for (const p of [...WORLD_PRO, CALL_PANEL, ...BOSS_DEFEAT, ...EPILOGUE]) panel(p);
-for (let i = 0; i < CH.length; i++) {
-  const me = CH[i];
+for (let i = 0; i < PLAYABLE.length; i++) {
+  const me = PLAYABLE[i];
   S.p1 = i;
   for (const p of [...STORY[me.id].pro, ...STORY[me.id].end, ...bossIntro()]) panel(p, me);
   for (const opp of CH)

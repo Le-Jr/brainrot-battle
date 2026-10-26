@@ -64,6 +64,7 @@ class Fight {
     this.flashT = 0;
   }
   input(i) {
+    if (DEBUG.local && DEBUG.testing && DEBUG.freezeCpu && this.ai[i]) return NOINP;
     if (this.ai[i]) return this.ai[i].think(this.f[i], this.f[1 - i], this);
     if (this.opts.dummy && i === 1) return NOINP;
     if (this.opts.cpu || this.opts.dummy) return readPad('p1', 'p1x');
@@ -235,6 +236,7 @@ class Fight {
     spark(p.x, FLOOR - 8, ['#fff2b0', '#ffb040', '#ff5a2a', '#5a4a50'], 26, 3, 0.06);
   }
   applyHit(a, d, dat, srcX, hy) {
+    if (DEBUG.local && DEBUG.testing && DEBUG.god && d.side === 0) return false;
     if (d.inv > 0 || d.st === 'ko' || d.hidden) return false;
     if (d.st === 'down' && !(d.jug > 0 && d.y < FLOOR - 3)) return false;
     if (d.atk && d.atk.n === 'up' && d.atk.t <= d.atk.d.st + 4 && !dat.unblock) return false;

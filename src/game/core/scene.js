@@ -3,6 +3,15 @@ import { VO } from '../audio/voice.js';
 import { ctx } from './canvas.js';
 import { pressedQ } from './input.js';
 
+let inspector = null;
+function setInspector(value) {
+  inspector = value;
+}
+function drawScene() {
+  scene.draw();
+  inspector?.draw(scene);
+}
+
 let scene = null,
   tick = 0;
 function go(s) {
@@ -12,6 +21,10 @@ function go(s) {
 }
 function step() {
   tick++;
+  if (inspector?.beforeStep(scene)) {
+    pressedQ.clear();
+    return;
+  }
   scene.update();
   pressedQ.clear();
 }
@@ -34,7 +47,7 @@ function frame(now) {
   ctx.imageSmoothingEnabled = false;
   ctx.globalAlpha = 1;
   try {
-    scene.draw();
+    drawScene();
   } catch (e) {
     console.error(e);
   }
@@ -51,4 +64,4 @@ function stopLoop() {
   raf = 0;
 }
 
-export { go, scene, startLoop, step, stopLoop, tick };
+export { drawScene, go, scene, setInspector, startLoop, step, stopLoop, tick };

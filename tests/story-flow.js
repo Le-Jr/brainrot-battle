@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 import { T } from './harness.js';
 const press = (c) => T.pressedQ.add(c);
 const run = (n, fn) => {
@@ -38,8 +39,11 @@ try {
   press('KeyJ');
   run(60);
   let last = '';
+  const bossFights = new Set();
+  let ended = false;
   for (let i = 0; i < 60000; i++) {
     const sc = T.scene;
+    if (sc.F && ['saturnita', 'saturnita-mega'].includes(sc.F.f[1].ch.id)) bossFights.add(sc.F);
     const nm =
       sc === T.Ending
         ? 'Ending'
@@ -59,7 +63,10 @@ try {
       last = nm;
     }
     if (nm === 'Ending') {
-      console.log('ENDING OK');
+      ended = true;
+      assert.equal(bossFights.size, 2, 'campaign must include both Saturnita forms');
+      assert.equal(T.S.li, 9);
+      console.log('ENDING OK: both boss forms defeated');
       break;
     }
     if (sc.F && sc.F.done === undefined && sc.F.phase === 'fight') {
@@ -81,7 +88,9 @@ try {
     T.step();
     T.scene.draw();
   }
+  assert.ok(ended, 'campaign must reach the ending');
   console.log('ALL OK');
 } catch (e) {
   console.error('ERR', e.stack);
+  process.exitCode = 1;
 }

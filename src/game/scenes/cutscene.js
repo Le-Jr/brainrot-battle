@@ -3,7 +3,7 @@ import { UI, screenFooter } from '../ui/theme.js';
 import { AU } from '../audio/synth.js';
 import { VO } from '../audio/voice.js';
 import { BOSS } from '../characters/fighters/saturnita.js';
-import { CH, VP } from '../characters/roster.js';
+import { CH, PLAYABLE, VP } from '../characters/roster.js';
 import { H, REDUCED, W } from '../config.js';
 import { shade } from '../core/color.js';
 import { ctx, cv, txt, vgrad, wrap } from '../core/canvas.js';
@@ -18,10 +18,10 @@ import { blink, fade, frameBox, letterbox, plate } from '../ui/arcade.js';
 import { headShot } from '../ui/portrait.js';
 
 /* ---------- cutscenes ---------- */
-function actorCh(w, opp) {
-  return w === 'P' ? CH[S.p1] : w === 'B' ? BOSS : w === 'O' ? opp : CH.find((c) => c.id === w);
+function actorCh(w, opp, player) {
+  return w === 'P' ? player : w === 'B' ? BOSS : w === 'O' ? opp : CH.find((c) => c.id === w);
 }
-function drawPanel(p, t, opp) {
+function drawPanel(p, t, opp, player) {
   const [si, tint, cam] = p.bg,
     st = STAGES[si],
     c = cam === undefined ? 80 : cam;
@@ -41,7 +41,7 @@ function drawPanel(p, t, opp) {
   }
   for (const a of p.a) {
     const [who, pose, x, y, dir, sc, lying, hyp] = a;
-    const ch = actorCh(who, opp);
+    const ch = actorCh(who, opp, player);
     if (!ch) continue;
     const fr = pose === 'idle' || pose === 'win' || pose === 'walk' ? Math.floor(tick / 7) % 8 : 0;
     if (hyp) {
@@ -105,9 +105,11 @@ function bust(ch, x, y, tint, right, t) {
     ctx.fillRect(x, y, S2, S2);
   }
 }
-function Cutscene(panels, next, opp) {
+function Cutscene(panels, next, opp, player = PLAYABLE[S.p1]) {
   return {
     id: 'cutscene',
+    player,
+    panels,
     tapStart: true,
     enter() {
       this.i = 0;
@@ -122,7 +124,7 @@ function Cutscene(panels, next, opp) {
         sp = p.sp;
       let o = { role: 'pt', rate: 1.04, pitch: 1 };
       if (sp === 'B') o = { role: 'pt', pitch: 0.3, rate: 0.86 };
-      else if (sp === 'P') o = { role: 'pt', pitch: VP[CH[S.p1].id] || 1, rate: 1.06 };
+      else if (sp === 'P') o = { role: 'pt', pitch: VP[player.id] || 1, rate: 1.06 };
       else if (sp === 'O' && opp) o = { role: 'pt', pitch: (VP[opp.id] || 1) * 0.9, rate: 0.95 };
       if (p.fx === 'flash' || p.fx === 'shake') AU.sfx(p.fx === 'shake' ? 'slam' : 'boom');
       if (p.fx === 'glitch') AU.sfx('crack');
@@ -163,10 +165,10 @@ function Cutscene(panels, next, opp) {
       const p = panels[this.i],
         shown = Math.floor(this.t * 1.3),
         sp = p.sp,
-        who = sp === 'B' ? BOSS : sp === 'O' ? opp : sp === 'P' ? CH[S.p1] : null,
+        who = sp === 'B' ? BOSS : sp === 'O' ? opp : sp === 'P' ? player : null,
         right = sp === 'B' || sp === 'O',
         sc = who ? who.col : '#f8cd55';
-      drawPanel(p, this.t, opp);
+      drawPanel(p, this.t, opp, player);
       // dialog band
       ctx.fillStyle = vgrad(120, 46, ['rgba(8,4,18,.96)', 'rgba(14,6,28,.97)']);
       ctx.fillRect(0, 120, W, 46);
@@ -205,7 +207,7 @@ function Cutscene(panels, next, opp) {
         ctx.fillRect(W / 2 - panels.length * 3 + i * 6, 5, 3, 3);
       });
       ctx.globalAlpha = 0.7;
-      txt('STORY MODE', 10, 4, 6, UI.gold, 'left', null);
+      txt(panels.title || 'STORY MODE', 10, 4, 6, UI.gold, 'left', null);
       txt('ESC PULAR', W - 10, 4, 6, UI.white, 'right', null);
       ctx.globalAlpha = 1;
       screenFooter('BRAINROTÁLIA', 'ENTER AVANÇAR · ESC PULAR');

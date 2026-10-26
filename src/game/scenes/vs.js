@@ -1,3 +1,4 @@
+import { FinalFight } from '../combat/final-fight.js';
 import { UI, screenBackdrop, screenHeader, screenFooter, panel, fitLabel } from '../ui/theme.js';
 /* VS splash before a fight (also warms the sprite cache). */
 import { AU } from '../audio/synth.js';
@@ -30,7 +31,7 @@ function VS(c1, c2, stage, opts, label) {
         sprite(w[0], w[1], w[2], w[3], w[4], '');
       }
       if (this.t > 190 || (this.t > 50 && anyPressed(CONFIRM))) {
-        const F = new Fight(c1, c2, stage, opts);
+        const F = opts.finale ? new FinalFight(c1, opts) : new Fight(c1, c2, stage, opts);
         go(FightScene(F, (F2) => onMatch(F2, opts)));
       }
     },

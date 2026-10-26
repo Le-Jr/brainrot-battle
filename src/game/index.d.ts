@@ -30,6 +30,9 @@ export interface GameHandle {
   destroy(): void;
   setMusic(on: boolean): void;
   setNarrator(on: boolean): void;
+  /** Local loopback only: opens/closes the F2 test cabinet after ready. */
+  openTests(): void;
+  readonly localTestsAvailable: boolean;
   pressButton(code: VirtualButton): void;
   releaseButton(code: VirtualButton): void;
   on<K extends keyof GameEvents>(type: K, fn: (payload: GameEvents[K]) => void): () => void;

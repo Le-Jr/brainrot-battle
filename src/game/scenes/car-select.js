@@ -2,7 +2,7 @@ import { UI, screenBackdrop, screenHeader, screenFooter, paragraph, panel } from
 /* Bonus mode: pick which car to smash. */
 import { AU } from '../audio/synth.js';
 import { CARS } from '../characters/cars.js';
-import { CH } from '../characters/roster.js';
+import { PLAYABLE } from '../characters/roster.js';
 
 import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, anyPressed, menuPad } from '../core/input.js';
@@ -41,7 +41,7 @@ const CarSelect = {
     if (anyPressed(CONFIRM)) {
       AU.sfx('ok');
       S.car = CARLIST[this.i][0];
-      startBonus(CH[S.p1], S.car, () => go(CarSelect));
+      startBonus(PLAYABLE[S.p1], S.car, () => go(CarSelect));
     }
   },
   draw() {

@@ -3,6 +3,17 @@ const lvlOf = (x) => Math.min(10, 1 + Math.floor(Math.sqrt(x / 120)));
 const xpAt = (l) => (l - 1) * (l - 1) * 120;
 const XP = {
   data: {},
+  sandbox: null,
+  beginSandbox() {
+    if (this.sandbox) return;
+    this.sandbox = this.data;
+    this.data = { ...this.data };
+  },
+  endSandbox() {
+    if (!this.sandbox) return;
+    this.data = this.sandbox;
+    this.sandbox = null;
+  },
   load() {
     try {
       this.data = JSON.parse(localStorage.getItem('brf_xp_v1') || '{}') || {};
@@ -11,6 +22,7 @@ const XP = {
     }
   },
   save() {
+    if (this.sandbox) return;
     try {
       localStorage.setItem('brf_xp_v1', JSON.stringify(this.data));
     } catch (e) {}

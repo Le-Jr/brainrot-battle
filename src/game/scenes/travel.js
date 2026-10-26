@@ -3,7 +3,7 @@ import { UI, screenBackdrop, screenHeader, screenFooter, panel, fitLabel } from 
 import { AU } from '../audio/synth.js';
 import { VO } from '../audio/voice.js';
 import { BOSS } from '../characters/fighters/saturnita.js';
-import { CH } from '../characters/roster.js';
+import { CH, PLAYABLE } from '../characters/roster.js';
 import { H, W } from '../config.js';
 import { ctx, fe, txt } from '../core/canvas.js';
 
@@ -148,7 +148,7 @@ function Travel(from, to, next) {
           mark(L, '#b060ff');
         }
       });
-      mark(LOC[CH[S.p1].stage], '#ff4d5e');
+      mark(LOC[PLAYABLE[S.p1].stage], '#ff4d5e');
       const A = LOC[from],
         B = LOC[to],
         p = clamp((t - 24) / 120, 0, 1),
@@ -170,7 +170,7 @@ function Travel(from, to, next) {
       const q = pos(e),
         dd = B.x >= A.x ? 1 : -1;
       minePlane(q[0], q[1] + 6, dd, t);
-      drawSpr(sprite(CH[S.p1], 'idle', 0, 0, false, ''), q[0], q[1] + 3, dd, 0.28);
+      drawSpr(sprite(PLAYABLE[S.p1], 'idle', 0, 0, false, ''), q[0], q[1] + 3, dd, 0.28);
       ctx.restore();
       const opp = S.li < 7 ? CH[S.ladder[S.li]] : BOSS;
       screenHeader('BRAINROTÁLIA', 'FRAGMENTOS ' + S.li + '/7');

@@ -4,7 +4,7 @@ import { UI, screenHeader, screenFooter, panel, paragraph, fitLabel } from '../u
 import { AU } from '../audio/synth.js';
 import { ANN, IT, VO } from '../audio/voice.js';
 import { BOSS } from '../characters/fighters/saturnita.js';
-import { CH } from '../characters/roster.js';
+import { CH, PLAYABLE } from '../characters/roster.js';
 import { H, W } from '../config.js';
 import { ctx, txt } from '../core/canvas.js';
 
@@ -49,7 +49,7 @@ function Result(f, side, opts, xi) {
         if (side === 0) {
           const beat = S.li < 7 ? CH[S.ladder[S.li]] : null;
           S.li++;
-          if (beat) go(Cutscene(freedScene(CH[S.p1], beat, S.li), arcadeNext, beat));
+          if (beat) go(Cutscene(freedScene(PLAYABLE[S.p1], beat, S.li), arcadeNext, beat));
           else arcadeNext();
         } else go(Continue);
       }
@@ -62,7 +62,10 @@ function Result(f, side, opts, xi) {
       ctx.fillRect(0, 0, W, H);
       const head = twoP ? (side === 0 ? '1P VENCE' : '2P VENCE') : lost ? 'DERROTA' : 'VITÓRIA';
       const up = xi.ups[0] && t > 90 && !twoP;
-      screenHeader(head, up ? 'LEVEL UP · NV ' + XP.lvl(xi.f[0].ch.id) : 'MATCH RESULT');
+      screenHeader(
+        head,
+        xi.unlocked ? 'BRI BRI DESBLOQUEADO' : up ? 'LEVEL UP · NV ' + XP.lvl(xi.f[0].ch.id) : 'MATCH RESULT',
+      );
       panel(10, 38, 126, 28, lost ? UI.danger : UI.gold);
       fitLabel(f.ch.name[0], 20, 44, 106, 6, UI.white);
       fitLabel(f.ch.name[1], 20, 55, 106, 6, UI.gold);
@@ -98,7 +101,13 @@ function Result(f, side, opts, xi) {
         ctx.fillRect(156, 152, Math.round(144 * XP.prog(id) * k), 3);
       }
       screenFooter(
-        S.mode === 'arcade' ? (S.li < 7 ? 'LUTA ' + (S.li + 1) + '/7' : 'CHEFE FINAL') : 'MATCH RESULT',
+        S.mode === 'arcade'
+          ? S.li < 7
+            ? 'LUTA ' + (S.li + 1) + '/7'
+            : S.li >= 8
+              ? 'ÚLTIMA LUTA · 2/2'
+              : 'SATURNITA · 1/2'
+          : 'MATCH RESULT',
         twoP || S.mode === 'versus' ? 'ENTER NOVA LUTA' : 'ENTER CONTINUAR',
       );
       if (t < 10) fade(1 - t / 10, '255,255,255');

@@ -50,3 +50,56 @@ for (const [type, w, h] of [
   );
 }
 console.log('ALL OK: projectile proportions, EX sizes, floor anchors and pixel alignment');
+
+// Measure the actual painted result beside each caster: prevent a return to tiny props.
+const { T, createCanvas } = await import('./harness.js');
+const { drawProjectileArt } = await import('../src/game/sprites/projectile-art.js');
+const caster = {
+  wave: T.CH[0],
+  bomb: T.CH[2],
+  boom: T.CH[2],
+  banana: T.CH[5],
+  clock: T.CH[7],
+  ring: T.BOSS,
+  meteor: T.BOSS,
+  quake: T.CH[4],
+};
+const relativeWidth = {
+  wave: 0.6,
+  bomb: 0.28,
+  boom: 0.45,
+  banana: 0.5,
+  clock: 0.5,
+  ring: 0.65,
+  meteor: 0.3,
+  quake: 0.65,
+};
+const canvas = createCanvas(256, 256),
+  g = canvas.getContext('2d');
+for (const [type, ch] of Object.entries(caster)) {
+  const profile = T.profile(ch),
+    bodyWidth = profile.r - profile.l;
+  for (const t of [0, 4, 8]) {
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, 256, 256);
+    g.scale(2, 2);
+    const p = { type, w: sizes[type][0], h: sizes[type][1], dir: 1, t };
+    const unchanged = JSON.stringify(p);
+    drawProjectileArt(g, p, 64, 64, t);
+    const data = g.getImageData(0, 0, 256, 256).data;
+    let left = 256,
+      right = -1;
+    for (let i = 3; i < data.length; i += 4)
+      if (data[i] > 127) {
+        const x = ((i - 3) / 4) % 256;
+        left = Math.min(left, x);
+        right = Math.max(right, x);
+      }
+    assert.ok(
+      (right - left + 1) / 2 >= bodyWidth * relativeWidth[type],
+      type + ': projectile must read clearly beside its caster',
+    );
+    assert.equal(JSON.stringify(p), unchanged, type + ': visual scaling never mutates the hitbox');
+  }
+}
+console.log('ALL OK: painted projectile scale relative to all casters, without changing combat');
