@@ -1,3 +1,4 @@
+import { projectileArtBounds } from './projectile-layout.js';
 import { PROJECTILE_ART } from '../data/projectile-art.js';
 
 const images = {};
@@ -22,19 +23,25 @@ function drawProjectileArt(ctx, projectile, x, y, tick) {
   const art = PROJECTILE_ART[projectile.type],
     image = images[projectile.type];
   if (!art || !image) return false;
+  const age = Math.max(0, projectile.t ?? tick ?? 0);
   const index =
     projectile.type === 'boom'
-      ? Math.min(art.frames - 1, Math.floor(projectile.t / 4))
-      : Math.floor((projectile.t ?? tick) / 3) % art.frames;
-  const scale = projectile.sup ? 1.5 : 1;
-  const [sx, sy, sw, sh] = art.rects[index];
-  const width = projectile.type === 'quake' ? projectile.w : (sw / 2) * scale;
-  const height = (sh / 2) * scale;
+      ? Math.min(art.frames - 1, Math.floor(age / 4))
+      : Math.floor(age / 3) % art.frames;
+  const bounds = projectileArtBounds(projectile, art, index);
+  if (!bounds) return false;
+  const {
+    source: [sx, sy, sw, sh],
+    left,
+    top,
+    width,
+    height,
+  } = bounds;
   ctx.save();
-  ctx.translate(x, y);
+  ctx.translate(Math.round(x * 2) / 2, Math.round(y * 2) / 2);
   ctx.scale(projectile.dir < 0 ? -1 : 1, 1);
   ctx.imageSmoothingEnabled = false;
-  ctx.drawImage(image, sx, sy, sw, sh, -width / 2, -height / 2, width, height);
+  ctx.drawImage(image, sx, sy, sw, sh, left, top, width, height);
   ctx.restore();
   return true;
 }
