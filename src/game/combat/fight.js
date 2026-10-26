@@ -568,7 +568,7 @@ class Fight {
     drawStage(st, cam, this.tick);
     for (const f of this.f) {
       if (f.hidden) continue;
-      const w = Math.round((f.isCar ? f.ch.hurt.w : f.bodyW()) * 0.5),
+      const w = Math.round(f.bodyW() * 0.5),
         hh = f.y < FLOOR ? Math.max(1, 3 - Math.round((FLOOR - f.y) / 30)) : 3;
       fe(
         ctx,
@@ -605,7 +605,15 @@ class Fight {
       }
       const tint = f.flash > 0 && f.flash & 2 ? 'w' : f.frozen > 0 ? 'b' : '';
       const alpha = f.inv > 0 && f.st !== 'special' && this.tick & 2 ? 0.45 : 1;
-      drawSpr(sprite(f.ch, pi.pose, pi.f, pi.a, f.alt, tint), f.x - cam, f.y, dir, 1, lying, alpha);
+      drawSpr(
+        sprite(f.ch, pi.pose, pi.f, pi.a, f.alt, tint),
+        f.x - cam,
+        f.y,
+        dir,
+        f.renderScale || 1,
+        lying,
+        alpha,
+      );
       if (f.atk && f.atk.t >= f.atk.d.st && f.atk.t < f.atk.d.st + f.atk.d.ac + 2) {
         const b = f.atkBox(),
           tx = (f.dir > 0 ? b.x + b.w - 3 : b.x + 3) - cam,

@@ -2,7 +2,7 @@
 
 Os três carros têm cinco desenhos independentes: íntegro, dano leve, médio, severo e sucata. O papagaio tem repouso, duas articulações de fala, piscada e susto. Os prompts completos de `image_gen` estão em `assets/bonus-art/prompts.json`; cada variante usa a mesma imagem-base como referência.
 
-`node tools/process-bonus-art.js` recorta a transparência, reduz com vizinho mais próximo, ancora as bases e grava `public/atlases/bonus-*.png`. O motor carrega os atlases na inicialização e mantém o desenho procedural como fallback. As colisões, HP e limiares de dano dos carros permanecem os mesmos. Os PNGs originais ficam locais em `assets/bonus-art/`, ignorados pelo Git.
+`node tools/process-bonus-art.js` recorta a transparência, reduz com vizinho mais próximo, ancora as bases e grava `public/atlases/bonus-*.png`. O motor carrega os atlases na inicialização e mantém o desenho procedural como fallback. Na fase de bônus, os carros usam escala 1,55 para melhorar a proporção em relação aos lutadores; colisões e sombras acompanham essa escala. HP e limiares de dano permanecem os mesmos. Os PNGs originais ficam locais em `assets/bonus-art/`, ignorados pelo Git.
 
 ## Diagnóstico do áudio atual
 

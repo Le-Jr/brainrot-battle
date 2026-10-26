@@ -8,6 +8,7 @@ class Car {
     this.alt = false;
     this.meter = 0;
     this.isCar = true;
+    this.renderScale = 1.55;
     this.pw = 1;
     this.df = def.def;
     this.maxhp = def.maxhp;
@@ -52,10 +53,12 @@ class Car {
   }
   hurt() {
     const h = this.ch.hurt;
-    return { x: this.x - h.w / 2, y: this.y - h.h, w: h.w, h: h.h };
+    const w = h.w * this.renderScale,
+      height = h.h * this.renderScale;
+    return { x: this.x - w / 2, y: this.y - height, w, h: height };
   }
   bodyW() {
-    return this.ch.hurt.w;
+    return this.ch.hurt.w * this.renderScale;
   }
   poseInfo() {
     const p = this.hp / this.maxhp,

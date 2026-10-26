@@ -10,6 +10,8 @@ for (const ch of Object.values(T.CARS)) {
   const car = new Car(ch),
     original = car.hurt();
   const hashes = [];
+  assert.equal(car.bodyW(), ch.hurt.w * 1.55);
+  assert.equal(original.h, ch.hurt.h * 1.55);
   for (const [i, ratio] of [1, 0.75, 0.5, 0.25, 0].entries()) {
     car.hp = car.maxhp * ratio;
     car.dead = i === 4;
