@@ -761,9 +761,6 @@ export const VOICE_CLIPS = {
   "it:vila brasilini": [
     "2e1613ee7f36cf7b.mp3"
   ],
-  "pt:milk shake de morango é muito cremoso": [
-    "a9d438a2befbde8b.mp3"
-  ],
   "pt:nóooo meu bi-ai-di": [
     "4b79ef4fcdeafd3b.mp3"
   ],

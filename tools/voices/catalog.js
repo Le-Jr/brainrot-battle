@@ -62,12 +62,7 @@ for (const loc of LOC) {
   add(loc.n.toLowerCase(), 'it', 'announcer');
 }
 for (const place of ['NEON CITTÀ', 'VILA BRASILINI']) add(place.toLowerCase(), 'it', 'announcer');
-for (const text of [
-  'MILK SHAKE DE MORANGO... É MUITO CREMOSO!',
-  'NÓOOO! MEU BI-AI-DI!',
-  'NÃÃÃO... ERA ZERO KM!',
-])
-  add(text, 'pt', 'parrot', 0.85);
+for (const text of ['NÓOOO! MEU BI-AI-DI!', 'NÃÃÃO... ERA ZERO KM!']) add(text, 'pt', 'parrot', 0.85);
 add('MAMMA MIA! LA MIA MACCHINA!', 'it', 'nonno', 0.85);
 ELON_LINES.forEach((line, i) => add(line.text, i === 0 ? 'ann' : 'pt', 'elon', 0.5 + i * 0.1));
 for (const p of [...ASCENSION, ...FINAL_VICTORY])

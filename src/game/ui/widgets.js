@@ -35,13 +35,81 @@ function parrot(x, y, talk, t, startled = false) {
   B(6, 14, 2, 2, '#e8a040');
   B(11, 14, 2, 2, '#e8a040');
 }
-function bubble(x, y, text, side = 1, col = '#ffffff') {
-  const lines = wrapTxt(text, 18),
-    w = Math.max(...lines.map((l) => l.length)) * 8 + 10,
-    h = lines.length * 10 + 8;
+/** A straight branch stand: the bird's perch sits on a fork, with a stable foot. */
+function parrotCane(x, top, bottom) {
+  ctx.save();
+  // Small grounded shadow and a broad, low wooden base.
+  ctx.fillStyle = 'rgba(10,18,15,.28)';
+  ctx.beginPath();
+  ctx.ellipse(x + 1, bottom + 1, 10, 2, 0, 0, Math.PI * 2);
+  ctx.fill();
+  const stroke = (color, width) => {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x - 8, bottom);
+    ctx.lineTo(x, bottom - 4);
+    ctx.lineTo(x + 8, bottom);
+    ctx.moveTo(x, bottom - 3);
+    ctx.lineTo(x, top + 8);
+    ctx.lineTo(x - 5, top);
+    ctx.moveTo(x, top + 8);
+    ctx.lineTo(x + 6, top);
+    ctx.stroke();
+  };
+  stroke('#29251b', 3.5);
+  stroke('#785639', 2);
+  ctx.strokeStyle = '#b18a55';
+  ctx.lineWidth = 0.65;
+  ctx.beginPath();
+  ctx.moveTo(x - 0.5, bottom - 5);
+  ctx.lineTo(x - 0.5, top + 9);
+  ctx.stroke();
+  // A short twine binding where the branch forks under the existing perch.
+  ctx.fillStyle = '#bcaa78';
+  for (let i = 0; i < 3; i++) ctx.fillRect(x - 1.7, top + 7 + i * 1.4, 3.4, 0.65);
+  ctx.restore();
+}
+
+function bubble(x, y, text, side = 1, col = '#ffffff', compact = false) {
+  const size = compact ? 5 : 8,
+    lineHeight = compact ? 7 : 10;
+  const lines = wrapTxt(text, compact ? 16 : 18),
+    w = Math.max(...lines.map((l) => l.length)) * size + (compact ? 14 : 10),
+    h = lines.length * lineHeight + (compact ? 12 : 8);
   let bx = Math.round(clamp(x - (side > 0 ? 10 : w - 10), 4, W - w - 4)),
     by = Math.round(y - h - 8);
   by = Math.max(24, by);
+  if (compact) {
+    const tail = Math.round(clamp(x, bx + 8, bx + w - 8));
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,.3)';
+    ctx.beginPath();
+    ctx.roundRect(bx + 2, by + 3, w, h, 5);
+    ctx.fill();
+    ctx.fillStyle = '#fff8de';
+    ctx.strokeStyle = '#527b3c';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(bx, by, w, h, 5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(tail - 3, by + h - 0.5);
+    ctx.lineTo(tail, by + h + 5);
+    ctx.lineTo(tail + 4, by + h - 0.5);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#fff8de';
+    ctx.fillRect(tail - 2, by + h - 1, 5, 2);
+    ctx.fillStyle = '#a1bd66';
+    ctx.fillRect(bx + 7, by + 5, 12, 1);
+    lines.forEach((l, i) => txt(l, bx + 7, by + 8 + i * lineHeight, size, '#263d26', 'left', null));
+    ctx.restore();
+    return;
+  }
   ctx.fillStyle = '#080e20';
   ctx.fillRect(bx - 1, by - 1, w + 2, h + 2);
   ctx.fillStyle = col;
@@ -68,4 +136,4 @@ function xpBar(id, x, y, w) {
   ctx.fillRect(bx, y + 1, Math.round(w * p), 1);
 }
 
-export { bubble, parrot, xpBar };
+export { bubble, parrot, parrotCane, xpBar };

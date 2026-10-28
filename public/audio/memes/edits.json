@@ -1,0 +1,14 @@
+{
+  "loudness": "-18 LUFS",
+  "peak": "-2 dBTP",
+  "processing": "Complete original at native speed; EQ, edge fades, normalization, limiter",
+  "clips": {
+    "parrot-byd-full": {
+      "file": "parrot-byd-full.mp3",
+      "duration": 12.981361,
+      "completeSource": true,
+      "source": "byd.mp3",
+      "sourceSha256": "4bca45a7bb1fff8caa7f3f1fd8da7df63481f3d103cdeb8d856d8fa37c829cde"
+    }
+  }
+}

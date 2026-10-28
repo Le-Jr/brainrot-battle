@@ -40,6 +40,7 @@ const VO = {
   on: true,
   clipToken: 0,
   clipAudio: null,
+  clipProtected: false,
   pendingLines: [],
   fallbackTimer: null,
   voices: [],
@@ -147,7 +148,7 @@ const VO = {
   },
   startLine(text, o, token) {
     if (!this.on || token !== this.clipToken) return;
-    const files = VOICE_CLIPS[voiceKey(text, o.role || 'pt')];
+    const files = o.meme ? [o.meme] : VOICE_CLIPS[voiceKey(text, o.role || 'pt')];
     if (!files || typeof Audio === 'undefined') {
       this.fallback(text, o, token);
       return;
@@ -156,17 +157,21 @@ const VO = {
       if (!this.on || token !== this.clipToken) return;
       if (index === files.length) {
         this.clipAudio = null;
+        this.clipProtected = false;
         this.drain();
         return;
       }
-      const audio = new Audio('/audio/voices/' + files[index]);
+      const audio = new Audio((o.meme ? '/audio/memes/' : '/audio/voices/') + files[index]);
+      audio.volume = Math.max(0, Math.min(1, o.volume ?? 1));
       this.clipAudio = audio;
+      this.clipProtected = !!o.meme;
       let failed = false;
       const fail = () => {
         if (failed || token !== this.clipToken) return;
         failed = true;
         audio.pause();
         this.clipAudio = null;
+        this.clipProtected = false;
         this.fallback(text, o, token);
       };
       audio.onended = () => {
@@ -193,6 +198,8 @@ const VO = {
     }, 110);
   },
   say(text, o = {}) {
+    // Combat calls yield to an original meme; explicit scene exit/mute still stops it.
+    if (this.clipProtected && this.clipAudio) return;
     this.stop();
     if (!this.on || !text) return;
     this.startLine(text, o, this.clipToken);
@@ -210,6 +217,7 @@ const VO = {
     if (next) this.startLine(next.text, next.o, this.clipToken);
   },
   stopClip() {
+    this.clipProtected = false;
     this.clipToken++;
     clearTimeout(this.fallbackTimer);
     this.fallbackTimer = null;
