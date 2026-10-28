@@ -1,5 +1,5 @@
 /* Mutable run state shared by the scenes: settings (SET), the current run (S) and debug toggles (DEBUG). */
-const SET = { music: 0.42, crt: false };
+const SET = { music: 0.3, effects: 0.6, voice: 0.85, crt: false };
 const S = {
   mode: 'arcade',
   vsCpu: true,

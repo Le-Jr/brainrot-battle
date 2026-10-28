@@ -1,6 +1,9 @@
 /* Web Audio synthesizer (AU): 2-operator FM voices, noise drums, reverb/delay bus, sequencer and SFX. */
 import { SET } from '../state.js';
 import { TRACKS, chordInfo, mf, noteMidi } from './tracks.js';
+import { MUSIC_FILES } from './music-files.js';
+import { IMPORTED_MUSIC } from './imported-music.js';
+import { loadAudioSettings, saveAudioSettings } from './settings.js';
 
 const AU = {
   ctx: null,
@@ -10,11 +13,16 @@ const AU = {
   step: 0,
   nextT: 0,
   pending: null,
+  renderedSource: null,
+  loadVersion: 0,
+  buffers: new Map(),
+  ducking: 1,
   init() {
     if (this.ctx) {
       if (this.ctx.state !== 'running') this.ctx.resume();
       return;
     }
+    loadAudioSettings();
     const C = window.AudioContext || window.webkitAudioContext;
     if (!C) return;
     let c;
@@ -34,7 +42,7 @@ const AU = {
     this.mg.gain.value = this.music ? SET.music : 0;
     this.mg.connect(this.master);
     this.sg = c.createGain();
-    this.sg.gain.value = 0.6;
+    this.sg.gain.value = SET.effects;
     this.sg.connect(this.master);
     // small room reverb for the "arcade cabinet" feel
     const len = Math.floor(c.sampleRate * 1.1),
@@ -71,7 +79,7 @@ const AU = {
     const d = b.getChannelData(0);
     for (let i = 0; i < nlen; i++) d[i] = Math.random() * 2 - 1;
     this.nb = b;
-    setInterval(() => this.tick(), 25);
+    if (!this.timer) this.timer = setInterval(() => this.tick(), 25);
     if (this.pending) {
       const p = this.pending;
       this.pending = null;
@@ -204,20 +212,101 @@ const AU = {
       this.pending = name;
       return;
     }
-    if (this.cur === name && this.track) return;
+    if (this.cur === name && (this.track || this.renderedSource)) return;
+    this.stop();
+    this.setDucking(1);
     this.cur = name;
-    this.track = TRACKS[name] || null;
+    this.track = IMPORTED_MUSIC[name] && typeof Audio !== 'undefined' ? null : TRACKS[name] || null;
     this.step = 0;
     this.nextT = this.ctx.currentTime + 0.08;
+    if (IMPORTED_MUSIC[name] && typeof Audio !== 'undefined') this.playImported(name, this.loadVersion);
+    else if (MUSIC_FILES[name]) this.loadRendered(name, this.loadVersion);
+  },
+  playImported(name, version) {
+    const audio = new Audio(MUSIC_FILES[name]);
+    audio.loop = true;
+    audio.preload = 'auto';
+    // Stream long tracks through the existing music bus rather than decoding minutes into RAM.
+    const node = this.ctx.createMediaElementSource(audio);
+    node.connect(this.mg);
+    const source = {
+      media: audio,
+      stop: () => {
+        audio.pause();
+        audio.removeAttribute('src');
+        audio.load();
+      },
+      disconnect: () => node.disconnect(),
+    };
+    this.renderedSource = source;
+    const fail = () => {
+      if (this.loadVersion !== version || this.renderedSource !== source) return;
+      audio.onerror = null;
+      source.stop();
+      source.disconnect();
+      this.renderedSource = null;
+      this.track = TRACKS[name];
+      this.step = 0;
+      this.nextT = this.ctx.currentTime + 0.08;
+    };
+    audio.onerror = fail;
+    audio.play().catch(fail);
+  },
+  async loadRendered(name, version) {
+    try {
+      let buffer = this.buffers.get(name);
+      if (!buffer) {
+        const response = await fetch(MUSIC_FILES[name]);
+        if (!response.ok) throw new Error('Music HTTP ' + response.status);
+        buffer = await this.ctx.decodeAudioData(await response.arrayBuffer());
+        // Bound decoded audio memory on phones; each stereo loop can take several MB.
+        if (this.buffers.size >= 3) this.buffers.delete(this.buffers.keys().next().value);
+        this.buffers.set(name, buffer);
+      }
+      if (version !== this.loadVersion || this.cur !== name) return;
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = TRACKS[name].loop !== false;
+      source.connect(this.mg);
+      source.onended = () => {
+        source.disconnect();
+        if (this.renderedSource === source) this.renderedSource = null;
+      };
+      // Continue at the scheduled step, preserving the musical position.
+      const tr = TRACKS[name],
+        d = 60 / tr.bpm / 4;
+      const start = Math.max(this.ctx.currentTime + 0.02, this.nextT);
+      const offset = (this.step * d) % buffer.duration;
+      this.renderedSource = source;
+      source.start(start, offset);
+      this.track = null;
+    } catch {
+      // The editable synth score remains available if a download/codec fails.
+    }
   },
   stop() {
+    this.loadVersion++;
+    if (this.renderedSource) {
+      this.renderedSource.stop();
+      this.renderedSource.disconnect();
+      this.renderedSource = null;
+    }
     this.track = null;
     this.cur = null;
     this.pending = null;
   },
   setMusic(v) {
     SET.music = v;
-    if (this.mg) this.mg.gain.value = this.music ? v : 0;
+    saveAudioSettings();
+    this.applyLevels();
+  },
+  applyLevels() {
+    if (this.mg) this.mg.gain.value = this.music ? SET.music * this.ducking : 0;
+    if (this.sg) this.sg.gain.value = SET.effects;
+  },
+  setDucking(value) {
+    this.ducking = value;
+    this.applyLevels();
   },
   tick() {
     const c = this.ctx,
@@ -243,6 +332,30 @@ const AU = {
   leadNote(tr, f, t, dur) {
     const L = this.lead;
     switch (tr.lw) {
+      case 'guitar':
+        this.fm(f, t, dur, 0.13, L, {
+          r: 1,
+          i: 3.8,
+          i2: 0.5,
+          id: 0.055,
+          ct: 'sawtooth',
+          filter: 3300,
+          sus: 0.65,
+          vib: 1,
+        });
+        this.fm(f * 1.003, t, dur, 0.045, L, { r: 2, i: 1.4, i2: 0.3, filter: 2600, sus: 0.6 });
+        break;
+      case 'cathedral':
+        for (const [ratio, vol] of [
+          [0.5, 0.045],
+          [1, 0.09],
+          [2, 0.05],
+          [3, 0.025],
+          [4, 0.012],
+        ])
+          this.osc('sine', f * ratio, t, dur, vol, L, { sus: 0.95 });
+        this.fm(f, t, dur, 0.035, L, { r: 2, i: 1.2, i2: 0.6, sus: 0.85 });
+        break;
       case 'cosmic':
         // Detuned FM brass/guitar attack with an octave halo, rather than a reused stage voice.
         this.fm(f, t, dur, 0.12, L, { r: 1, i: 3.2, i2: 0.85, id: 0.12, a: 0.012, sus: 0.78, vib: 1 });
@@ -335,6 +448,37 @@ const AU = {
       pos = s % spb,
       M = this.mg;
     const ch = chordInfo(tr.chords[bar % tr.chords.length]);
+    const intensity = tr.sections?.[bar % tr.sections.length] ?? 1;
+    if (tr.arcade) {
+      // Offbeat chord stabs, palm-muted fifths and a call/response countermelody.
+      if (intensity >= 0.5 && (pos === 2 || pos === half + 2)) {
+        for (const interval of ch.tones.slice(0, 3))
+          this.fm(mf(48 + ch.pc + interval), t, d * 1.35, 0.032 * intensity, M, {
+            r: 1,
+            i: 2.8,
+            i2: 0.6,
+            id: 0.05,
+            filter: 2300,
+            sus: 0.3,
+          });
+      }
+      if (intensity >= 0.9 && pos % 4 === 2)
+        this.fm(mf(60 + ch.pc + ch.tones[(pos / 2 + bar) % 4]), t, d * 1.5, 0.045, this.lead, {
+          r: 1,
+          i: 1.7,
+          i2: 0.4,
+          sus: 0.5,
+        });
+      if (intensity >= 0.7 && pos % 2 === 0)
+        for (const interval of [0, 7])
+          this.fm(mf(36 + ch.pc + interval), t, d * 0.7, 0.027, M, {
+            r: 1,
+            i: 3,
+            i2: 0.3,
+            filter: 1800,
+            sus: 0.2,
+          });
+    }
     if (pos % 2 === 0) {
       const toks = tr.lead[bar % tr.lead.length].trim().split(/\s+/);
       const i = pos / 2,
@@ -382,9 +526,13 @@ const AU = {
       }
     }
     const dr = tr.dr,
-      at = (k) => (dr[k] || '')[pos] === 'x';
+      at = (k) =>
+        (dr[k] || '')[pos] === 'x' &&
+        (intensity >= 0.65 ||
+          (intensity >= 0.5 ? k !== 'h' || pos % 4 === 0 : ['k', 'c', 'x'].includes(k) && pos === 0));
     if (at('k')) this.osc('sine', 155, t, 0.18, 0.9, M, { slide: 40, st: 0.12, sus: 0.2 });
-    const fill = bar % 8 === 7 && pos >= spb - 6 && tr.loop !== false && tr.fill !== false;
+    const fill =
+      intensity >= 0.65 && bar % 8 === 7 && pos >= spb - 6 && tr.loop !== false && tr.fill !== false;
     if (at('s') || fill) {
       this.noise(t, 0.14, fill && !at('s') ? 0.24 : 0.42, M, { hp: 1200 });
       this.osc('triangle', 210, t, 0.07, 0.25, M, { slide: 120, sus: 0.2 });
@@ -403,8 +551,8 @@ const AU = {
     if (at('c') && bar % 4 === 0) this.noise(t, 0.9, 0.18, M, { hp: 4000 });
     if (at('x') && bar % 2 === 0) this.ohit(mf(60 + ch.pc), ch, t);
   },
-  ohit(f, ch, t) {
-    const M = this.mg;
+  ohit(f, ch, t, dest = this.mg) {
+    const M = dest;
     for (const k of [0, ch.minor ? 3 : 4, 7, 12])
       this.fm(f * Math.pow(2, k / 12), t, 0.32, 0.07, M, {
         r: 1,
@@ -527,7 +675,7 @@ const AU = {
       case 'slam':
         this.noise(t, 0.5, 0.9, S, { lp: 1400 });
         this.osc('sine', 70, t, 0.5, 0.9, S, { slide: 30, sus: 0.4 });
-        this.ohit(523, { minor: true }, t);
+        this.ohit(523, { minor: true }, t, S);
         break;
       case 'squawk':
         this.fm(1400, t, 0.12, 0.16, S, { r: 1.5, i: 4, slide: 2100, sus: 0.4 });

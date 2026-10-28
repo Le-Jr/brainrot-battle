@@ -8,17 +8,18 @@ import { ctx, txt } from '../core/canvas.js';
 import { CONFIRM, START, anyPressed, menuPad } from '../core/input.js';
 import { go } from '../core/scene.js';
 import { sprite } from '../sprites/sprite.js';
-import { DEBUG, SET } from '../state.js';
+import { DEBUG } from '../state.js';
 
 import { fitShot, headShot } from '../ui/portrait.js';
 import { Title } from './title.js';
+import { audioItems, adjustAudio } from '../audio/controls.js';
 
-const OPTIONS = ['CONTINUAR', 'REINICIAR LUTA', 'HITBOXES', 'SAIR PARA O MENU'];
+const OPTIONS = ['CONTINUAR', 'REINICIAR LUTA', 'ÁUDIO', 'HITBOXES', 'SAIR PARA O MENU'];
 const ease = (k) => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
 
 /** Music volume, lowered while paused. */
 function duck(on) {
-  if (AU.mg && AU.music) AU.mg.gain.value = on ? SET.music * 0.35 : SET.music;
+  AU.setDucking(on ? 0.35 : 1);
 }
 
 /** Put the match back at round 1 with full health and empty gauges. */
@@ -42,6 +43,7 @@ function FightScene(F, onDone) {
       this.pm = 0;
       this.pt = 0;
       this.confirm = false;
+      this.audio = false;
       this.out = 0;
     },
     open() {
@@ -49,6 +51,7 @@ function FightScene(F, onDone) {
       this.pm = 0;
       this.pt = 0;
       this.confirm = false;
+      this.audio = false;
       AU.sfx('wipe');
       duck(true);
     },
@@ -70,6 +73,21 @@ function FightScene(F, onDone) {
       this.pt++;
       if (this.pt < 6) return;
       const p = menuPad();
+      if (this.audio) {
+        if (p.pup) this.am = (this.am + 3) % 4;
+        if (p.pdown) this.am = (this.am + 1) % 4;
+        if (anyPressed(['Escape', 'Backspace'])) {
+          this.audio = false;
+          return;
+        }
+        if (p.pleft) adjustAudio(this.am, -1);
+        if (p.pright) adjustAudio(this.am, 1);
+        if (anyPressed(CONFIRM)) {
+          if (this.am === 3) this.audio = false;
+          else adjustAudio(this.am, 1);
+        }
+        return;
+      }
       if (this.confirm) {
         if (p.pleft || p.pright || p.pup || p.pdown) {
           this.cm ^= 1;
@@ -105,6 +123,9 @@ function FightScene(F, onDone) {
           restart(F);
           this.out = 0;
           this.close();
+        } else if (o === 'ÁUDIO') {
+          this.audio = true;
+          this.am = 0;
         } else if (o === 'HITBOXES') DEBUG.showBox = !DEBUG.showBox;
         else {
           this.confirm = true;
@@ -124,8 +145,8 @@ function FightScene(F, onDone) {
       ctx.fillRect(0, 0, W, H);
       ctx.save();
       ctx.globalAlpha = k;
-      panel(40, 26, 240, 132, UI.gold);
-      txt('PAUSA', 52, 36, 12, UI.white);
+      panel(40, 20, 240, 144, UI.gold);
+      txt(this.audio ? 'ÁUDIO' : 'PAUSA', 52, 30, 12, UI.white);
       txt('ROUND ' + String(F.round).padStart(2, '0'), 268, 40, 6, UI.gold, 'right', null);
       const chip = (f, x, flip) => {
         panel(x, 54, 22, 22, flip ? UI.p2 : UI.p1);
@@ -149,19 +170,23 @@ function FightScene(F, onDone) {
         ['NÃO', 'SIM'].forEach((label, i) =>
           menuRow(label, 76 + i * 88, 134, 80, this.cm === i, { height: 16 }),
         );
+      } else if (this.audio) {
+        [...audioItems(), ['VOLTAR', '']].forEach(([name, value], i) =>
+          menuRow(name, 52, 82 + i * 18, 216, this.am === i, { value, height: 16 }),
+        );
       } else
         OPTIONS.forEach((name, i) =>
           menuRow(
             name === 'HITBOXES' ? 'HITBOXES: ' + (DEBUG.showBox ? 'SIM' : 'NÃO') : name,
             52,
-            82 + i * 18,
+            80 + i * 16,
             216,
             this.pm === i,
-            { height: 16 },
+            { height: 14 },
           ),
         );
       ctx.restore();
-      screenFooter('↑↓ ESCOLHER', 'ENTER OK · ESC RETOMAR');
+      screenFooter('↑↓ ESCOLHER', this.audio ? '←→ VOLUME · ESC VOLTAR' : 'ENTER OK · ESC RETOMAR');
     },
   };
 }

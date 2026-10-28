@@ -8,7 +8,7 @@ import { CH, PLAYABLE } from '../characters/roster.js';
 import { REDUCED } from '../config.js';
 import { ctx, txt, vgrad } from '../core/canvas.js';
 import { anyPressed } from '../core/input.js';
-import { S, SET } from '../state.js';
+import { S } from '../state.js';
 import { sprite, drawSpr } from '../sprites/sprite.js';
 import { artImage } from '../stages/art.js';
 import { STAGES, drawStage } from '../stages/index.js';
@@ -32,14 +32,14 @@ export function Finale(panels, next, victory = false) {
       if (this.finished) return;
       this.finished = true;
       VO.stop();
-      if (AU.mg) AU.mg.gain.value = AU.music ? SET.music : 0;
+      AU.setDucking(1);
       next();
     },
     speak() {
       const p = panels[this.i];
       const theme = victory ? 'ending' : this.i >= 5 ? 'laststand' : 'ascension';
       AU.play(theme);
-      if (AU.mg) AU.mg.gain.value = AU.music ? SET.music * 0.65 : 0;
+      AU.setDucking(0.65);
       VO.say(p.text, {
         role: 'pt',
         rate: p.voice === 'saturnita' ? 0.9 : 1.02,

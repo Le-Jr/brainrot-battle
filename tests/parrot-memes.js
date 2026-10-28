@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { T, main } from './harness.js';
 import { VO } from '../src/game/audio/voice.js';
+import { SET } from '../src/game/state.js';
 import { prepareFrame } from '../src/game/core/canvas.js';
 const played = [];
 globalThis.Audio = class {
@@ -20,7 +21,7 @@ const bonus = new T.Bonus(T.CH[0], 1, 'byd');
 bonus.phase = 'fight';
 bonus.parrotSay();
 assert.equal(played.at(-1).src, '/audio/memes/parrot-byd-full.mp3');
-assert.equal(played.at(-1).volume, 0.8);
+assert.equal(played.at(-1).volume, 0.8 * SET.voice);
 assert.equal(bonus.bub, null, 'parrot speech has no balloon');
 assert.ok(bonus.parTalk >= 12.9 * 60, 'animation covers the complete original');
 bonus.parrotSay();

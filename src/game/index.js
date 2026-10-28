@@ -17,7 +17,7 @@ import { loadBonusArt } from './sprites/bonus-art.js';
 import { artImage, loadStageArt } from './stages/art.js';
 import { useMapArt } from './world/map.js';
 import { buildStages } from './stages/index.js';
-import { SET } from './state.js';
+import { loadAudioSettings } from './audio/settings.js';
 import { buildLogo } from './ui/logo.js';
 import { loadTupinicodeArt } from './ui/tupinicode.js';
 
@@ -29,6 +29,7 @@ let booting = null;
  */
 function boot(assetBase, intro, stageBase) {
   if (booting) return booting;
+  loadAudioSettings();
   if (intro) go(Intro);
   const fontReady =
     document.fonts && document.fonts.load
@@ -110,7 +111,7 @@ function createGame({
     setMusic(enabled) {
       AU.music = enabled;
       AU.init();
-      if (AU.mg) AU.mg.gain.value = enabled ? SET.music : 0;
+      AU.applyLevels();
     },
     setNarrator(enabled) {
       VO.on = enabled;

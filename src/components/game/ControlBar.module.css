@@ -4,7 +4,8 @@
   gap: 8px;
 }
 
-.bar button {
+.bar button,
+.bar a {
   font: inherit;
   font-size: 9px;
   color: var(--fg);
@@ -16,6 +17,10 @@
     inset 0 2px 0 #2d4363,
     inset 0 -3px 0 #050812;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   letter-spacing: 0.06em;
 }
 .bar button[aria-pressed='false'] {
@@ -23,19 +28,22 @@
   border-color: #2d3c55;
   background: #0b1425;
 }
-.bar button:hover {
+.bar button:hover,
+.bar a:hover {
   border-color: var(--gold);
 }
 
 .bar button[aria-pressed='true'] {
   border-bottom-color: var(--gold);
 }
-.bar button:active {
+.bar button:active,
+.bar a:active {
   box-shadow: inset 0 2px 0 #050812;
   transform: translateY(1px);
 }
 @media (pointer: coarse) {
-  .bar button {
+  .bar button,
+  .bar a {
     min-height: 44px;
   }
 }
@@ -43,7 +51,8 @@
   .bar {
     width: 100%;
   }
-  .bar button {
+  .bar button,
+  .bar a {
     flex: 1 1 auto;
     font-size: 8px;
     padding: 10px 8px;

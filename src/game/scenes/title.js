@@ -67,7 +67,7 @@ const Title = {
     this.show = 0;
     this.shake = 0;
     this.sub = null;
-    AU.play('title');
+    AU.play(this.phase === 'menu' ? 'select' : 'title');
   },
   update() {
     this.t++;
@@ -88,6 +88,7 @@ const Title = {
       if (anyPressed(CONFIRM)) {
         AU.sfx('start');
         this.phase = 'menu';
+        AU.play('select');
         this.mt = 0;
       }
       return;
@@ -116,6 +117,7 @@ const Title = {
     if (anyPressed(['Escape', 'Backspace'])) {
       AU.sfx('wipe');
       this.phase = 'attract';
+      AU.play('title');
       this.mt = 0;
       return;
     }

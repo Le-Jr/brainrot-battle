@@ -3,12 +3,12 @@ import { screenBackdrop, screenHeader, screenFooter, menuRow } from '../ui/theme
 import { AU } from '../audio/synth.js';
 import { ANN, IT, VO } from '../audio/voice.js';
 import { W } from '../config.js';
+import { audioItems, adjustAudio } from '../audio/controls.js';
 
 import { CONFIRM, anyPressed, menuPad } from '../core/input.js';
-import { clamp } from '../core/math.js';
 import { go } from '../core/scene.js';
 import { emit } from '../events.js';
-import { S, SET } from '../state.js';
+import { S } from '../state.js';
 import { Title } from './title.js';
 
 const Options = {
@@ -17,11 +17,13 @@ const Options = {
     this.m = 0;
     this.t = 0;
     this.msg = '';
+    this.audio = false;
   },
   items() {
+    if (this.audio) return [...audioItems(), ['VOLTAR', '']];
     return [
       ['DIFICULDADE', ['FÁCIL', 'NORMAL', 'DIFÍCIL'][S.diff]],
-      ['MÚSICA', Math.round((SET.music / 0.42) * 100) + '%'],
+      ['ÁUDIO', 'AJUSTAR VOLUMES'],
       ['NARRADOR', VO.on ? 'LIGADO' : 'DESLIGADO'],
       ['LOCUTOR (EN)', 'OUVIR VOZ'],
       ['HISTÓRIA (PT)', 'OUVIR VOZ'],
@@ -31,10 +33,18 @@ const Options = {
     ];
   },
   change(i, dir) {
+    if (this.audio) {
+      if (i === 3) {
+        this.audio = false;
+        this.m = 1;
+      } else adjustAudio(i, dir);
+      return;
+    }
     const role = ['ann', 'pt', 'it'];
     if (i === 0) S.diff = (S.diff + 3 + dir) % 3;
     else if (i === 1) {
-      AU.setMusic(clamp(SET.music + dir * 0.042, 0, 0.63));
+      this.audio = true;
+      this.m = 0;
     } else if (i === 2) {
       VO.on = !VO.on;
       emit('voice', VO.on);
@@ -66,6 +76,11 @@ const Options = {
     const p = menuPad(),
       n = this.items().length;
     if (anyPressed(['Escape', 'Backspace'])) {
+      if (this.audio) {
+        this.audio = false;
+        this.m = 1;
+        return;
+      }
       go(Title);
       return;
     }
@@ -83,7 +98,10 @@ const Options = {
   },
   draw() {
     screenBackdrop(this.t);
-    screenHeader('OPÇÕES', 'SYSTEM CONFIG');
+    screenHeader(
+      this.audio ? 'ÁUDIO' : 'OPÇÕES',
+      this.audio ? 'VOLUMES SALVOS AUTOMATICAMENTE' : 'SYSTEM CONFIG',
+    );
     this.items().forEach(([name, value], i) => {
       menuRow(name, 10, 35 + i * 16, W - 20, i === this.m, { value, height: 14 });
     });

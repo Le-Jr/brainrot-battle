@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/projectile-scale.js && node tests/display-resolution.js && node tests/bonus-art.js && node tests/map-art.js && node tests/finale.js && node tests/secret-fighter.js && node tests/local-tests.js && node tests/elon-reactions.js && node tests/parrot-memes.js && node tests/visual-snapshot.js && node tests/voice-clips.js",
+    "test": "node tests/story-flow.js && node tests/combat-suite.js && node tests/check-texts.js && node tests/sprite-art.js && node tests/projectile-scale.js && node tests/display-resolution.js && node tests/bonus-art.js && node tests/map-art.js && node tests/finale.js && node tests/secret-fighter.js && node tests/local-tests.js && node tests/elon-reactions.js && node tests/parrot-memes.js && node tests/visual-snapshot.js && node tests/voice-clips.js && node tests/music.js && node tests/audio-menus.js",
     "render": "node tests/render-poses.js && node tests/render-stages.js",
     "sprites": "node tools/process-sprite-art.js",
     "sprites:legacy": "python3 tools/process_sprites.py",
@@ -35,7 +35,10 @@
     "render:finale:audio": "node tools/render-finale-audio.js",
     "sprites:finale": "node tools/process-finale-art.js",
     "render:finale:video": "node tools/render-finale-video.js",
-    "test:local": "node tests/local-tests.js"
+    "test:local": "node tests/local-tests.js",
+    "music:render": "node tools/render-music.js --all",
+    "music:check": "node tools/check-music.js",
+    "test:music": "node tests/music.js && node tests/audio-menus.js"
   },
   "dependencies": {
     "next": "16.4.2",

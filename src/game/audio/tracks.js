@@ -1,4 +1,6 @@
 import { FINALE_TRACKS } from './finale-tracks.js';
+import { arrangeArcade } from './arcade-arrangements.js';
+import { IMPORTED_MUSIC } from './imported-music.js';
 /* Music data: note parsing, bass patterns and the 21 tracks played by the synth. */
 const NOTE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
 function noteMidi(s) {
@@ -482,6 +484,11 @@ const TRACKS = {
   },
 };
 Object.assign(TRACKS, FINALE_TRACKS);
+arrangeArcade(TRACKS);
+for (const [id, music] of Object.entries(IMPORTED_MUSIC)) {
+  if (music.alternative) TRACKS[id] = { ...TRACKS[id.replace('-alt', '')] };
+  if (TRACKS[id]) TRACKS[id].title = music.title + (music.alternative ? ' (ALTERNATIVA)' : '');
+}
 for (const k in TRACKS) {
   const t = TRACKS[k];
   t.bpArr = (BP[t.bp] || BP.oct).split(' ').map((v) => (v === '.' ? null : +v));

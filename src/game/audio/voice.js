@@ -1,6 +1,7 @@
 /* Offline Chatterbox clips first; installed browser voices are a fallback. */
 import { VOICE_CLIPS } from '../data/voice-clips.js';
 import { voiceKey } from './voice-key.js';
+import { SET } from '../state.js';
 const VPREF = {
   ann: [
     /Andrew.*Natural/i,
@@ -46,6 +47,11 @@ const VO = {
   voices: [],
   live: [],
   lastStart: 0,
+  clipVolume: 1,
+  applyVolume() {
+    if (this.clipAudio) this.clipAudio.volume = Math.max(0, Math.min(1, SET.voice * this.clipVolume));
+    for (const utterance of this.live) utterance.volume = SET.voice;
+  },
   choice: { ann: '', pt: '', it: '' },
   init() {
     try {
@@ -127,7 +133,7 @@ const VO = {
       const natural = v && /Natural|Neural/i.test(v.name);
       u.pitch = o.pitch === undefined ? 1 : natural ? 1 + (o.pitch - 1) * 0.6 : o.pitch;
       u.rate = o.rate === undefined ? 1 : o.rate;
-      u.volume = 1;
+      u.volume = SET.voice;
       const done = () => {
         const active = this.live.includes(u);
         this.live = this.live.filter((x) => x !== u);
@@ -162,7 +168,8 @@ const VO = {
         return;
       }
       const audio = new Audio((o.meme ? '/audio/memes/' : '/audio/voices/') + files[index]);
-      audio.volume = Math.max(0, Math.min(1, o.volume ?? 1));
+      this.clipVolume = o.volume ?? 1;
+      audio.volume = Math.max(0, Math.min(1, SET.voice * this.clipVolume));
       this.clipAudio = audio;
       this.clipProtected = !!o.meme;
       let failed = false;

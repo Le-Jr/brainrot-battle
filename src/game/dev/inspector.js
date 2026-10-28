@@ -14,7 +14,7 @@ import { ctx, txt } from '../core/canvas.js';
 import { keys, pressedQ, menuPad, anyPressed, CONFIRM } from '../core/input.js';
 import { go, setInspector } from '../core/scene.js';
 import { XP } from '../progression/xp.js';
-import { S, SET, DEBUG } from '../state.js';
+import { S, DEBUG } from '../state.js';
 import { STAGES, buildStages } from '../stages/index.js';
 import { ASCENSION } from '../story/finale.js';
 import { WORLD_PRO, CALL_PANEL } from '../story/world.js';
@@ -74,7 +74,7 @@ export function installLocalInspector({ hostname, target, onAvailability = () =>
       }
       keys.clear();
       pressedQ.clear();
-      if (AU.mg) AU.mg.gain.value = AU.music ? SET.music * (this.scene?.pause ? 0.35 : 1) : 0;
+      AU.setDucking(this.scene?.pause ? 0.35 : 1);
       if (resume) {
         VO.clipAudio?.play()?.catch(() => {});
         if (VO.live.length && typeof speechSynthesis !== 'undefined') speechSynthesis.resume();
@@ -209,7 +209,7 @@ export function installLocalInspector({ hostname, target, onAvailability = () =>
               this.audition = true;
               AU.init();
               AU.play(id);
-              if (AU.mg) AU.mg.gain.value = AU.music ? SET.music : 0;
+              AU.setDucking(1);
             },
           })),
           ...[

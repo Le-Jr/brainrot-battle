@@ -1,0 +1,167 @@
+[
+  {
+    "name": "beach",
+    "peak": 0.5389730334281921,
+    "rms": 0.0851770311034421,
+    "finite": true,
+    "duration": 35.12195011337869,
+    "title": "Costa Turbo",
+    "bars": 24,
+    "bpm": 164,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "piazza",
+    "peak": 0.4321737587451935,
+    "rms": 0.06412189290593269,
+    "finite": true,
+    "duration": 28.421043083900226,
+    "title": "Piazza Furiosa",
+    "bars": 24,
+    "bpm": 152,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "jungle",
+    "peak": 0.6563853621482849,
+    "rms": 0.12058598838829183,
+    "finite": true,
+    "duration": 24,
+    "title": "Selva de Aço",
+    "bars": 16,
+    "bpm": 160,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "desert",
+    "peak": 0.6259516477584839,
+    "rms": 0.08615856014202146,
+    "finite": true,
+    "duration": 24.935056689342403,
+    "title": "Miragem de Fogo",
+    "bars": 16,
+    "bpm": 154,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "cafe",
+    "peak": 0.4934428334236145,
+    "rms": 0.07830790723970381,
+    "finite": true,
+    "duration": 28.235283446712018,
+    "title": "Espresso Overdrive",
+    "bars": 16,
+    "bpm": 136,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "sahur",
+    "peak": 0.5812161564826965,
+    "rms": 0.12404676364982965,
+    "finite": true,
+    "duration": 25.26315192743764,
+    "title": "Sahur Impact",
+    "bars": 16,
+    "bpm": 152,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "march",
+    "peak": 0.5697363018989563,
+    "rms": 0.06999219065323291,
+    "finite": true,
+    "duration": 26.666666666666668,
+    "title": "Esquadrão Relâmpago",
+    "bars": 16,
+    "bpm": 144,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "waltz",
+    "peak": 0.39069119095802307,
+    "rms": 0.050044194297018195,
+    "finite": true,
+    "duration": 16,
+    "title": "Dança das Lâminas",
+    "bars": 16,
+    "bpm": 180,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "banana",
+    "peak": 0.48664185404777527,
+    "rms": 0.09473007409056533,
+    "finite": true,
+    "duration": 25.9459410430839,
+    "title": "Banana Breaker",
+    "bars": 16,
+    "bpm": 148,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "boss",
+    "peak": 0.6952636241912842,
+    "rms": 0.12291619940749109,
+    "finite": true,
+    "duration": 22.857142857142858,
+    "title": "Catedral de Saturno",
+    "bars": 16,
+    "bpm": 168,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "bonus",
+    "peak": 0.5298080444335938,
+    "rms": 0.08716085948861865,
+    "finite": true,
+    "duration": 22.325578231292518,
+    "title": "Nonno Full Throttle",
+    "bars": 16,
+    "bpm": 172,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "cyber",
+    "peak": 0.5162358283996582,
+    "rms": 0.07447272982282355,
+    "finite": true,
+    "duration": 25.9459410430839,
+    "title": "Neon Redline",
+    "bars": 16,
+    "bpm": 148,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "byd",
+    "peak": 0.6859338879585266,
+    "rms": 0.15161929593913925,
+    "finite": true,
+    "duration": 25.6,
+    "title": "Brasilini Pancadão",
+    "bars": 16,
+    "bpm": 150,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "ascension",
+    "peak": 0.8988457322120667,
+    "rms": 0.1958063948281979,
+    "finite": true,
+    "duration": 20,
+    "title": "Mega Brain — O Último Sinal",
+    "bars": 8,
+    "bpm": 96,
+    "encodedPeakTarget": 0.85
+  },
+  {
+    "name": "laststand",
+    "peak": 0.5924956798553467,
+    "rms": 0.1061402868350704,
+    "finite": true,
+    "duration": 39.06977324263038,
+    "title": "Toccata della Mega Vacca — BWV 565 Arcade",
+    "bars": 28,
+    "bpm": 172,
+    "encodedPeakTarget": 0.85
+  }
+]

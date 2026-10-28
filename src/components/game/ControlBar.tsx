@@ -30,6 +30,9 @@ export function ControlBar({ toggles, onToggle, onFullscreen, onTests }: Props) 
           {LABELS[key]}
         </button>
       ))}
+      <a href="/audio/music/index.html" target="_blank" rel="noopener noreferrer">
+        OUVIR TRILHA ↗
+      </a>
       {onTests && (
         <button type="button" onClick={onTests}>
           TESTES (F2)
