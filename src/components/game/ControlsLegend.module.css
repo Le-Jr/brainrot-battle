@@ -1,11 +1,11 @@
 .legend {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  align-items: start;
   gap: 16px;
 }
 
 .card {
-  container-type: inline-size;
   background: var(--panel);
   border: 1px solid var(--line);
   border-top: 3px solid var(--gold);
@@ -28,15 +28,21 @@
 .card dl {
   margin: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px 16px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
   font-size: 10px;
   line-height: 1.8;
 }
 
-/* <div> rows keep dt/dd pairs grouped while still laying out on the parent grid */
 .row {
-  display: contents;
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.row + .row {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
 }
 
 .card dt {
@@ -63,18 +69,6 @@
   border-top-color: var(--blue);
 }
 
-/* Use the card width: a narrow card can also appear on a wide screen. */
-@container (max-width: 400px) {
-  .card dl {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .row {
-    display: grid;
-    gap: 4px;
-  }
-}
 @media (max-width: 480px) {
   .card {
     padding: 14px;
