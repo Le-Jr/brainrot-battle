@@ -146,7 +146,19 @@ try {
   AU.stop();
   delete globalThis.Audio;
 }
-assert.equal(Object.keys(IMPORTED_MUSIC).length, 12);
+assert.equal(Object.keys(IMPORTED_MUSIC).length, 17);
+for (const [id, source] of Object.entries({
+  byd: 'Favela_Knockout.mp3',
+  cyber: 'Asphalt_Impact.mp3',
+  bonus: 'Throttle_Lock.mp3',
+  boss: 'Cathedral_of_the_Unbeaten.mp3',
+  ending: 'The_Last_Quarter.mp3',
+})) {
+  assert.equal(IMPORTED_MUSIC[id].source, source);
+  assert.equal(MUSIC_FILES[id], IMPORTED_MUSIC[id].url);
+  assert.ok(IMPORTED_MUSIC[id].loudness <= -19.5, `${id}: loudness`);
+  assert.ok(IMPORTED_MUSIC[id].truePeak < -1, `${id}: peak headroom`);
+}
 console.log(
   'ALL OK: music assets, streamed imports, scene changes, fallback, mute, pause ducking and saved mixer levels',
 );

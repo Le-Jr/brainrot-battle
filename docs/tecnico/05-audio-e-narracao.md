@@ -18,6 +18,11 @@ As faixas de `src/game/audio/imported-music.js` têm prioridade sobre as versõe
 | Deserto | Scorpion’s Claw |
 | Caffè | Café Duel |
 | Villaggio | Village Standoff |
+| Vila Brasilini | Favela Knockout |
+| Neon Città | Asphalt Impact |
+| Strada (bônus de corrida) | Throttle Lock |
+| Saturno | Cathedral of the Unbeaten |
+| Epílogos dos personagens / créditos | The Last Quarter |
 | Ascensão | The Ominant Signal |
 | Mega Vaca final | Toccata of the Final Battle |
 | Alternativa de Spiaggia | Boardwalk Brawl |
@@ -25,7 +30,7 @@ As faixas de `src/game/audio/imported-music.js` têm prioridade sobre as versõe
 
 As duas alternativas aparecem na página **OUVIR TRILHA** e no painel local de áudio (F2). As outras fases mantêm as faixas anteriores até a próxima importação.
 
-`python3 tools/import-music.py` lê somente os doze MP3 indicados em Downloads. Cria versões OGG com ganho constante medido para aproximadamente **−20 LUFS**, respeitando teto de **−3 dBTP**; assim preserva a dinâmica original. A emenda usa sobreposição de um segundo entre fim e começo, encurtando o ciclo em um segundo. Na abertura, a sobreposição é de apenas 50 ms para preservar a entrada da fanfarra. Não altera os MP3 originais. O processamento e as medições ficam em `public/audio/music/import-report.json`; os nomes dos arquivos incluem o hash da fonte.
+`python3 tools/import-music.py` lê somente os dezessete MP3 indicados em Downloads. Cria versões OGG com ganho constante medido para aproximadamente **−20 LUFS**, respeitando teto de **−3 dBTP**; assim preserva a dinâmica original. A emenda usa sobreposição de um segundo entre fim e começo, encurtando o ciclo em um segundo. Na abertura, a sobreposição é de apenas 50 ms para preservar a entrada da fanfarra. Não altera os MP3 originais. O processamento e as medições ficam em `public/audio/music/import-report.json`; os nomes dos arquivos incluem o hash da fonte.
 
 **OPÇÕES → ÁUDIO** e **PAUSA → ÁUDIO** compartilham os controles de **MÚSICA**, **EFEITOS** e **VOZES**. Use ↑↓ para selecionar e ←→ para ajustar; zero silencia o canal. Os níveis ficam salvos em `localStorage.brb_audio`. O mudo de música do gabinete continua independente do volume; a redução de música durante pausa/cutscene é preservada ao ajustar os níveis. O volume de vozes também afeta os memes originais. Escape volta ao menu de pausa antes de retomar a luta.
 

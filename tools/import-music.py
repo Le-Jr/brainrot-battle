@@ -20,6 +20,11 @@ SOURCES=[
  ('laststand','Toccata of the Final Battle.mp3','Toccata of the Final Battle'),
  ('piazza','Brawl_in_the_Piazza.mp3','Brawl in the Piazza'),
  ('beach-alt','Boardwalk_Brawl.mp3','Boardwalk Brawl'),
+ ('byd','Favela_Knockout.mp3','Favela Knockout'),
+ ('cyber','Asphalt_Impact.mp3','Asphalt Impact'),
+ ('bonus','Throttle_Lock.mp3','Throttle Lock'),
+ ('boss','Cathedral_of_the_Unbeaten.mp3','Cathedral of the Unbeaten'),
+ ('ending','The_Last_Quarter.mp3','The Last Quarter'),
 ]
 
 def run(args):

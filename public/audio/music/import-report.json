@@ -142,5 +142,65 @@
     "gainDb": -9.26,
     "overlapSeconds": 1.0,
     "alternative": false
+  },
+  "byd": {
+    "title": "Favela Knockout",
+    "url": "/audio/music/imported-byd-1dee25c880.ogg",
+    "source": "Favela_Knockout.mp3",
+    "sourceHash": "1dee25c880",
+    "duration": 180.106939,
+    "loudness": -20.07,
+    "truePeak": -6.85,
+    "gainDb": -8.0,
+    "overlapSeconds": 1.0,
+    "alternative": false
+  },
+  "cyber": {
+    "title": "Asphalt Impact",
+    "url": "/audio/music/imported-cyber-dec8609f1d.ogg",
+    "source": "Asphalt_Impact.mp3",
+    "sourceHash": "dec8609f1d",
+    "duration": 88.547755,
+    "loudness": -20.09,
+    "truePeak": -7.34,
+    "gainDb": -8.24,
+    "overlapSeconds": 1.0,
+    "alternative": false
+  },
+  "bonus": {
+    "title": "Throttle Lock",
+    "url": "/audio/music/imported-bonus-131e888f77.ogg",
+    "source": "Throttle_Lock.mp3",
+    "sourceHash": "131e888f77",
+    "duration": 71.333061,
+    "loudness": -20.09,
+    "truePeak": -8.74,
+    "gainDb": -9.11,
+    "overlapSeconds": 1.0,
+    "alternative": false
+  },
+  "boss": {
+    "title": "Cathedral of the Unbeaten",
+    "url": "/audio/music/imported-boss-955775d77d.ogg",
+    "source": "Cathedral_of_the_Unbeaten.mp3",
+    "sourceHash": "955775d77d",
+    "duration": 91.943673,
+    "loudness": -20.08,
+    "truePeak": -7.78,
+    "gainDb": -8.42,
+    "overlapSeconds": 1.0,
+    "alternative": false
+  },
+  "ending": {
+    "title": "The Last Quarter",
+    "url": "/audio/music/imported-ending-ebe9021d03.ogg",
+    "source": "The_Last_Quarter.mp3",
+    "sourceHash": "ebe9021d03",
+    "duration": 120.626122,
+    "loudness": -20.04,
+    "truePeak": -7.62,
+    "gainDb": -8.61,
+    "overlapSeconds": 1.0,
+    "alternative": false
   }
 }
