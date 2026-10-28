@@ -224,7 +224,7 @@ const AU = {
   },
   playImported(name, version) {
     const audio = new Audio(MUSIC_FILES[name]);
-    audio.loop = true;
+    audio.loop = TRACKS[name].loop !== false;
     audio.preload = 'auto';
     // Stream long tracks through the existing music bus rather than decoding minutes into RAM.
     const node = this.ctx.createMediaElementSource(audio);

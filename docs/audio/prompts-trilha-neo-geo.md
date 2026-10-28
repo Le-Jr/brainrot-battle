@@ -112,6 +112,22 @@ Make BWV 565 substantially more recognizable. Feature Bach's famous opening Tocc
 
 Se a ferramenta aceitar referência sonora, uma interpretação própria do motivo em MIDI/áudio pode ajudar a fixar a melodia. Só texto pode produzir uma aproximação em vez de um remix fiel.
 
+## 16 · Vitória — Mais Uma Pro Campeão
+
+Tela de resultado após a luta (`win`), com pose do vencedor e ganho de XP. Uma vinheta curta, tocada uma vez; diferente da música de encerramento da campanha.
+
+```text
+Instrumental victory fanfare for a 1990s Neo Geo arcade fighting game. 150 BPM, C major. Start immediately with a bold, memorable rising FM brass hook, answered by harmonized electric guitar, expressive slap bass, punchy sampled rock drums, snare flourishes and a bright cymbal crash. Confident, triumphant and slightly cocky: the fighter strikes a victory pose while the match results and earned experience appear. Compose a complete 8–12 second musical statement with a strong opening, a brief melodic answer and a satisfying final major chord with a short natural reverb tail. Full-bodied arcade band sound with clear melody and room for a spoken winner announcement. This is a short match-win cue, not the grand campaign ending. No vocals, speech, crowd samples, thin 8-bit beeps, ambient intro, extended solo or fade-out. Play once; do not loop.
+```
+
+## 17 · Continue? — O Último Segundo
+
+Tela após a derrota com contagem de 9 a 0 (`cont`). O jogador pode acelerar a contagem ou interrompê-la ao continuar: os números e o anúncio de GAME OVER ficam por conta do jogo.
+
+```text
+Instrumental continue-screen theme for a 1990s Neo Geo arcade fighting game. 120 BPM, A minor, tense and dramatic with one last spark of hope. Begin immediately with a distinctive descending electric-piano melody over a restrained pulsing synth bass, tight sampled kick, dry snare, metallic FM accents and short dark brass responses. A defeated fighter waits beside a large countdown: make the player feel the urgency to press Start and fight again. Compose a compact four-bar phrase, approximately eight seconds, with a clear melodic identity and a harmonically unresolved turnaround that loops naturally into the first beat. Keep the tension steady across repetitions; the game can accelerate or interrupt its countdown independently. Full-bodied early-1990s arcade production, clear midrange and space for separately played countdown announcements and interface effects. No vocals, spoken numbers, ticking-clock samples, game-over announcement, long intro, thin 8-bit arpeggios, EDM drop, final cadence or fade-out. Deliver a repeatable music bed, not a fixed countdown or a pre-timed game-over sequence.
+```
+
 ## Ajustes rápidos para qualquer faixa
 
 **Ficou genérica ou sem melodia:**

@@ -25,6 +25,8 @@ SOURCES=[
  ('bonus','Throttle_Lock.mp3','Throttle Lock'),
  ('boss','Cathedral_of_the_Unbeaten.mp3','Cathedral of the Unbeaten'),
  ('ending','The_Last_Quarter.mp3','The Last Quarter'),
+ ('win','Winner_s_Stance.mp3',"Winner's Stance"),
+ ('cont','Ten_Seconds_Remaining.mp3','Ten Seconds Remaining'),
 ]
 
 def run(args):
@@ -55,6 +57,10 @@ def main():
    f'[head]atrim=end={overlap},asetpts=PTS-STARTPTS[h];'
    f'[t][h]acrossfade=d={overlap}:c1=qsin:c2=qsin[seam];'
    '[body][seam]concat=n=2:v=0:a=1[out]')
+  # Victory is a one-shot cue: preserve its opening and natural ending.
+  if key=='win':
+   overlap=0.0
+   graph='[0:a]aresample=44100[out]'
   run(['ffmpeg','-y','-v','error','-i',str(src),'-filter_complex',graph,'-map','[out]','-ac','2','-c:a','pcm_s24le',str(intermediate)])
   before=measure(intermediate)
   # Static gain preserves the dynamics; choose the quieter gain if true peak needs headroom.

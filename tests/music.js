@@ -113,6 +113,12 @@ try {
   assert.equal(media.at(-1).src, IMPORTED_MUSIC.laststand.url);
   assert.equal(media.at(-1).loop, true);
   assert.equal(AU.track, null);
+  AU.play('win');
+  assert.equal(media.at(-1).src, IMPORTED_MUSIC.win.url);
+  assert.equal(media.at(-1).loop, false, 'victory fanfare plays once');
+  AU.play('cont');
+  assert.equal(media.at(-1).src, IMPORTED_MUSIC.cont.url);
+  assert.equal(media.at(-1).loop, true, 'continue music repeats until interrupted');
   const oldFailure = media.at(-1).onerror;
   AU.play('beach');
   assert.ok(media[0].paused);
@@ -146,13 +152,15 @@ try {
   AU.stop();
   delete globalThis.Audio;
 }
-assert.equal(Object.keys(IMPORTED_MUSIC).length, 17);
+assert.equal(Object.keys(IMPORTED_MUSIC).length, 19);
 for (const [id, source] of Object.entries({
   byd: 'Favela_Knockout.mp3',
   cyber: 'Asphalt_Impact.mp3',
   bonus: 'Throttle_Lock.mp3',
   boss: 'Cathedral_of_the_Unbeaten.mp3',
   ending: 'The_Last_Quarter.mp3',
+  win: 'Winner_s_Stance.mp3',
+  cont: 'Ten_Seconds_Remaining.mp3',
 })) {
   assert.equal(IMPORTED_MUSIC[id].source, source);
   assert.equal(MUSIC_FILES[id], IMPORTED_MUSIC[id].url);
