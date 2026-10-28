@@ -8,6 +8,9 @@ const { VO } = await import('../src/game/audio/voice.js');
 VO.on = false;
 const specs = JSON.parse(fs.readFileSync('assets/sprite-art/projectiles.json', 'utf8'));
 const tag = process.argv[2] || 'after';
+const density = process.argv.includes('--hd') ? 3 : 1;
+main.width = 640 * density;
+main.height = 360 * density;
 const g = main.getContext('2d'),
   out = createCanvas(1280, Object.keys(specs).length * 250),
   o = out.getContext('2d');
@@ -39,9 +42,9 @@ for (const [row, [type, spec]] of Object.entries(specs).entries()) {
     p.t = 4;
     if (type === 'meteor') p.y = 115;
     else if (type !== 'quake' && type !== 'boom') p.y = 125;
-    g.setTransform(2, 0, 0, 2, 0, 0);
+    g.setTransform(2 * density, 0, 0, 2 * density, 0, 0);
     f.draw();
-    const img = createCanvas(640, 360);
+    const img = createCanvas(main.width, main.height);
     img.getContext('2d').drawImage(main, 0, 0);
     fs.writeFileSync(`output/projectiles/${tag}/${type}-${mode}.png`, img.toBuffer('image/png'));
     o.imageSmoothingEnabled = false;

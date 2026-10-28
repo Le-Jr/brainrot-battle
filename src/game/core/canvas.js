@@ -1,8 +1,8 @@
 /* Main canvas binding plus low-level drawing helpers (offscreen canvases, rects, pixel ellipses, outlined text). */
 import { pixelText } from './pixel-font.js';
-import { FONT } from '../config.js';
+import { FONT, W, H } from '../config.js';
 
-/** Main 640x360 canvas and its context, bound once by initCanvas(). */
+/** Display-resolution canvas; all gameplay coordinates remain in logical space. */
 let cv = null,
   ctx = null;
 function initCanvas(canvas) {
@@ -10,6 +10,37 @@ function initCanvas(canvas) {
   ctx = canvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
   return ctx;
+}
+/** Keep the backbuffer at display density, with a 4K desktop / 720p touch budget. */
+function watchCanvasResolution(canvas) {
+  const resize = () => {
+    const width = canvas.clientWidth;
+    if (!width) return; // Headless tools keep their explicitly requested resolution.
+    const touch = globalThis.matchMedia?.('(pointer: coarse)').matches;
+    const limit = touch ? 1280 : 3840;
+    const pixels = Math.min(limit, Math.max(640, Math.ceil(width * (globalThis.devicePixelRatio || 1))));
+    const targetWidth = Math.ceil(pixels / 16) * 16;
+    const targetHeight = (targetWidth * H) / W;
+    if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+    }
+  };
+  const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(resize) : null;
+  observer?.observe(canvas);
+  globalThis.addEventListener?.('resize', resize);
+  resize();
+  return () => {
+    observer?.disconnect();
+    globalThis.removeEventListener?.('resize', resize);
+  };
+}
+function prepareFrame() {
+  const scale = cv.width / W;
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+  ctx.imageSmoothingEnabled = cv.width > 640;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.globalAlpha = 1;
 }
 function mk(w, h) {
   const c = document.createElement('canvas');
@@ -97,7 +128,7 @@ function drawMarks(marks, n, x, y, size, align, col, o) {
 }
 
 function txt(s, x, y, size = 8, col = '#ffffff', align = 'left', ol = '#120a1c') {
-  if (size <= 7 && typeof col === 'string') {
+  if (size <= 7 && typeof col === 'string' && cv.width <= 640) {
     pixelText(ctx, s, Math.round(x), Math.round(y), size, col, align, ol);
     return;
   }
@@ -151,4 +182,4 @@ function wrapTxt(s, n) {
 }
 const wrap = wrapTxt;
 
-export { R, ctx, cv, fe, initCanvas, mk, txt, vgrad, wrap, wrapTxt };
+export { R, ctx, cv, fe, initCanvas, mk, prepareFrame, watchCanvasResolution, txt, vgrad, wrap, wrapTxt };

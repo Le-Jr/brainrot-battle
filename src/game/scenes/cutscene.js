@@ -83,7 +83,8 @@ function drawPanel(p, t, opp, player) {
       const y = Math.floor(rnd(10, 120)),
         h = Math.floor(rnd(2, 7)),
         off = Math.round(rnd(-8, 8));
-      ctx.drawImage(cv, 0, y * 2, 640, h * 2, off, y, W, h);
+      const scale = cv.width / W;
+      ctx.drawImage(cv, 0, y * scale, cv.width, h * scale, off, y, W, h);
       ctx.fillStyle = k % 2 ? 'rgba(255,0,180,.18)' : 'rgba(0,255,255,.15)';
       ctx.fillRect(0, y, W, h);
     }

@@ -1,6 +1,6 @@
 /* Scene manager (go/step) and the fixed-timestep render loop. */
 import { VO } from '../audio/voice.js';
-import { ctx } from './canvas.js';
+import { prepareFrame } from './canvas.js';
 import { pressedQ } from './input.js';
 
 let inspector = null;
@@ -43,9 +43,7 @@ function frame(now) {
     n++;
   }
   if (n === 4) acc = 0;
-  ctx.setTransform(2, 0, 0, 2, 0, 0);
-  ctx.imageSmoothingEnabled = false;
-  ctx.globalAlpha = 1;
+  prepareFrame();
   try {
     drawScene();
   } catch (e) {

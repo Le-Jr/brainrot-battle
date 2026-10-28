@@ -15,6 +15,8 @@ function sprite(ch, pose, f, a, alt, tint) {
   const hd = !!HD[ch.id] || bonus || finale;
   c = mk(SW * (hd ? 2 : 1), SH * (hd ? 2 : 1));
   c.hd = hd;
+  if (bonus && ['car', 'cyber', 'byd'].includes(ch.id) && !alt && !tint)
+    c.bonus = { id: ch.id, frame: Number(pose.slice(1)) || 0 };
   c.own = hd && (pose === 'down' || pose === 'fall');
   const g = c.getContext('2d');
   if (tint) {
@@ -78,7 +80,8 @@ function drawSpr(img, x, y, dir, scale = 1, lying = false, alpha = 1) {
     ctx.translate(26, -12);
     ctx.rotate(-Math.PI / 2);
   }
-  ctx.drawImage(img, -OX * scale, -OY * scale, img.width * k * scale, img.height * k * scale);
+  if (img.bonus) drawBonusArt(ctx, img.bonus.id, img.bonus.frame, 0, 0, scale * 0.5);
+  else ctx.drawImage(img, -OX * scale, -OY * scale, img.width * k * scale, img.height * k * scale);
   ctx.restore();
 }
 /* ---- collision profiles measured from the sprites themselves ---- */

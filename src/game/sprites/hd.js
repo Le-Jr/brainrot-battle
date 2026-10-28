@@ -1,21 +1,10 @@
-/* HD character atlases: loading, pose-to-frame mapping (hdPick) and the squash/rotate transforms (drawHD). */
+/* HD character atlases: loading, pose mapping and rigid pose transforms. */
 import { ATLAS_FRAMES } from '../data/atlas-frames.js';
 import { ATLAS_ANIMATIONS } from '../data/atlas-animations.js';
 import { OX, OY } from './primitives.js';
 
 /* ---- HD sprites built from the reference sheets ---- */
 const HD = {};
-const HIP = {
-  chimp: 0.55,
-  tralalero: 0.64,
-  tung: 0.5,
-  ballerina: 0.56,
-  bombardiro: 0.62,
-  lirili: 0.5,
-  assassino: 0.55,
-  patapim: 0.5,
-  saturnita: 0.6,
-};
 function hdPick(pose, f, a, animation) {
   f = ((f % 8) + 8) % 8;
   if (animation) {
@@ -106,6 +95,11 @@ function drawHD(g, ch, pose, f, a) {
   g.imageSmoothingEnabled = false;
   g.save();
   g.translate(OX * 2 + (q.dx || 0), OY * 2 + (q.dy || 0));
+  if (H.animation && (pose === 'crouch' || pose === 'cblock')) {
+    // Authored crouch frames were packed smaller than idle. Restore body volume
+    // uniformly around the foot pivot, rather than stretching either axis.
+    g.scale(H.crouchScale, H.crouchScale);
+  }
   if (q.rot) {
     const pv = (q.pv || 0) * w,
       py = (q.pvy || 0) * h;
@@ -116,11 +110,15 @@ function drawHD(g, ch, pose, f, a) {
   const lc = q.lc || 1;
   if (lc >= 0.999) g.drawImage(H.img, x, y, w, h, -ax, -ay - 1, w, h);
   else {
-    const hip = Math.round(h * (HIP[ch.id] || 0.55)),
-      legs = h - hip,
-      nl = Math.max(2, Math.round(legs * lc));
-    g.drawImage(H.img, x, y + hip, w, legs, -ax, -nl, w, nl);
-    g.drawImage(H.img, x, y, w, hip, -ax, -nl - hip, w, hip);
+    // Workaround until low-attack frames are authored: lower the intact pose
+    // behind the floor instead of squeezing its legs. Measure painted height,
+    // since atlas cells contain transparent padding above the character.
+    const height = H.heights[q.i];
+    const lowered = Math.round(height * (1 - lc) * 0.45);
+    g.beginPath();
+    g.rect(-ax, -ay - 1, w, ay + 1);
+    g.clip();
+    g.drawImage(H.img, x, y, w, h, -ax, -ay - 1 + lowered, w, h);
   }
   g.restore();
 }
@@ -133,7 +131,39 @@ function loadHD(base) {
         new Promise((res) => {
           const im = new Image();
           im.onload = () => {
-            HD[id] = { img: im, f, animation: ATLAS_ANIMATIONS[id] };
+            const canvas = document.createElement('canvas');
+            canvas.width = im.width;
+            canvas.height = im.height;
+            const context = canvas.getContext('2d');
+            context.drawImage(im, 0, 0);
+            const areas = [];
+            const heights = f.map(([x, y, w, h]) => {
+              const pixels = context.getImageData(x, y, w, h).data;
+              let top = h,
+                bottom = -1,
+                area = 0;
+              for (let row = 0; row < h; row++)
+                for (let col = 0; col < w; col++)
+                  if (pixels[(row * w + col) * 4 + 3] >= 128) {
+                    area++;
+                    top = Math.min(top, row);
+                    bottom = Math.max(bottom, row);
+                  }
+              areas.push(area);
+              return Math.max(0, bottom - top + 1);
+            });
+            const animation = ATLAS_ANIMATIONS[id];
+            let crouchScale = 1;
+            if (animation) {
+              const idle = animation.idle,
+                crouch = animation.crouch;
+              // Painted area estimates body volume without treating bent knees as
+              // a smaller character. Keep the pose clearly below standing height.
+              const volumeScale = Math.sqrt(areas[idle] / Math.max(1, areas[crouch]));
+              const heightLimit = (heights[idle] * 0.9) / Math.max(1, heights[crouch]);
+              crouchScale = Math.max(1, Math.min(1.22, heightLimit, Math.max(1.1, volumeScale)));
+            }
+            HD[id] = { img: im, f, heights, animation, crouchScale };
             res();
           };
           im.onerror = () => res();

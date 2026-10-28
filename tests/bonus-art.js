@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import { loadImage } from '@napi-rs/canvas';
 import { T, createCanvas } from './harness.js';
 import { Car } from '../src/game/combat/car.js';
 import { drawBonusArt, hasBonusArt } from '../src/game/sprites/bonus-art.js';
+
+const elonAtlas = await loadImage(fs.readFileSync('public/atlases/bonus-elon.png'));
+assert.equal(elonAtlas.width, 5120, 'Elon retains high-resolution originals across five frames');
+assert.equal(elonAtlas.height, 832);
 
 const hash = (canvas) => crypto.createHash('sha256').update(canvas.toBuffer('image/png')).digest('hex');
 for (const ch of Object.values(T.CARS)) {
@@ -19,6 +25,7 @@ for (const ch of Object.values(T.CARS)) {
     assert.deepEqual(car.hurt(), original, 'damage preserves collision box');
     const sprite = T.sprite(ch, car.poseInfo().pose, 0, 0, false, '');
     assert.equal(sprite.hd, true);
+    assert.equal(sprite.bonus.id, ch.id, 'car draws directly from its improved atlas');
     hashes.push(hash(sprite));
   }
   assert.equal(new Set(hashes).size, 5, ch.id + ': five distinct damage states');

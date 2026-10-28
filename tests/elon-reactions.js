@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { T } from './harness.js';
+import fs from 'node:fs';
+import { T, main } from './harness.js';
+import { prepareFrame } from '../src/game/core/canvas.js';
 import { VO } from '../src/game/audio/voice.js';
 import { ELON_LINES } from '../src/game/audio/elon-lines.js';
 
@@ -31,3 +33,11 @@ bonus.startRound();
 assert.equal(bonus.elonDamage, 0);
 assert.equal(bonus.bub, null);
 console.log('ALL OK: Elon damage reactions, KO, drawing and round reset');
+
+main.width = 1920;
+main.height = 1080;
+bonus.phase = 'fight';
+prepareFrame();
+bonus.draw();
+fs.mkdirSync('output/elon', { recursive: true });
+fs.writeFileSync('output/elon/bonus-1080p.png', main.toBuffer('image/png'));

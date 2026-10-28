@@ -7,7 +7,7 @@ export interface GameEvents {
 }
 
 export interface CreateGameOptions {
-  /** The 640x360 backbuffer canvas. */
+  /** The canvas; its backbuffer follows display size and pixel density. */
   canvas: HTMLCanvasElement;
   /** CSS font-family of the pixel font (the self-hosted next/font family). */
   fontFamily?: string;

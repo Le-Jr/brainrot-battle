@@ -12,7 +12,7 @@ function drawProj(p, cam, tk) {
   if (drawProjectileArt(ctx, p, x, y, tk)) return;
   // Keep the procedural fallback as readable as the shipped sprites.
   const magnify =
-    { wave: 1.7, bomb: 2, boom: 1.4, banana: 2, clock: 1.9, ring: 1.6, meteor: 2, quake: 1.8 }[p.type] || 1;
+    { wave: 3, bomb: 3.5, boom: 2, banana: 3.5, clock: 3, ring: 2.4, meteor: 3.2, quake: 3 }[p.type] || 1;
   const anchorY = p.type === 'quake' || p.type === 'boom' ? FLOOR : y;
   ctx.save();
   ctx.translate(x, anchorY);

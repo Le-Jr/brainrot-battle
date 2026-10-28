@@ -13,9 +13,13 @@ pg.fillRect(0, 0, preview.width, preview.height);
 let row = 0;
 for (const [id, [width, height]] of Object.entries(sizes)) {
   if (only && id !== only) continue;
-  const sheet = createCanvas(256 * 5, 208),
+  // Preserve the available high-resolution Elon originals for desktop rendering.
+  const density = id === 'elon' ? 4 : 1;
+  const sheet = createCanvas(256 * 5 * density, 208 * density),
     g = sheet.getContext('2d');
-  g.imageSmoothingEnabled = false;
+  g.imageSmoothingEnabled = id === 'elon';
+  g.imageSmoothingQuality = 'high';
+  g.scale(density, density);
   for (let frame = 0; frame < 5; frame++) {
     const image = await loadImage(`assets/bonus-art/${id}-${frame}.png`);
     const source = createCanvas(image.width, image.height),
@@ -29,11 +33,11 @@ for (const [id, [width, height]] of Object.entries(sizes)) {
     for (let y = 0; y < image.height; y++)
       for (let x = 0; x < image.width; x++) {
         const i = (y * image.width + x) * 4;
-        if (pixels.data[i + 3] < 128) {
+        if (pixels.data[i + 3] < (id === 'elon' ? 8 : 128)) {
           pixels.data[i + 3] = 0;
           continue;
         }
-        pixels.data[i + 3] = 255;
+        if (id !== 'elon') pixels.data[i + 3] = 255;
         l = Math.min(l, x);
         r = Math.max(r, x);
         t = Math.min(t, y);
@@ -53,7 +57,17 @@ for (const [id, [width, height]] of Object.entries(sizes)) {
   pg.fillText(id, 4, row * 80 + 12);
   pg.imageSmoothingEnabled = false;
   for (let i = 0; i < 5; i++)
-    pg.drawImage(sheet, i * 256, 0, 256, 208, i * 200 + 30, row * 80 - 24, 128, 104);
+    pg.drawImage(
+      sheet,
+      i * 256 * density,
+      0,
+      256 * density,
+      208 * density,
+      i * 200 + 30,
+      row * 80 - 24,
+      128,
+      104,
+    );
   row++;
 }
 fs.writeFileSync(

@@ -60,7 +60,8 @@ function glitchBands(n, y0 = 0, y1 = H, maxOff = 8) {
     const y = Math.floor(rnd(y0, y1 - 6)),
       h = Math.floor(rnd(2, 7)),
       off = Math.round(rnd(-maxOff, maxOff));
-    ctx.drawImage(cv, 0, y * 2, 640, h * 2, off, y, W, h);
+    const scale = cv.width / W;
+    ctx.drawImage(cv, 0, y * scale, cv.width, h * scale, off, y, W, h);
     ctx.fillStyle = k % 2 ? 'rgba(255,0,180,.18)' : 'rgba(0,255,200,.15)';
     ctx.fillRect(0, y, W, h);
   }

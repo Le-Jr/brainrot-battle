@@ -4,7 +4,7 @@ import { isLocalHost } from './dev/local.js';
 import { AU } from './audio/synth.js';
 import { VO } from './audio/voice.js';
 import { FONT, setFont } from './config.js';
-import { ctx, initCanvas } from './core/canvas.js';
+import { ctx, initCanvas, watchCanvasResolution } from './core/canvas.js';
 import { attachKeyboard, pressVirtual, pressedQ, releaseVirtual } from './core/input.js';
 import { go, scene, startLoop, stopLoop } from './core/scene.js';
 import { on } from './events.js';
@@ -19,6 +19,7 @@ import { useMapArt } from './world/map.js';
 import { buildStages } from './stages/index.js';
 import { SET } from './state.js';
 import { buildLogo } from './ui/logo.js';
+import { loadTupinicodeArt } from './ui/tupinicode.js';
 
 let booting = null;
 /**
@@ -35,6 +36,7 @@ function boot(assetBase, intro, stageBase) {
       : Promise.resolve();
   booting = Promise.all([
     fontReady.catch(() => {}),
+    loadTupinicodeArt(),
     loadHD(assetBase),
     loadProjectileArt(assetBase),
     loadBonusArt(assetBase),
@@ -56,7 +58,7 @@ function boot(assetBase, intro, stageBase) {
 }
 
 /**
- * Bind the engine to a 640x360 canvas and start it.
+ * Bind the engine to a display-resolution canvas and start it.
  * Returns a handle right away; `ready` resolves when the font and atlases are loaded (and, without the intro,
  * once the title screen is up).
  * The engine is a singleton: calling destroy() and createGame() again (React StrictMode, remounts) resumes the same run.
@@ -71,9 +73,10 @@ function createGame({
   intro = true,
 }) {
   initCanvas(canvas);
+  const detachResolution = watchCanvasResolution(canvas);
   if (fontFamily) setFont(fontFamily);
   ctx.fillStyle = '#0c0814';
-  ctx.fillRect(0, 0, 640, 360);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   const detachKeyboard = keyboardTarget ? attachKeyboard(keyboardTarget) : () => {};
   const onPointer = () => {
     AU.init();
@@ -99,6 +102,7 @@ function createGame({
       alive = false;
       stopLoop();
       detachKeyboard();
+      detachResolution();
       inspector?.destroy();
       if (canvas.removeEventListener) canvas.removeEventListener('pointerdown', onPointer);
       VO.stop();
