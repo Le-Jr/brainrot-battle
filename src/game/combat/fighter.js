@@ -5,7 +5,7 @@ import { clamp } from '../core/math.js';
 import { popup, spark } from '../fx/particles.js';
 import { profile } from '../sprites/sprite.js';
 import { ATK, CHAIN, GRAV, JUMPV, PROJ_SP, SPCANCEL } from './constants.js';
-import { SPEC } from './specials.js';
+import { SPEC, directionalSpecial } from './specials.js';
 
 class Fighter {
   constructor(ch, side, alt, lvl = 1) {
@@ -48,6 +48,10 @@ class Fighter {
     this.inFwd = false;
     this.buf = [];
     this.grab = null;
+    this.bb = null;
+    this.tap = null;
+    this.heldHorizontal = 0;
+    this.dashT = 0;
   }
   get spd() {
     return this.ch.st.spd;
@@ -60,7 +64,10 @@ class Fighter {
   }
   get crouching() {
     return (
-      this.st === 'crouch' || (this.atk && this.atk.d.crouch) || (this.st === 'blockstun' && this.cblock)
+      this.st === 'crouch' ||
+      (this.spec && this.spec.variant === 'down') ||
+      (this.atk && this.atk.d.crouch) ||
+      (this.st === 'blockstun' && this.cblock)
     );
   }
   hurt() {
@@ -80,7 +87,7 @@ class Fighter {
       P = profile(this.ch),
       re = this.ch.st.reach;
     let b;
-    if (this.atk.n === 'up') b = { x0: P.r - 12, x1: P.r + 12, y0: P.t - 16, y1: P.t * 0.45 };
+    if (['up', 'uk'].includes(this.atk.n)) b = { x0: P.r - 12, x1: P.r + 12, y0: P.t - 16, y1: P.t * 0.45 };
     else {
       const pr = P[d.key];
       if (pr) b = { x0: pr.x0, x1: pr.x1 + (d.ext || 0) + (re - 1) * 8, y0: pr.y0, y1: pr.y1 };
@@ -130,15 +137,17 @@ class Fighter {
   }
   trySpecial(o, g, inp) {
     const qcf = inp.qcf || this.motion([2, 3, 6]);
-    if (this.meter >= 100) return this.startSpecial(o, g, 'super');
-    if (qcf && this.meter >= 50) return this.startSpecial(o, g, 'ex');
-    return this.startSpecial(o, g, '');
+    const variant = inp.down ? 'down' : inp.up ? 'up' : 'forward';
+    if (this.meter >= 100) return this.startSpecial(o, g, 'super', variant);
+    if (qcf && this.meter >= 50) return this.startSpecial(o, g, 'ex', variant);
+    return this.startSpecial(o, g, '', variant);
   }
-  startSpecial(o, g, kind) {
+  startSpecial(o, g, kind, variant = 'forward') {
     const type = this.ch.sp,
       sup = kind === 'super',
       ex = kind === 'ex';
-    if (PROJ_SP.has(type) && g.projs.some((p) => p.o === this && p.type !== 'boom')) return false;
+    if (variant === 'forward' && PROJ_SP.has(type) && g.projs.some((p) => p.o === this && p.type !== 'boom'))
+      return false;
     if (sup) {
       this.meter = 0;
       g.superFlash(this);
@@ -149,7 +158,19 @@ class Fighter {
       AU.sfx('special');
       popup(this.x, this.y - this.ch.hurt.h - 10, this.ch.shout, this.ch.col);
     }
-    this.spec = { type, t: 0, sup, ex, hits: 0, last: -99, box: null, data: null, max: 1, rehit: 99 };
+    this.spec = {
+      type,
+      variant,
+      t: 0,
+      sup,
+      ex,
+      hits: 0,
+      last: -99,
+      box: null,
+      data: null,
+      max: 1,
+      rehit: 99,
+    };
     this.st = 'special';
     this.vx = 0;
     this.atk = null;
@@ -178,6 +199,7 @@ class Fighter {
           f = 1;
         }
         break;
+      case 'dash':
       case 'walk':
         pose = 'walk';
         f = (((Math.floor(tk / 5) * this.walkDir) % 8) + 8) % 8;
@@ -203,9 +225,16 @@ class Fighter {
         if (this.atk) {
           const n = this.atk.n,
             d = this.atk.d;
-          pose = { p: 'punch', k: 'kick', cp: 'cpunch', ck: 'ckick', hp: 'punch', up: 'jpunch' }[n];
-          a = this.atk.t < d.st ? 0.5 : this.atk.t < d.st + d.ac + (n === 'up' ? 12 : 0) ? 1 : 0.25;
-          if (n === 'up' && this.atk.t >= d.st + d.ac + 12) {
+          pose = { p: 'punch', k: 'kick', cp: 'cpunch', ck: 'ckick', hp: 'punch', up: 'jpunch', uk: 'jkick' }[
+            n
+          ];
+          a =
+            this.atk.t < d.st
+              ? 0.5
+              : this.atk.t < d.st + d.ac + (['up', 'uk'].includes(n) ? 12 : 0)
+                ? 1
+                : 0.25;
+          if (['up', 'uk'].includes(n) && this.atk.t >= d.st + d.ac + 12) {
             pose = 'jump';
             f = this.vy > 2 ? 2 : 1;
           }
@@ -223,13 +252,17 @@ class Fighter {
         f = (this.stunT >> 1) & 1;
         break;
       case 'special':
-        pose = 'special';
+        pose = this.spec.variant === 'up' ? 'jpunch' : this.spec.variant === 'down' ? 'ckick' : 'special';
         // Match the anticipation/release artwork to the existing gameplay release frame.
         a =
           this.spec.t >=
-          ({ wave: 8, bomb: 9, banana: 7, clock: 10, quake: 12, bat: 6, spin: 4, ring: 10, slash: 10 }[
-            this.spec.type
-          ] || 8)
+          (this.spec.variant === 'up'
+            ? 6
+            : this.spec.variant === 'down'
+              ? 9
+              : { wave: 8, bomb: 9, banana: 7, clock: 10, quake: 12, bat: 6, spin: 4, ring: 10, slash: 10 }[
+                  this.spec.type
+                ] || 8)
             ? 1
             : 0.5;
         break;
@@ -253,7 +286,7 @@ class Fighter {
   neutralAct(inp, o, g) {
     if (inp.ps && this.trySpecial(o, g, inp)) return true;
     if (inp.pp) {
-      if (inp.dp || this.motion([6, 2, 3])) {
+      if ((!inp.down && inp.up) || inp.dp || this.motion([6, 2, 3])) {
         this.startAtk('up');
         popup(this.x, this.y - this.ch.hurt.h - 8, 'UPPER!', '#ffd23a');
         return true;
@@ -262,6 +295,10 @@ class Fighter {
       return true;
     }
     if (inp.pk) {
+      if (inp.up && !inp.down) {
+        this.startAtk('uk');
+        return true;
+      }
       if (this.inFwd && !inp.down && this.canThrow(o)) {
         this.doGrab(o);
         return true;
@@ -287,6 +324,19 @@ class Fighter {
   }
   update(inp, o, g) {
     this.t++;
+    // Count physical direction edges, never key-repeat or a held direction.
+    const horizontal = inp.left === inp.right ? 0 : inp.left ? -1 : inp.right ? 1 : 0;
+    const edge = horizontal && horizontal !== this.heldHorizontal;
+    this.heldHorizontal = horizontal;
+    const neutral = ['idle', 'walk', 'crouch'].includes(this.st) && this.y === FLOOR;
+    let dash = 0;
+    if (!neutral || inp.down || inp.up) this.tap = null;
+    else if (edge) {
+      if (this.tap && this.tap.dir === horizontal && this.t - this.tap.t <= 12) {
+        dash = horizontal;
+        this.tap = null;
+      } else this.tap = { dir: horizontal, t: this.t };
+    }
     if (this.flash > 0) this.flash--;
     if (this.inv > 0) this.inv--;
     if (this.landT > 0) this.landT--;
@@ -296,6 +346,7 @@ class Fighter {
       this.inBack = this.dir > 0 ? !!inp.left : !!inp.right;
       this.inFwd = this.dir > 0 ? !!inp.right : !!inp.left;
     };
+    if (neutral) this.dir = o.x >= this.x ? 1 : -1;
     setDirs();
     this.record(this.dirCode(inp));
     if (inp.pp || inp.pk || inp.ps)
@@ -303,6 +354,7 @@ class Fighter {
         b: inp.pp ? 'pp' : inp.pk ? 'pk' : 'ps',
         t: this.t,
         down: !!inp.down,
+        up: !!inp.up,
         fwd: this.inFwd,
         dp: !!(inp.dp || this.motion([6, 2, 3])),
         qcf: !!(inp.qcf || this.motion([2, 3, 6])),
@@ -316,6 +368,15 @@ class Fighter {
           setDirs();
         }
         if (this.neutralAct(inp, o, g)) break;
+        if (dash) {
+          this.st = 'dash';
+          this.dashT = 12;
+          this.walkDir = dash === this.dir ? 1 : -1;
+          this.vx = dash * this.spd * (this.walkDir === 1 ? 2.8 : 2.4);
+          AU.sfx('whoosh');
+          spark(this.x, FLOOR, [this.ch.col, '#ffffff'], 5, 1.4, 0.05);
+          break;
+        }
         if (inp.up) {
           this.st = 'jump';
           this.vy = -JUMPV;
@@ -342,19 +403,37 @@ class Fighter {
         }
         break;
       }
+      case 'dash':
+        if (--this.dashT <= 0) {
+          this.st = 'idle';
+          this.vx = 0;
+        }
+        break;
       case 'attack': {
         const a = this.atk,
           B = this.bb;
         if (a && a.conn && B && this.t - B.t <= 10 && B.t > a.t0) {
           if (B.b === 'ps') {
-            if (SPCANCEL.has(a.n) && this.trySpecial(o, g, { qcf: B.qcf })) {
+            if (SPCANCEL.has(a.n) && this.trySpecial(o, g, { qcf: B.qcf, up: B.up, down: B.down })) {
               this.bb = null;
               g.cancelFx(this);
               break;
             }
           } else {
             const nx =
-              B.b === 'pp' ? (B.dp ? 'up' : B.down ? 'cp' : B.fwd ? 'hp' : 'p') : B.down ? 'ck' : 'k';
+              B.b === 'pp'
+                ? (B.up && !B.down) || B.dp
+                  ? 'up'
+                  : B.down
+                    ? 'cp'
+                    : B.fwd
+                      ? 'hp'
+                      : 'p'
+                : B.up && !B.down
+                  ? 'uk'
+                  : B.down
+                    ? 'ck'
+                    : 'k';
             const ch = CHAIN[a.n];
             if (ch && ch.includes(nx)) {
               this.bb = null;
@@ -365,7 +444,7 @@ class Fighter {
         }
         if (this.atk && this.atk.n === 'hp' && this.atk.t < this.atk.d.st) this.vx = this.dir * 2.2;
         else if (this.atk && this.atk.n === 'hp') this.vx *= 0.7;
-        if (this.atk && this.atk.n === 'up' && this.atk.t === this.atk.d.st) {
+        if (this.atk && ['up', 'uk'].includes(this.atk.n) && this.atk.t === this.atk.d.st) {
           this.vy = -4.8;
           this.vx = this.dir * 1.3;
           this.y -= 1;
@@ -408,7 +487,7 @@ class Fighter {
         }
         break;
       case 'special':
-        SPEC[this.spec.type](this, o, g);
+        if (!directionalSpecial(this, o, g)) SPEC[this.spec.type](this, o, g);
         break;
       case 'down':
         if (!air && this.vy === 0) {
@@ -443,8 +522,13 @@ class Fighter {
       } else if (d.air && this.atk.t >= d.st + d.ac + 10) this.atk = null;
     }
     if (
-      (this.spec && (this.spec.type === 'bat' || this.spec.type === 'slash' || this.spec.type === 'spin')) ||
-      (this.atk && this.atk.n === 'up')
+      (this.spec &&
+        (this.spec.variant === 'up' ||
+          this.spec.variant === 'down' ||
+          this.spec.type === 'bat' ||
+          this.spec.type === 'slash' ||
+          this.spec.type === 'spin')) ||
+      (this.atk && ['up', 'uk'].includes(this.atk.n))
     ) {
       this.trail.push([this.x, this.y]);
       if (this.trail.length > 5) this.trail.shift();
@@ -465,7 +549,7 @@ class Fighter {
           this.landT = 6;
           AU.sfx('land');
           spark(this.x, FLOOR, ['#d8c8b0', '#a89880'], 4, 1, 0.05);
-        } else if (this.st === 'attack' && this.atk && this.atk.n === 'up') {
+        } else if (this.st === 'attack' && this.atk && ['up', 'uk'].includes(this.atk.n)) {
           this.vx = 0;
           AU.sfx('land');
         } else if (this.st === 'down' || this.st === 'ko') {

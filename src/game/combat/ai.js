@@ -77,7 +77,11 @@ class AI {
       Math.random() < L.aa * 0.25
     ) {
       o.pp = true;
-      o.dp = true;
+      if (Math.random() < 0.35) {
+        o.pp = false;
+        o.ps = true;
+        o.up = true;
+      } else o.dp = true;
       return o;
     }
     const threat = (op.atk && d < 80) || (op.st === 'special' && d < 130) || inc;
@@ -85,7 +89,12 @@ class AI {
       if (this.def === null) this.def = Math.random() < blockP;
       if (this.def) {
         o[B] = true;
-        if ((op.atk && op.atk.d.lvl === 'low') || (inc && inc.data.lvl === 'low')) o.down = true;
+        if (
+          (op.atk && op.atk.d.lvl === 'low') ||
+          (op.spec && op.spec.variant === 'down') ||
+          (inc && inc.data.lvl === 'low')
+        )
+          o.down = true;
         return o;
       }
     } else this.def = null;
@@ -152,7 +161,10 @@ class AI {
         } else if (q < 0.93) {
           o.down = true;
           o.pk = true;
-        } else o.ps = true;
+        } else {
+          o.ps = true;
+          o.down = Math.random() < 0.5;
+        }
         this.wait = Math.floor(this.wait * 0.6);
       } else if (r < L.ag + 0.15) {
         this.move = 'back';

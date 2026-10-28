@@ -47,6 +47,8 @@ Os comandos consideram o personagem virado para a direita (→ = para frente).
 
 | Golpe | Comando | Observações |
 |-------|---------|-------------|
+| Avanço / recuo rápido | → solte → / ← solte ← | Segundo toque em até 12 frames (0,2 s); dash de 12 frames, sem invencibilidade e sem defesa durante a arrancada. |
+| Ascendente | ↑ + Soco / Chute | Aperte juntos no chão: uppercut / chute ascendente. |
 | Soco / chute | Soco / Chute | Golpes básicos, médios. |
 | Soco forte | → + Soco | Investe para frente. É **alto**: precisa ser defendido em pé. |
 | Rasteira | ↓ + Chute | **Baixo**: precisa ser defendido agachado. Derruba. |
@@ -54,18 +56,22 @@ Os comandos consideram o personagem virado para a direita (→ = para frente).
 | Golpes no ar | Soco / Chute no pulo | **Altos**: o rival tem que defender em pé. |
 | Uppercut | → ↓ ↘ + Soco | Invencível no começo, lança o rival para um **juggle**. |
 | Agarrão | Perto + → + Chute | Não pode ser defendido. Joga o rival para trás. |
-| Especial | Especial | Um por personagem (veja [05-personagens.md](05-personagens.md)). |
+| Especial normal | Especial (neutro ou →) | Mantém o golpe próprio de cada personagem (veja [05-personagens.md](05-personagens.md)). |
+| Especial ascendente | ↑ + Especial | Aperte juntos no chão. Salta atacando e lança o adversário; recuperação até pousar. |
+| Especial baixo | ↓ + Especial | Desliza com ataque baixo que derruba; só se defende agachado. |
 | Especial EX | ↓ ↘ → + Especial | Gasta **meia barra**: cerca de +30% a +35% de dano, e projéteis 25% mais rápidos. |
 | Super | Especial com a barra **cheia** | Tela de corte com o nome do golpe. Versão muito mais forte. |
 | Defesa | Segurar para trás | Agachado para golpes baixos, em pé para golpes altos. Os dois funcionam contra os médios. |
+
+Os comandos direcionais também funcionam no D-pad de toque e com o jogador 2. ↑ sem ataque continua pulando; no ar, Soco/Chute mantêm os ataques aéreos. As três versões do especial usam a barra existente: com barra cheia sai Super; meia barra com o comando EX dá EX.
 
 ## Correntes e cancelamentos
 
 | Depois de… | Pode emendar |
 |------------|--------------|
-| Soco | Soco, chute, soco agachado, rasteira, soco forte, uppercut |
-| Soco agachado | Soco agachado, rasteira, soco, uppercut |
-| Chute ou soco forte | Uppercut |
+| Soco | Soco, chute, soco agachado, rasteira, soco forte, uppercut ou chute ascendente |
+| Soco agachado | Soco agachado, rasteira, soco, uppercut ou chute ascendente |
+| Chute ou soco forte | Uppercut ou chute ascendente |
 | Soco, soco agachado, chute, soco forte **que acertou** | Especial, EX ou Super (cancelamento) |
 
 O jogo guarda o último botão apertado por **10 frames**, então dá para apertar um pouquinho antes do golpe acertar.

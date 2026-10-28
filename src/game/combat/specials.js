@@ -197,4 +197,52 @@ const SPEC = {
   },
 };
 
-export { SPEC };
+/** Directional alternatives share frame rules; the forward move keeps each fighter's original identity. */
+function directionalSpecial(f, o, g) {
+  const s = f.spec;
+  if (!s.variant || s.variant === 'forward') return false;
+  s.t++;
+  const rising = s.variant === 'up';
+  const startup = rising ? 6 : 9;
+  const activeEnd = rising ? 18 : 20;
+  if (s.t === startup) {
+    if (rising) {
+      f.y -= 1;
+      f.vy = -5.2;
+    }
+    AU.sfx(rising ? 'whoosh' : 'boom');
+    spark(f.x + f.dir * 16, rising ? f.y - 42 : FLOOR - 6, [f.ch.col, '#ffffff', '#ffd36a'], 12, 2, 0.04);
+  }
+  if (s.t >= startup && s.t < activeEnd) {
+    f.vx = f.dir * (rising ? 1.4 : 3.2);
+    const P = profile(f.ch);
+    const reach = rising ? P.r + 16 : P.r + 30;
+    s.box = {
+      x: f.dir > 0 ? f.x - 8 : f.x - reach,
+      y: rising ? f.y + P.t - 18 : f.y - 18,
+      w: reach + 8,
+      h: rising ? -P.t + 6 : 18,
+    };
+    s.data = {
+      dmg: s.sup ? 26 : rising ? 12 : 10,
+      stun: 20,
+      bstun: 14,
+      push: rising ? 1.5 : 3,
+      lvl: rising ? 'mid' : 'low',
+      launch: rising,
+      kd: 1,
+      heavy: 1,
+      chip: 1,
+    };
+    if (s.t % 3 === 0)
+      spark(f.x + f.dir * 12, rising ? f.y - 36 : f.y - 6, [f.ch.col, '#ffffff'], 3, 1.2, 0.03);
+  } else {
+    s.box = null;
+    f.vx *= 0.65;
+  }
+  // The rise is committed through landing; the slide has punishable recovery.
+  if (s.t >= (rising ? 40 : 34) && f.y >= FLOOR) f.endSpec();
+  return true;
+}
+
+export { SPEC, directionalSpecial };

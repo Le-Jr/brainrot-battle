@@ -136,13 +136,16 @@ const ATK = {
     launch: 1,
   },
 };
+// Rising kick trades startup speed for damage.
+ATK.uk = { ...ATK.up, key: 'up', st: 5, ac: 10, rc: 28, dmg: 12 };
 const CHAIN = {
-  p: ['p', 'k', 'cp', 'ck', 'hp', 'up'],
-  cp: ['cp', 'ck', 'p', 'up'],
-  k: ['up'],
-  hp: ['up'],
+  p: ['p', 'k', 'cp', 'ck', 'hp', 'up', 'uk'],
+  cp: ['cp', 'ck', 'p', 'up', 'uk'],
+  k: ['up', 'uk'],
+  hp: ['up', 'uk'],
   ck: [],
   up: [],
+  uk: [],
 };
 const SPCANCEL = new Set(['p', 'cp', 'k', 'hp']);
 const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;

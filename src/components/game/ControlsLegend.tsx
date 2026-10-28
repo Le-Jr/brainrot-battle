@@ -42,6 +42,20 @@ const CARDS: { title: string; accent?: 'p2'; rows: Row[] }[] = [
   {
     title: 'GOLPES E COMBOS',
     rows: [
+      [
+        <>
+          Dois toques {m('→')} ou {m('←')}
+        </>,
+        'Dash: avanço rápido / recuo rápido',
+      ],
+      [<>{m('↑')}+Soco / Chute</>, 'Golpe ascendente (aperte junto)'],
+      [<>{m('↓')}+Soco / Chute</>, 'Golpe agachado / rasteira'],
+      [
+        <>
+          Esp. / {m('↑')}+Esp. / {m('↓')}+Esp.
+        </>,
+        'Especial normal / ascendente / baixo',
+      ],
       [<>{m('→')}+Soco</>, 'Soco forte (defenda em pé)'],
       [<>{m('→', '↓', '↘')}+Soco</>, 'Uppercut: lança o rival para um juggle'],
       [<>Perto {m('→')}+Chute</>, 'Agarrão'],

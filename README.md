@@ -196,6 +196,10 @@ Aperte **Enter** (ou toque na tela) para começar: o navegador só libera o som 
 
 | Golpe | Comando |
 |-------|---------|
+| Avanço / recuo rápido | Dois toques para frente / para trás |
+| Ascendente (soco / chute) | `↑` + Soco / Chute, juntos |
+| Soco agachado / rasteira | `↓` + Soco / Chute |
+| Especial normal / ascendente / baixo | Especial / `↑` + Especial / `↓` + Especial |
 | Soco forte (alto) | `→` + Soco |
 | Rasteira (baixo) | `↓` + Chute |
 | Uppercut (lança para juggle) | `→` `↓` `↘` + Soco |

@@ -24,8 +24,13 @@ Tempos em frames (60 por segundo). O dano é multiplicado pela **força** do ata
 | Soco no ar | Soco no pulo | 3 / 7 | 6 | **alta** | |
 | Chute no ar | Chute no pulo | 4 / 9 | 8 | **alta** | |
 | Soco forte | → + Soco | 8 / 4 / 15 | 10 | **alta** | Investe para frente, alcance +8 px |
-| Uppercut | → ↓ ↘ + Soco | 3 / 9 / 30 | 11 | média | Invencível nos primeiros frames, lança para juggle |
+| Chute ascendente | ↑ + Chute | 5 / 10 / 28 | 12 | média | Salta e lança para juggle; sem invencibilidade |
+| Uppercut | ↑ + Soco ou → ↓ ↘ + Soco | 3 / 9 / 30 | 11 | média | Invencível nos primeiros frames, lança para juggle |
 | Agarrão | Perto + → + Chute | – | 13 | indefensável | Só funciona com os dois no chão |
+
+## Dash
+
+Dois toques na mesma direção horizontal, separados por uma soltura e em até 12 frames, iniciam uma arrancada de 12 frames. O avanço usa 2,8× a velocidade de caminhada; o recuo, 2,4×. Só começa no chão, fora de ataques e atordoamentos. Não concede invencibilidade, defesa nem cancelamento durante o dash.
 
 ## Defesa
 
@@ -51,6 +56,8 @@ Tempos em frames (60 por segundo). O dano é multiplicado pela **força** do ata
 - A barra pisca nas cores do arco-íris quando está em MAX.
 
 ## Especiais
+
+Além do especial normal de cada personagem, ↑ + Especial dá um ataque ascendente (6 frames de início, ativo até o frame 17, recuperação mínima de 40 frames e até pousar); ↓ + Especial dá um ataque deslizante baixo (9 frames de início, ativo até o frame 19, termina no frame 34). Ambos derrubam; o ascendente lança para juggle. As versões preservam EX, Super e cancelamentos direcionais. Não dão invencibilidade.
 
 Só um projétil de cada lutador fica na tela por vez. Projéteis que se chocam se anulam (bombas e meteoros explodem).
 
