@@ -10,8 +10,8 @@ Tralalero, Tung Tung Sahur, Bombardiro e companhia contra uma vaca cósmica que 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-149eca?style=for-the-badge&logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Canvas 2D](https://img.shields.io/badge/Canvas_2D-640×360-ff6ad5?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/API/Canvas_API)
-[![Web Audio](https://img.shields.io/badge/Web_Audio-FM_synth-ffcc3a?style=for-the-badge)](https://developer.mozilla.org/docs/Web/API/Web_Audio_API)
+[![Canvas 2D](https://img.shields.io/badge/Canvas_2D-até_4K-ff6ad5?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/docs/Web/API/Canvas_API)
+[![Web Audio](https://img.shields.io/badge/Web_Audio-OGG_+_FM_synth-ffcc3a?style=for-the-badge)](https://developer.mozilla.org/docs/Web/API/Web_Audio_API)
 
 <a href="#-como-jogar"><b>🎮 Jogar</b></a> ·
 <a href="#-abertura-tupinicode"><b>🌴 Abertura</b></a> ·
@@ -26,7 +26,7 @@ Tralalero, Tung Tung Sahur, Bombardiro e companhia contra uma vaca cósmica que 
 
 ## 🌴 Abertura Tupinicode
 
-Uma abertura no estilo dos arcades dos anos 90: o CRT na selva carrega o jogo de verdade (com barra de progresso), o logo cai com glitch e jingle de boot, e o crédito do desenvolvedor aparece antes da tela de aviso e do título.
+Uma vinheta de estúdio no estilo dos arcades dos anos 90: a arte da Tupinicode na selva acende como um CRT enquanto o jogo carrega de verdade ("PREPARANDO O CAOS", com porcentagem), o logo original é revelado ao som do jingle e o crédito do desenvolvedor aparece antes da tela de aviso e do título. A tela de título toca *Quarter In The Slot*; ao apertar Start, o menu passa para *Last Token Remaining*.
 
 <div align="center">
 <table>
@@ -117,6 +117,8 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
     <td width="50%" valign="top">
 
 ### 🥊 Combate de arcade
+- **Dash** com dois toques para frente ou para trás
+- Golpes **direcionais**: soco/chute ascendente, agachado e especial normal / ascendente / baixo
 - Correntes, **cancelamento em especial**, uppercut com comando **→ ↓ ↘**, agarrão
 - **EX** (meia barra) e **Super** com tela de corte
 - Juggle, escalonamento de dano, hit-stop e tremor de tela
@@ -129,7 +131,7 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
 ### 📜 Modo história completo
 - Prólogo do mundo + prólogo e final **próprios de cada lutador**
 - Cena antes e depois de **cada rival**, com rivalidades especiais
-- Mapa animado de **Brainrotália** entre as lutas
+- Mapa animado de **Brainrotália** entre as lutas, com arte renovada e emblema de Saturno na viagem final
 - Chefe em duas fases: Saturnita, ascensão do Mega Brain e batalha final
 - Cutscene global com Bri Bri jogável e desbloqueável, novas vozes e duas trilhas FM originais
 - Ataque coletivo dos brainrots, salvação do planeta e epílogos separados de cada herói
@@ -141,16 +143,19 @@ Fichas completas, falas e rivalidades em [docs/jogo/05-personagens.md](docs/jogo
   <tr>
     <td valign="top">
 
-### 🎵 Tudo gerado ao vivo
-- **21 músicas** de um sintetizador FM de 2 operadores (família YM2151)
-- 25 efeitos sonoros, reverb e delay, **zero arquivos de áudio**
+### 🎵 Trilha arcade e mixer
+- **19 faixas gravadas** no estilo Neo Geo: título, menu, fases, bônus, chefe, final, epílogos, **vitória** e **continue**, normalizadas para ~−20 LUFS e com emenda para loop
+- As demais fases usam arranjos FM renderizados em OGG; as **21 partituras** do sintetizador FM de 2 operadores (família YM2151) continuam como reserva
+- **Mixer de áudio** (MÚSICA · EFEITOS · VOZES) em Opções e na Pausa, salvo no navegador
+- Página **OUVIR TRILHA** com todos os players
+- 25 efeitos sonoros sintetizados ao vivo, com reverb e delay
 - **13 cenários pintados em código** e convertidos em pixel art moderna: faixas de luz sem granulado, contorno nas silhuetas e perspectiva atmosférica
 
   </td>
   <td valign="top">
 
 ### 🚗 Fases bônus e progressão
-- Destrua a **Macchina del Nonno**, o **Cybercaminhão** de "vidro blindado" e o **Bi-ai-di** (com papagaio do milk shake 🦜)
+- Destrua a **Macchina del Nonno**, o **Cybercaminhão** de "vidro blindado" e o **Bi-ai-di** (com papagaio do milk shake 🦜, que agora toca o meme completo num poleiro redesenhado)
 - **XP e níveis 1–10** por personagem, salvos no navegador
 - Versus **contra a CPU ou local**, Treino com leitura de dano e **modo celular**: tela cheia na horizontal com D-pad de 8 direções e botões sobre o jogo
 
@@ -181,7 +186,7 @@ npm install
 npm run dev        # http://localhost:3000
 ```
 
-Aperte **Enter** (ou toque na tela) para começar: o navegador só libera o som depois da primeira interação. Escolha **HISTÓRIA** para a campanha ou **TREINO** para praticar combos.
+Aperte **Enter** (ou toque na tela) para começar: o navegador só libera o som depois da primeira interação. Escolha **HISTÓRIA** para a campanha ou **TREINO** para praticar combos. Os volumes de música, efeitos e vozes ficam em **OPÇÕES → ÁUDIO** ou em **PAUSA → ÁUDIO** (↑↓ seleciona, ←→ ajusta).
 
 | | Jogador 1 | Jogador 2 (versus) |
 |---|:---:|:---:|
@@ -214,20 +219,33 @@ Mais detalhes em [docs/jogo/03-controles-e-comandos.md](docs/jogo/03-controles-e
 
 ## 🛠️ Desenvolvimento
 
-> Requer **Node.js 20.9+**. Os testes de áudio usam **FFmpeg e ffprobe**. O pipeline atual de sprites usa Node.js; somente o pipeline legado requer Python com `pillow`, `numpy` e `scipy`.
+> Requer **Node.js 20.9+**. Os testes de áudio usam **FFmpeg e ffprobe**; renderizar a trilha exige também **Chromium** e FFmpeg com `libvorbis`. O pipeline atual de sprites usa Node.js; somente o pipeline legado requer Python com `pillow`, `numpy` e `scipy`.
 
 | Comando | O que faz |
 |---------|-----------|
 | `npm run dev` | Servidor de desenvolvimento (Turbopack) |
 | `npm run build` · `npm start` | Build de produção (página estática) e servidor |
 | `npm run lint` · `npm run typecheck` | ESLint e TypeScript |
-| `npm run format` | Prettier |
-| `npm test` | Campanha completa, 24 lutas CPU × CPU, textos e snapshots visuais, tudo headless |
+| `npm run format` · `npm run format:check` | Prettier |
+| `npm test` | Campanha completa, lutas CPU × CPU, combate direcional, final, sprites, resolução, textos, vozes, música e snapshots visuais, tudo headless |
+| `npm run test:combat` · `test:music` · `test:finale` · `test:local` · `test:voices` | Só uma parte da suíte |
 | `npm run test:snapshot:update` | Aceita uma mudança visual intencional |
 | `npm run readme:art` | Regera as imagens deste README com o próprio motor |
 | `npm run sprites` | 19 poses por personagem → atlas em `public/atlases/` |
 | `npm run sprites:projectiles` | Empacota os oito artefatos com três fases cada |
-| `npm run sprites:bonus` | Empacota os estados de dano dos carros e as expressões do papagaio |
+| `npm run sprites:bonus` | Empacota os estados de dano dos carros e as expressões do papagaio e do Elon |
+| `npm run sprites:finale` · `stages:art` | Processa a arte do final e dos cenários/mapa |
+| `npm run music:render` · `music:check` | Renderiza a trilha FM em OGG e confere os arquivos |
+| `npm run render:ui` · `render:map` · `render:projectiles` · `render:finale` | Galerias de conferência visual em `output/` |
+| `npm run voices:catalog` · `voices:generate` | Catálogo e geração das vozes Chatterbox |
+
+### 🎵 Trilha sonora
+
+As faixas gravadas ficam em `public/audio/music/` e são mapeadas em `src/game/audio/imported-music.js`; elas têm prioridade sobre os arranjos FM. Faixas longas tocam por streaming (`HTMLAudioElement` ligado ao bus de música), sem decodificar tudo na memória. Se um arquivo falhar, o sintetizador assume a música da fase.
+
+`python3 tools/import-music.py` converte os MP3 de origem em OGG com ganho constante (~−20 LUFS, teto −3 dBTP) e emenda de um segundo para o loop; `--only title select` reprocessa só as faixas escolhidas. As medições ficam em `public/audio/music/import-report.json`. Depois, `node tools/music-playlist.js` atualiza a página **OUVIR TRILHA** (`/audio/music/index.html`). Os prompts usados para gerar a trilha estão em [docs/audio/prompts-trilha-neo-geo.md](docs/audio/prompts-trilha-neo-geo.md).
+
+Os volumes do mixer ficam salvos em `localStorage.brb_audio`. O áudio completo do meme do papagaio é processado por `tools/process-parrot-audio.js` (−18 LUFS, sem cortes nem mudança de velocidade). Detalhes em [docs/tecnico/05-audio-e-narracao.md](docs/tecnico/05-audio-e-narracao.md).
 
 ### Vozes pré-geradas com Chatterbox
 
@@ -241,7 +259,11 @@ Para regenerar as vozes, veja [tools/voices/README.md](tools/voices/README.md). 
 
 A intro, os menus, as seleções, a pausa, o HUD e os resultados compartilham a paleta e os componentes de `src/game/ui/theme.js`: azul escuro, dourado, branco quente, vermelho para 1P e azul para 2P. Títulos usam Press Start 2P; os textos menores usam a fonte bitmap 5×7 de `src/game/core/pixel-font.js`, com acentos em português e italiano.
 
-O desenho usa a resolução lógica 320×180 e escala mantendo 16:9. Cabeçalhos, rodapés, margens, foco e painéis seguem o mesmo padrão. `npm run render:ui` gera uma galeria dos estados da interface em `output/ui/after/`; para reproduzir, coloque a fonte TTF Press Start 2P em `output/ui/PressStart2P-Regular.ttf`. O teste manual `node tools/review-ui-browser.js` usa Chromium e uma instância de produção em `localhost:3011` para capturar desktop, tablet e celular.
+O desenho usa a resolução lógica 320×180 e escala mantendo 16:9. O canvas acompanha a densidade real da tela (até 4K no desktop e 1280 px em telas de toque), com suavização de alta qualidade acima de 640 px; sprites e projéteis mantêm proporções e alinhamento ao pixel (`tests/display-resolution.js`, `tests/projectile-scale.js`). Cabeçalhos, rodapés, margens, foco e painéis seguem o mesmo padrão. `npm run render:ui` gera uma galeria dos estados da interface em `output/ui/after/`; para reproduzir, coloque a fonte TTF Press Start 2P em `output/ui/PressStart2P-Regular.ttf`. O teste manual `node tools/review-ui-browser.js` usa Chromium e uma instância de produção em `localhost:3011` para capturar desktop, tablet e celular.
+
+### 🧪 Testes locais / God Mode
+
+Em `localhost`, clique em **TESTES (F2)** ou pressione **F2**. O primeiro item abre a última luta como Bri Bri, com God Mode, especial infinito e relógio parado. O painel também acessa cutscenes, bônus, personagens, cenários, músicas e vozes, com XP isolado do progresso salvo. [Guia do painel local](docs/tecnico/09-testes-locais.md).
 
 ### 🧱 Arquitetura
 
@@ -251,7 +273,7 @@ src/
 ├── components/game/     Casca React: gabinete, barra de botões, toque, legenda
 └── game/                Motor do jogo em módulos ES (sem React)
     ├── core/            canvas, entrada, cenas e loop de 60 Hz
-    ├── audio/           sintetizador FM, 21 músicas, narrador, locutor
+    ├── audio/           trilha OGG, sintetizador FM, mixer, narrador, locutor
     ├── sprites/         atlas HD, cache, hitboxes medidas dos pixels
     ├── characters/      um arquivo por lutador + carros
     ├── combat/          Fighter, Fight, IA, especiais, Treino, Bônus
@@ -305,6 +327,12 @@ Essa rede de segurança continua no projeto como `tests/visual-snapshot.js`.
 6. [Ferramentas e testes](docs/tecnico/06-ferramentas-e-testes.md)
 7. [Guia de extensão](docs/tecnico/07-guia-de-extensao.md)
 8. [Roadmap](docs/tecnico/08-roadmap.md)
+9. [Testes locais](docs/tecnico/09-testes-locais.md)
+
+**🎨 Arte e áudio**
+- [Prompts dos cenários](docs/arte/prompts-cenarios.md) · [dos sprites](docs/arte/prompts-sprites.md)
+- [Carros e papagaio](docs/arte/carros-e-papagaio.md)
+- [Prompts da trilha Neo Geo](docs/audio/prompts-trilha-neo-geo.md)
 
   </td>
   </tr>
@@ -314,6 +342,7 @@ Essa rede de segurança continua no projeto como `tests/visual-snapshot.js`.
 
 - **Conceito, sprite sheets e direção:** Leandro Junior.
 - **Código, músicas, cenários e roteiro:** feitos com Claude.
+- **Trilha gravada:** gerada a partir dos prompts de [docs/audio](docs/audio/prompts-trilha-neo-geo.md) e masterizada localmente.
 - **Fonte:** [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P), de CodeMan38 (SIL Open Font License).
 - Os nomes dos personagens vêm da trend **"Italian brainrot"**. Toda a arte e a música deste projeto são originais.
 
@@ -321,7 +350,3 @@ Essa rede de segurança continua no projeto como `tests/visual-snapshot.js`.
 <br>
 <sub><b>TRALALERO TRALALÀ!</b> · feito no Brasil com 🇮🇹 no coração</sub>
 </div>
-
-### Testes locais / God Mode
-
-Em `localhost`, clique em **TESTES (F2)** ou pressione **F2**. O primeiro item abre a última luta como Bri Bri, com God Mode, especial infinito e relógio parado. O painel também acessa cutscenes, bônus, personagens, cenários, músicas e vozes, com XP isolado do progresso salvo. [Guia do painel local](docs/tecnico/09-testes-locais.md).
